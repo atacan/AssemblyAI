@@ -4,20 +4,22 @@
 import PackageDescription
 
 let package = Package(
-    name: "SwiftAssemblyAI",
+    name: "AssemblyAI",
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
-            name: "SwiftAssemblyAI",
-            targets: ["SwiftAssemblyAI"]),
+            name: "AssemblyAI",
+            targets: ["AssemblyAI"]),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "SwiftAssemblyAI"),
+            name: "AssemblyAI"),
         .testTarget(
-            name: "SwiftAssemblyAITests",
-            dependencies: ["SwiftAssemblyAI"]),
+            name: "AssemblyAITests",
+            dependencies: ["AssemblyAI"],
+            resources: [.copy("Resources")]
+        ),
     ]
 )
