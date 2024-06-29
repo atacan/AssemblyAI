@@ -263,7 +263,7 @@ public struct Transcript: Codable {
     let words: [TranscriptWord]?
     let utterances: [TranscriptUtterance]?
     let confidence: Double?
-    let audioDuration: Double?
+    public let audioDuration: Double?
     let punctuate: Bool?
     let formatText: Bool?
     let dualChannel: Bool?
