@@ -37,7 +37,11 @@ func downloadFile(from fileURL: URL, to destinationPaths: [String]) async throws
         // Fix overflowing integers
         .replacingOccurrences(of: "9223372036854776000", with: "922337203685477600")
         // Remove the null type
-        // .replacingOccurrences(of: #"  - type: "null""#, with: "nullable: true")
+//         .replacingOccurrences(of: #"  - type: "null""#, with: "nullable: true")
+//         .replacingOccurrences(of: #"          type: [string, "null"]"#, with: """
+//           type: string
+//           nullable: true
+// """)
 
     // Save to each destination path
     try await withThrowingTaskGroup(of: Void.self) { group in
