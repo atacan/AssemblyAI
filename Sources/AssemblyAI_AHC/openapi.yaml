@@ -2486,7 +2486,7 @@ components:
       description: A transcript object
       type: object
       x-fern-sdk-group-name: transcripts
-      additionalProperties: false
+      additionalProperties: true
       properties:
         id:
           x-label: ID
@@ -2862,18 +2862,13 @@ components:
           deprecated: true
 
       required:
-        - id
-        - speech_model
-        - language_model
-        - acoustic_model
-        - status
         - audio_url
-        - webhook_auth
         - auto_highlights
+        - id
         - redact_pii
+        - status
         - summarization
-        - language_confidence_threshold
-        - language_confidence
+        - webhook_auth
       example:
         {
           id: "9ea68fd3-f953-42c1-9742-976c447fb463",
@@ -3491,10 +3486,6 @@ components:
         See [Topic Detection](https://www.assemblyai.com/docs/models/topic-detection) for more information.
       x-fern-sdk-group-name: transcripts
       type: object
-      required:
-        - status
-        - results
-        - summary
       properties:
         status:
           x-label: Status
@@ -3601,11 +3592,7 @@ components:
         See [Content moderation](https://www.assemblyai.com/docs/models/content-moderation) for more information.
       x-fern-sdk-group-name: transcripts
       type: object
-      required:
-        - status
-        - results
-        - summary
-        - severity_score_summary
+
       properties:
         status:
           x-label: Status
@@ -4483,7 +4470,6 @@ components:
         - start
         - end
         - text
-        - speaker
       properties:
         confidence:
           x-label: Confidence

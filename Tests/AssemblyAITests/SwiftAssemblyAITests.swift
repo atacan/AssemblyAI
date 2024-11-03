@@ -13,6 +13,13 @@ final class AssemblyAITests: XCTestCase {
         )
     }
     
+    func test_Decoding_post_transcript_response() throws {
+        let jsonFileURL = URL(fileURLWithPath: "post_transcript_response.json", relativeTo: referenceTestResourcesDirectory)
+        let response = try Data(contentsOf: jsonFileURL)
+        let transcript = try JSONDecoder().decode(Transcript.self, from: response)
+        print(transcript)
+    }
+
     func test_Decoding_completed_transcript_response() throws {
         let jsonFileURL = URL(fileURLWithPath: "transcript_completed.json", relativeTo: referenceTestResourcesDirectory)
         let response = try Data(contentsOf: jsonFileURL)

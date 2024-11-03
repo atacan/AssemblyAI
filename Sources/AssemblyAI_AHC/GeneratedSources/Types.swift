@@ -1839,15 +1839,15 @@ public enum Components {
             ///
             ///
             /// - Remark: Generated from `#/components/schemas/Transcript/language_confidence_threshold`.
-            public var language_confidence_threshold: Swift.Float
+            public var language_confidence_threshold: Swift.Float?
             /// The confidence score for the detected language, between 0.0 (low confidence) and 1.0 (high confidence)
             ///
             /// - Remark: Generated from `#/components/schemas/Transcript/language_confidence`.
-            public var language_confidence: Swift.Double
+            public var language_confidence: Swift.Double?
             /// The speech model used for the transcription. When `null`, the default model is used.
             ///
             /// - Remark: Generated from `#/components/schemas/Transcript/speech_model`.
-            public var speech_model: Components.Schemas.SpeechModel
+            public var speech_model: Components.Schemas.SpeechModel?
             /// The textual transcript of your media file
             ///
             /// - Remark: Generated from `#/components/schemas/Transcript/text`.
@@ -2073,12 +2073,14 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/Transcript/language_model`.
             @available(*, deprecated)
-            public var language_model: Swift.String
+            public var language_model: Swift.String?
             /// The acoustic model that was used for the transcript
             ///
             /// - Remark: Generated from `#/components/schemas/Transcript/acoustic_model`.
             @available(*, deprecated)
-            public var acoustic_model: Swift.String
+            public var acoustic_model: Swift.String?
+            /// A container of undocumented properties.
+            public var additionalProperties: OpenAPIRuntime.OpenAPIObjectContainer
             /// Creates a new `Transcript`.
             ///
             /// - Parameters:
@@ -2140,15 +2142,16 @@ public enum Components {
             ///   - error: Error message of why the transcript failed
             ///   - language_model: The language model that was used for the transcript
             ///   - acoustic_model: The acoustic model that was used for the transcript
+            ///   - additionalProperties: A container of undocumented properties.
             public init(
                 id: Swift.String,
                 audio_url: Swift.String,
                 status: Components.Schemas.TranscriptStatus,
                 language_code: Components.Schemas.Transcript.language_codePayload? = nil,
                 language_detection: Swift.Bool? = nil,
-                language_confidence_threshold: Swift.Float,
-                language_confidence: Swift.Double,
-                speech_model: Components.Schemas.SpeechModel,
+                language_confidence_threshold: Swift.Float? = nil,
+                language_confidence: Swift.Double? = nil,
+                speech_model: Components.Schemas.SpeechModel? = nil,
                 text: Swift.String? = nil,
                 words: [Components.Schemas.TranscriptWord]? = nil,
                 utterances: [Components.Schemas.TranscriptUtterance]? = nil,
@@ -2197,8 +2200,9 @@ public enum Components {
                 speech_threshold: Swift.Float? = nil,
                 throttled: Swift.Bool? = nil,
                 error: Swift.String? = nil,
-                language_model: Swift.String,
-                acoustic_model: Swift.String
+                language_model: Swift.String? = nil,
+                acoustic_model: Swift.String? = nil,
+                additionalProperties: OpenAPIRuntime.OpenAPIObjectContainer = .init()
             ) {
                 self.id = id
                 self.audio_url = audio_url
@@ -2258,6 +2262,7 @@ public enum Components {
                 self.error = error
                 self.language_model = language_model
                 self.acoustic_model = acoustic_model
+                self.additionalProperties = additionalProperties
             }
             public enum CodingKeys: String, CodingKey {
                 case id
@@ -2341,15 +2346,15 @@ public enum Components {
                     Swift.Bool.self,
                     forKey: .language_detection
                 )
-                language_confidence_threshold = try container.decode(
+                language_confidence_threshold = try container.decodeIfPresent(
                     Swift.Float.self,
                     forKey: .language_confidence_threshold
                 )
-                language_confidence = try container.decode(
+                language_confidence = try container.decodeIfPresent(
                     Swift.Double.self,
                     forKey: .language_confidence
                 )
-                speech_model = try container.decode(
+                speech_model = try container.decodeIfPresent(
                     Components.Schemas.SpeechModel.self,
                     forKey: .speech_model
                 )
@@ -2545,15 +2550,15 @@ public enum Components {
                     Swift.String.self,
                     forKey: .error
                 )
-                language_model = try container.decode(
+                language_model = try container.decodeIfPresent(
                     Swift.String.self,
                     forKey: .language_model
                 )
-                acoustic_model = try container.decode(
+                acoustic_model = try container.decodeIfPresent(
                     Swift.String.self,
                     forKey: .acoustic_model
                 )
-                try decoder.ensureNoAdditionalProperties(knownKeys: [
+                additionalProperties = try decoder.decodeAdditionalProperties(knownKeys: [
                     "id",
                     "audio_url",
                     "status",
@@ -2614,6 +2619,242 @@ public enum Components {
                     "acoustic_model"
                 ])
             }
+            public func encode(to encoder: any Encoder) throws {
+                var container = encoder.container(keyedBy: CodingKeys.self)
+                try container.encode(
+                    id,
+                    forKey: .id
+                )
+                try container.encode(
+                    audio_url,
+                    forKey: .audio_url
+                )
+                try container.encode(
+                    status,
+                    forKey: .status
+                )
+                try container.encodeIfPresent(
+                    language_code,
+                    forKey: .language_code
+                )
+                try container.encodeIfPresent(
+                    language_detection,
+                    forKey: .language_detection
+                )
+                try container.encodeIfPresent(
+                    language_confidence_threshold,
+                    forKey: .language_confidence_threshold
+                )
+                try container.encodeIfPresent(
+                    language_confidence,
+                    forKey: .language_confidence
+                )
+                try container.encodeIfPresent(
+                    speech_model,
+                    forKey: .speech_model
+                )
+                try container.encodeIfPresent(
+                    text,
+                    forKey: .text
+                )
+                try container.encodeIfPresent(
+                    words,
+                    forKey: .words
+                )
+                try container.encodeIfPresent(
+                    utterances,
+                    forKey: .utterances
+                )
+                try container.encodeIfPresent(
+                    confidence,
+                    forKey: .confidence
+                )
+                try container.encodeIfPresent(
+                    audio_duration,
+                    forKey: .audio_duration
+                )
+                try container.encodeIfPresent(
+                    punctuate,
+                    forKey: .punctuate
+                )
+                try container.encodeIfPresent(
+                    format_text,
+                    forKey: .format_text
+                )
+                try container.encodeIfPresent(
+                    disfluencies,
+                    forKey: .disfluencies
+                )
+                try container.encodeIfPresent(
+                    dual_channel,
+                    forKey: .dual_channel
+                )
+                try container.encodeIfPresent(
+                    webhook_url,
+                    forKey: .webhook_url
+                )
+                try container.encodeIfPresent(
+                    webhook_status_code,
+                    forKey: .webhook_status_code
+                )
+                try container.encode(
+                    webhook_auth,
+                    forKey: .webhook_auth
+                )
+                try container.encodeIfPresent(
+                    webhook_auth_header_name,
+                    forKey: .webhook_auth_header_name
+                )
+                try container.encodeIfPresent(
+                    speed_boost,
+                    forKey: .speed_boost
+                )
+                try container.encode(
+                    auto_highlights,
+                    forKey: .auto_highlights
+                )
+                try container.encodeIfPresent(
+                    auto_highlights_result,
+                    forKey: .auto_highlights_result
+                )
+                try container.encodeIfPresent(
+                    audio_start_from,
+                    forKey: .audio_start_from
+                )
+                try container.encodeIfPresent(
+                    audio_end_at,
+                    forKey: .audio_end_at
+                )
+                try container.encodeIfPresent(
+                    word_boost,
+                    forKey: .word_boost
+                )
+                try container.encodeIfPresent(
+                    boost_param,
+                    forKey: .boost_param
+                )
+                try container.encodeIfPresent(
+                    filter_profanity,
+                    forKey: .filter_profanity
+                )
+                try container.encode(
+                    redact_pii,
+                    forKey: .redact_pii
+                )
+                try container.encodeIfPresent(
+                    redact_pii_audio,
+                    forKey: .redact_pii_audio
+                )
+                try container.encodeIfPresent(
+                    redact_pii_audio_quality,
+                    forKey: .redact_pii_audio_quality
+                )
+                try container.encodeIfPresent(
+                    redact_pii_policies,
+                    forKey: .redact_pii_policies
+                )
+                try container.encodeIfPresent(
+                    redact_pii_sub,
+                    forKey: .redact_pii_sub
+                )
+                try container.encodeIfPresent(
+                    speaker_labels,
+                    forKey: .speaker_labels
+                )
+                try container.encodeIfPresent(
+                    speakers_expected,
+                    forKey: .speakers_expected
+                )
+                try container.encodeIfPresent(
+                    content_safety,
+                    forKey: .content_safety
+                )
+                try container.encodeIfPresent(
+                    content_safety_labels,
+                    forKey: .content_safety_labels
+                )
+                try container.encodeIfPresent(
+                    iab_categories,
+                    forKey: .iab_categories
+                )
+                try container.encodeIfPresent(
+                    iab_categories_result,
+                    forKey: .iab_categories_result
+                )
+                try container.encodeIfPresent(
+                    custom_spelling,
+                    forKey: .custom_spelling
+                )
+                try container.encodeIfPresent(
+                    auto_chapters,
+                    forKey: .auto_chapters
+                )
+                try container.encodeIfPresent(
+                    chapters,
+                    forKey: .chapters
+                )
+                try container.encode(
+                    summarization,
+                    forKey: .summarization
+                )
+                try container.encodeIfPresent(
+                    summary_type,
+                    forKey: .summary_type
+                )
+                try container.encodeIfPresent(
+                    summary_model,
+                    forKey: .summary_model
+                )
+                try container.encodeIfPresent(
+                    summary,
+                    forKey: .summary
+                )
+                try container.encodeIfPresent(
+                    custom_topics,
+                    forKey: .custom_topics
+                )
+                try container.encodeIfPresent(
+                    topics,
+                    forKey: .topics
+                )
+                try container.encodeIfPresent(
+                    sentiment_analysis,
+                    forKey: .sentiment_analysis
+                )
+                try container.encodeIfPresent(
+                    sentiment_analysis_results,
+                    forKey: .sentiment_analysis_results
+                )
+                try container.encodeIfPresent(
+                    entity_detection,
+                    forKey: .entity_detection
+                )
+                try container.encodeIfPresent(
+                    entities,
+                    forKey: .entities
+                )
+                try container.encodeIfPresent(
+                    speech_threshold,
+                    forKey: .speech_threshold
+                )
+                try container.encodeIfPresent(
+                    throttled,
+                    forKey: .throttled
+                )
+                try container.encodeIfPresent(
+                    error,
+                    forKey: .error
+                )
+                try container.encodeIfPresent(
+                    language_model,
+                    forKey: .language_model
+                )
+                try container.encodeIfPresent(
+                    acoustic_model,
+                    forKey: .acoustic_model
+                )
+                try encoder.encodeAdditionalProperties(additionalProperties)
+            }
         }
         /// The result of the Topic Detection model, if it is enabled.
         /// See [Topic Detection](https://www.assemblyai.com/docs/models/topic-detection) for more information.
@@ -2624,11 +2865,11 @@ public enum Components {
             /// The status of the Topic Detection model. Either success, or unavailable in the rare case that the model failed.
             ///
             /// - Remark: Generated from `#/components/schemas/TopicDetectionModelResult/status`.
-            public var status: Components.Schemas.AudioIntelligenceModelStatus
+            public var status: Components.Schemas.AudioIntelligenceModelStatus?
             /// An array of results for the Topic Detection model
             ///
             /// - Remark: Generated from `#/components/schemas/TopicDetectionModelResult/results`.
-            public var results: [Components.Schemas.TopicDetectionResult]
+            public var results: [Components.Schemas.TopicDetectionResult]?
             /// The overall relevance of topic to the entire audio file
             ///
             /// - Remark: Generated from `#/components/schemas/TopicDetectionModelResult/summary`.
@@ -2652,7 +2893,7 @@ public enum Components {
             /// The overall relevance of topic to the entire audio file
             ///
             /// - Remark: Generated from `#/components/schemas/TopicDetectionModelResult/summary`.
-            public var summary: Components.Schemas.TopicDetectionModelResult.summaryPayload
+            public var summary: Components.Schemas.TopicDetectionModelResult.summaryPayload?
             /// Creates a new `TopicDetectionModelResult`.
             ///
             /// - Parameters:
@@ -2660,9 +2901,9 @@ public enum Components {
             ///   - results: An array of results for the Topic Detection model
             ///   - summary: The overall relevance of topic to the entire audio file
             public init(
-                status: Components.Schemas.AudioIntelligenceModelStatus,
-                results: [Components.Schemas.TopicDetectionResult],
-                summary: Components.Schemas.TopicDetectionModelResult.summaryPayload
+                status: Components.Schemas.AudioIntelligenceModelStatus? = nil,
+                results: [Components.Schemas.TopicDetectionResult]? = nil,
+                summary: Components.Schemas.TopicDetectionModelResult.summaryPayload? = nil
             ) {
                 self.status = status
                 self.results = results
@@ -2683,11 +2924,11 @@ public enum Components {
             /// The status of the Content Moderation model. Either success, or unavailable in the rare case that the model failed.
             ///
             /// - Remark: Generated from `#/components/schemas/ContentSafetyLabelsResult/status`.
-            public var status: Components.Schemas.AudioIntelligenceModelStatus
+            public var status: Components.Schemas.AudioIntelligenceModelStatus?
             /// An array of results for the Content Moderation model
             ///
             /// - Remark: Generated from `#/components/schemas/ContentSafetyLabelsResult/results`.
-            public var results: [Components.Schemas.ContentSafetyLabelResult]
+            public var results: [Components.Schemas.ContentSafetyLabelResult]?
             /// A summary of the Content Moderation confidence results for the entire audio file
             ///
             /// - Remark: Generated from `#/components/schemas/ContentSafetyLabelsResult/summary`.
@@ -2711,7 +2952,7 @@ public enum Components {
             /// A summary of the Content Moderation confidence results for the entire audio file
             ///
             /// - Remark: Generated from `#/components/schemas/ContentSafetyLabelsResult/summary`.
-            public var summary: Components.Schemas.ContentSafetyLabelsResult.summaryPayload
+            public var summary: Components.Schemas.ContentSafetyLabelsResult.summaryPayload?
             /// A summary of the Content Moderation severity results for the entire audio file
             ///
             /// - Remark: Generated from `#/components/schemas/ContentSafetyLabelsResult/severity_score_summary`.
@@ -2735,7 +2976,7 @@ public enum Components {
             /// A summary of the Content Moderation severity results for the entire audio file
             ///
             /// - Remark: Generated from `#/components/schemas/ContentSafetyLabelsResult/severity_score_summary`.
-            public var severity_score_summary: Components.Schemas.ContentSafetyLabelsResult.severity_score_summaryPayload
+            public var severity_score_summary: Components.Schemas.ContentSafetyLabelsResult.severity_score_summaryPayload?
             /// Creates a new `ContentSafetyLabelsResult`.
             ///
             /// - Parameters:
@@ -2744,10 +2985,10 @@ public enum Components {
             ///   - summary: A summary of the Content Moderation confidence results for the entire audio file
             ///   - severity_score_summary: A summary of the Content Moderation severity results for the entire audio file
             public init(
-                status: Components.Schemas.AudioIntelligenceModelStatus,
-                results: [Components.Schemas.ContentSafetyLabelResult],
-                summary: Components.Schemas.ContentSafetyLabelsResult.summaryPayload,
-                severity_score_summary: Components.Schemas.ContentSafetyLabelsResult.severity_score_summaryPayload
+                status: Components.Schemas.AudioIntelligenceModelStatus? = nil,
+                results: [Components.Schemas.ContentSafetyLabelResult]? = nil,
+                summary: Components.Schemas.ContentSafetyLabelsResult.summaryPayload? = nil,
+                severity_score_summary: Components.Schemas.ContentSafetyLabelsResult.severity_score_summaryPayload? = nil
             ) {
                 self.status = status
                 self.results = results
@@ -3464,7 +3705,7 @@ public enum Components {
             /// The speaker of the word if [Speaker Diarization](https://www.assemblyai.com/docs/models/speaker-diarization) is enabled, else null
             ///
             /// - Remark: Generated from `#/components/schemas/TranscriptWord/speaker`.
-            public var speaker: Swift.String
+            public var speaker: Swift.String?
             /// Creates a new `TranscriptWord`.
             ///
             /// - Parameters:
@@ -3480,7 +3721,7 @@ public enum Components {
                 end: Swift.Int,
                 text: Swift.String,
                 channel: Swift.String? = nil,
-                speaker: Swift.String
+                speaker: Swift.String? = nil
             ) {
                 self.confidence = confidence
                 self.start = start
@@ -3519,7 +3760,7 @@ public enum Components {
                     Swift.String.self,
                     forKey: .channel
                 )
-                speaker = try container.decode(
+                speaker = try container.decodeIfPresent(
                     Swift.String.self,
                     forKey: .speaker
                 )

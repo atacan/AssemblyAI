@@ -33,6 +33,13 @@ final class AssemblyAI_AHCTests {
         )
     }()
 
+    @Test func testDecodingPostTranscriptResponse() throws {
+        let jsonUrl = Bundle.module.url(forResource: "Resources/post_transcript_response", withExtension: "json")!
+        let jsonData = try Data(contentsOf: jsonUrl)
+        let transcript = try JSONDecoder().decode(Components.Schemas.Transcript.self, from: jsonData)
+        #expect(transcript.id == "6cfe335a-a92c-4079-ad88-7be3f0fd7bf5")
+    }
+
     @Test func testUploadFile() async throws {
         // Upload the audio file to AssemblyAI
         let audioFileUrl = Bundle.module.url(forResource: "Resources/amazing-things", withExtension: "wav")!
@@ -53,7 +60,7 @@ final class AssemblyAI_AHCTests {
 
         let text = transcript.text
         let wordsJoined = transcript.words?.map { $0.text }.joined(separator: " ")
-
+        print(text)
         #expect(text == wordsJoined)
     }
 

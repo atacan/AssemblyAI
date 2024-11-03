@@ -64,6 +64,108 @@ func downloadFile(from fileURL: URL, to destinationUrls: [URL]) async throws {
                             - type: string
                 """
         )
+        .replacingOccurrences(
+            of: """
+                      required:
+                        - id
+                        - speech_model
+                        - language_model
+                        - acoustic_model
+                        - status
+                        - audio_url
+                        - webhook_auth
+                        - auto_highlights
+                        - redact_pii
+                        - summarization
+                        - language_confidence_threshold
+                        - language_confidence
+                """,
+            with: """
+                      required:
+                        - audio_url
+                        - auto_highlights
+                        - id
+                        - redact_pii
+                        - status
+                        - summarization
+                        - webhook_auth
+                """
+        )
+        .replacingOccurrences(
+            of: """
+                      required:
+                        - status
+                        - results
+                        - summary
+                        - severity_score_summary
+                """,
+            with: ""
+        )
+        .replacingOccurrences(
+            of: """
+                    TopicDetectionModelResult:
+                      x-label: Topic Detection result
+                      description: |
+                        The result of the Topic Detection model, if it is enabled.
+                        See [Topic Detection](https://www.assemblyai.com/docs/models/topic-detection) for more information.
+                      x-fern-sdk-group-name: transcripts
+                      type: object
+                      required:
+                        - status
+                        - results
+                        - summary
+                """,
+            with: """
+                    TopicDetectionModelResult:
+                      x-label: Topic Detection result
+                      description: |
+                        The result of the Topic Detection model, if it is enabled.
+                        See [Topic Detection](https://www.assemblyai.com/docs/models/topic-detection) for more information.
+                      x-fern-sdk-group-name: transcripts
+                      type: object
+                """
+        )
+        .replacingOccurrences(of: """
+    Transcript:
+      x-label: Transcript
+      description: A transcript object
+      type: object
+      x-fern-sdk-group-name: transcripts
+      additionalProperties: false
+""", with: """
+    Transcript:
+      x-label: Transcript
+      description: A transcript object
+      type: object
+      x-fern-sdk-group-name: transcripts
+      additionalProperties: true
+"""
+        )
+        .replacingOccurrences(of: """
+    TranscriptWord:
+      x-label: Word
+      type: object
+      x-fern-sdk-group-name: transcripts
+      additionalProperties: false
+      required:
+        - confidence
+        - start
+        - end
+        - text
+        - speaker
+""", with: """
+    TranscriptWord:
+      x-label: Word
+      type: object
+      x-fern-sdk-group-name: transcripts
+      additionalProperties: false
+      required:
+        - confidence
+        - start
+        - end
+        - text
+"""
+        )
 
     fileContent = try await replaceOneOfNullableReferences(text: fileContent)
 
