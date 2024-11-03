@@ -19,9 +19,9 @@ check_uncommitted:
 format: check_uncommitted
 	# run the formatters
 	# nicklockwood/SwiftFormat
-	swiftformat --config .swiftformat --swiftversion 5.7 .
+	# swiftformat --config .swiftformat --swiftversion 5.7 .
 	# apple/swift-format
-	swift-format . -i -p --ignore-unparsable-files -r --configuration .swift-format
+	swift-format ./Sources ./Tests -i -p --ignore-unparsable-files -r --configuration .swift-format
 	# commit
 	git add .
 	git commit -m "Format code"
