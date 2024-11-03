@@ -73,7 +73,7 @@ func downloadFile(from fileURL: URL, to destinationPaths: [String]) async throws
     // Save to each destination path
     try await withThrowingTaskGroup(of: Void.self) { group in
         for destinationPath in destinationPaths {
-            group.addTask {
+            group.addTask { [fileContent] in
                 try fileContent.write(
                     toFile: destinationPath,
                     atomically: true,
