@@ -24,7 +24,7 @@ format: check_uncommitted
 	swift-format ./Sources ./Tests -i -p --ignore-unparsable-files -r --configuration .swift-format
 	# commit
 	git add .
-	git commit -m "Format code"
+	# git commit -m "Format code"
 
 # spm clean cache
 clean_spm_cache:
