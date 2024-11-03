@@ -30,8 +30,8 @@ format: check_uncommitted
 clean_spm_cache:
 	swift package purge-cache
 
-download-openapi:
-	swift scripts/downloadOpenAPIDocument.swift
+download:
+	swift run Prepare
 
 generate-openapi:
 	# automatically provide the "yes" response

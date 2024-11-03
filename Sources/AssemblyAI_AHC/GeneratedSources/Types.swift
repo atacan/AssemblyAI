@@ -770,6 +770,63 @@ public enum Components {
         ///
         /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams`.
         public struct TranscriptOptionalParams: Codable, Hashable, Sendable {
+            /// The language of your audio file. Possible values are found in [Supported Languages](https://www.assemblyai.com/docs/concepts/supported-languages).
+            /// The default value is 'en_us'.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/language_code`.
+            public struct language_codePayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/language_code/value1`.
+                public var value1: Components.Schemas.TranscriptLanguageCode?
+                /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/language_code/value2`.
+                public var value2: Swift.String?
+                /// Creates a new `language_codePayload`.
+                ///
+                /// - Parameters:
+                ///   - value1:
+                ///   - value2:
+                public init(
+                    value1: Components.Schemas.TranscriptLanguageCode? = nil,
+                    value2: Swift.String? = nil
+                ) {
+                    self.value1 = value1
+                    self.value2 = value2
+                }
+                public init(from decoder: any Decoder) throws {
+                    var errors: [any Error] = []
+                    do {
+                        value1 = try decoder.decodeFromSingleValueContainer()
+                    } catch {
+                        errors.append(error)
+                    }
+                    do {
+                        value2 = try decoder.decodeFromSingleValueContainer()
+                    } catch {
+                        errors.append(error)
+                    }
+                    try Swift.DecodingError.verifyAtLeastOneSchemaIsNotNil(
+                        [
+                            value1,
+                            value2
+                        ],
+                        type: Self.self,
+                        codingPath: decoder.codingPath,
+                        errors: errors
+                    )
+                }
+                public func encode(to encoder: any Encoder) throws {
+                    try encoder.encodeFirstNonNilValueToSingleValueContainer([
+                        value1,
+                        value2
+                    ])
+                }
+            }
+            /// The language of your audio file. Possible values are found in [Supported Languages](https://www.assemblyai.com/docs/concepts/supported-languages).
+            /// The default value is 'en_us'.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/language_code`.
+            public var language_code: Components.Schemas.TranscriptOptionalParams.language_codePayload?
             /// Enable [Automatic language detection](https://www.assemblyai.com/docs/models/speech-recognition#automatic-language-detection), either true or false.
             ///
             /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/language_detection`.
@@ -781,6 +838,10 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/language_confidence_threshold`.
             public var language_confidence_threshold: Swift.Float?
+            /// The speech model to use for the transcription. When `null`, the "best" model is used.
+            ///
+            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/speech_model`.
+            public var speech_model: Components.Schemas.SpeechModel?
             /// Enable Automatic Punctuation, can be true or false
             ///
             /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/punctuate`.
@@ -853,6 +914,10 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/redact_pii_policies`.
             public var redact_pii_policies: [Components.Schemas.PiiPolicy]?
+            /// The replacement logic for detected PII, can be "entity_type" or "hash". See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more details.
+            ///
+            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/redact_pii_sub`.
+            public var redact_pii_sub: Components.Schemas.SubstitutionPolicy?
             /// Enable [Speaker diarization](https://www.assemblyai.com/docs/models/speaker-diarization), can be true or false
             ///
             /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/speaker_labels`.
@@ -918,8 +983,10 @@ public enum Components {
             /// Creates a new `TranscriptOptionalParams`.
             ///
             /// - Parameters:
+            ///   - language_code: The language of your audio file. Possible values are found in [Supported Languages](https://www.assemblyai.com/docs/concepts/supported-languages).
             ///   - language_detection: Enable [Automatic language detection](https://www.assemblyai.com/docs/models/speech-recognition#automatic-language-detection), either true or false.
             ///   - language_confidence_threshold: The confidence threshold for the automatically detected language.
+            ///   - speech_model: The speech model to use for the transcription. When `null`, the "best" model is used.
             ///   - punctuate: Enable Automatic Punctuation, can be true or false
             ///   - format_text: Enable Text Formatting, can be true or false
             ///   - disfluencies: Transcribe Filler Words, like "umm", in your media file; can be true or false
@@ -937,6 +1004,7 @@ public enum Components {
             ///   - redact_pii_audio: Generate a copy of the original media file with spoken PII "beeped" out, can be true or false. See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more details.
             ///   - redact_pii_audio_quality: Controls the filetype of the audio created by redact_pii_audio. Currently supports mp3 (default) and wav. See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more details.
             ///   - redact_pii_policies: The list of PII Redaction policies to enable. See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more details.
+            ///   - redact_pii_sub: The replacement logic for detected PII, can be "entity_type" or "hash". See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more details.
             ///   - speaker_labels: Enable [Speaker diarization](https://www.assemblyai.com/docs/models/speaker-diarization), can be true or false
             ///   - speakers_expected: Tells the speaker label model how many speakers it should attempt to identify, up to 10. See [Speaker diarization](https://www.assemblyai.com/docs/models/speaker-diarization) for more details.
             ///   - content_safety: Enable [Content Moderation](https://www.assemblyai.com/docs/models/content-moderation), can be true or false
@@ -953,8 +1021,10 @@ public enum Components {
             ///   - custom_topics: Enable custom topics, either true or false
             ///   - topics: The list of custom topics
             public init(
+                language_code: Components.Schemas.TranscriptOptionalParams.language_codePayload? = nil,
                 language_detection: Swift.Bool? = nil,
                 language_confidence_threshold: Swift.Float? = nil,
+                speech_model: Components.Schemas.SpeechModel? = nil,
                 punctuate: Swift.Bool? = nil,
                 format_text: Swift.Bool? = nil,
                 disfluencies: Swift.Bool? = nil,
@@ -972,6 +1042,7 @@ public enum Components {
                 redact_pii_audio: Swift.Bool? = nil,
                 redact_pii_audio_quality: Components.Schemas.RedactPiiAudioQuality? = nil,
                 redact_pii_policies: [Components.Schemas.PiiPolicy]? = nil,
+                redact_pii_sub: Components.Schemas.SubstitutionPolicy? = nil,
                 speaker_labels: Swift.Bool? = nil,
                 speakers_expected: Swift.Int? = nil,
                 content_safety: Swift.Bool? = nil,
@@ -988,8 +1059,10 @@ public enum Components {
                 custom_topics: Swift.Bool? = nil,
                 topics: [Swift.String]? = nil
             ) {
+                self.language_code = language_code
                 self.language_detection = language_detection
                 self.language_confidence_threshold = language_confidence_threshold
+                self.speech_model = speech_model
                 self.punctuate = punctuate
                 self.format_text = format_text
                 self.disfluencies = disfluencies
@@ -1007,6 +1080,7 @@ public enum Components {
                 self.redact_pii_audio = redact_pii_audio
                 self.redact_pii_audio_quality = redact_pii_audio_quality
                 self.redact_pii_policies = redact_pii_policies
+                self.redact_pii_sub = redact_pii_sub
                 self.speaker_labels = speaker_labels
                 self.speakers_expected = speakers_expected
                 self.content_safety = content_safety
@@ -1024,8 +1098,10 @@ public enum Components {
                 self.topics = topics
             }
             public enum CodingKeys: String, CodingKey {
+                case language_code
                 case language_detection
                 case language_confidence_threshold
+                case speech_model
                 case punctuate
                 case format_text
                 case disfluencies
@@ -1043,6 +1119,7 @@ public enum Components {
                 case redact_pii_audio
                 case redact_pii_audio_quality
                 case redact_pii_policies
+                case redact_pii_sub
                 case speaker_labels
                 case speakers_expected
                 case content_safety
@@ -1061,6 +1138,10 @@ public enum Components {
             }
             public init(from decoder: any Decoder) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
+                language_code = try container.decodeIfPresent(
+                    Components.Schemas.TranscriptOptionalParams.language_codePayload.self,
+                    forKey: .language_code
+                )
                 language_detection = try container.decodeIfPresent(
                     Swift.Bool.self,
                     forKey: .language_detection
@@ -1068,6 +1149,10 @@ public enum Components {
                 language_confidence_threshold = try container.decodeIfPresent(
                     Swift.Float.self,
                     forKey: .language_confidence_threshold
+                )
+                speech_model = try container.decodeIfPresent(
+                    Components.Schemas.SpeechModel.self,
+                    forKey: .speech_model
                 )
                 punctuate = try container.decodeIfPresent(
                     Swift.Bool.self,
@@ -1137,6 +1222,10 @@ public enum Components {
                     [Components.Schemas.PiiPolicy].self,
                     forKey: .redact_pii_policies
                 )
+                redact_pii_sub = try container.decodeIfPresent(
+                    Components.Schemas.SubstitutionPolicy.self,
+                    forKey: .redact_pii_sub
+                )
                 speaker_labels = try container.decodeIfPresent(
                     Swift.Bool.self,
                     forKey: .speaker_labels
@@ -1198,8 +1287,10 @@ public enum Components {
                     forKey: .topics
                 )
                 try decoder.ensureNoAdditionalProperties(knownKeys: [
+                    "language_code",
                     "language_detection",
                     "language_confidence_threshold",
+                    "speech_model",
                     "punctuate",
                     "format_text",
                     "disfluencies",
@@ -1217,6 +1308,7 @@ public enum Components {
                     "redact_pii_audio",
                     "redact_pii_audio_quality",
                     "redact_pii_policies",
+                    "redact_pii_sub",
                     "speaker_labels",
                     "speakers_expected",
                     "content_safety",
@@ -1747,11 +1839,15 @@ public enum Components {
             ///
             ///
             /// - Remark: Generated from `#/components/schemas/Transcript/language_confidence_threshold`.
-            public var language_confidence_threshold: Swift.Float?
+            public var language_confidence_threshold: Swift.Float
             /// The confidence score for the detected language, between 0.0 (low confidence) and 1.0 (high confidence)
             ///
             /// - Remark: Generated from `#/components/schemas/Transcript/language_confidence`.
-            public var language_confidence: Swift.Double?
+            public var language_confidence: Swift.Double
+            /// The speech model used for the transcription. When `null`, the default model is used.
+            ///
+            /// - Remark: Generated from `#/components/schemas/Transcript/speech_model`.
+            public var speech_model: Components.Schemas.SpeechModel
             /// The textual transcript of your media file
             ///
             /// - Remark: Generated from `#/components/schemas/Transcript/text`.
@@ -1821,6 +1917,12 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/Transcript/auto_highlights`.
             public var auto_highlights: Swift.Bool
+            /// An array of results for the Key Phrases model, if it is enabled.
+            /// See [Key Phrases](https://www.assemblyai.com/docs/models/key-phrases) for more information.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/Transcript/auto_highlights_result`.
+            public var auto_highlights_result: Components.Schemas.AutoHighlightsResult?
             /// The point in time, in milliseconds, in the file at which the transcription was started
             ///
             /// - Remark: Generated from `#/components/schemas/Transcript/audio_start_from`.
@@ -1851,6 +1953,12 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/Transcript/redact_pii_audio`.
             public var redact_pii_audio: Swift.Bool?
+            /// The audio quality of the PII-redacted audio file, if redact_pii_audio is enabled.
+            /// See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more information.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/Transcript/redact_pii_audio_quality`.
+            public var redact_pii_audio_quality: Components.Schemas.RedactPiiAudioQuality?
             /// The list of PII Redaction policies that were enabled, if PII Redaction is enabled.
             /// See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more information.
             ///
@@ -1873,10 +1981,22 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/Transcript/content_safety`.
             public var content_safety: Swift.Bool?
+            /// An array of results for the Content Moderation model, if it is enabled.
+            /// See [Content moderation](https://www.assemblyai.com/docs/models/content-moderation) for more information.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/Transcript/content_safety_labels`.
+            public var content_safety_labels: Components.Schemas.ContentSafetyLabelsResult?
             /// Whether [Topic Detection](https://www.assemblyai.com/docs/models/topic-detection) is enabled, can be true or false
             ///
             /// - Remark: Generated from `#/components/schemas/Transcript/iab_categories`.
             public var iab_categories: Swift.Bool?
+            /// The result of the Topic Detection model, if it is enabled.
+            /// See [Topic Detection](https://www.assemblyai.com/docs/models/topic-detection) for more information.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/Transcript/iab_categories_result`.
+            public var iab_categories_result: Components.Schemas.TopicDetectionModelResult?
             /// Customize how words are spelled and formatted using to and from values
             ///
             /// - Remark: Generated from `#/components/schemas/Transcript/custom_spelling`.
@@ -1969,6 +2089,7 @@ public enum Components {
             ///   - language_detection: Whether [Automatic language detection](https://www.assemblyai.com/docs/models/speech-recognition#automatic-language-detection) is enabled, either true or false
             ///   - language_confidence_threshold: The confidence threshold for the automatically detected language.
             ///   - language_confidence: The confidence score for the detected language, between 0.0 (low confidence) and 1.0 (high confidence)
+            ///   - speech_model: The speech model used for the transcription. When `null`, the default model is used.
             ///   - text: The textual transcript of your media file
             ///   - words: An array of temporally-sequential word objects, one for each word in the transcript.
             ///   - utterances: When dual_channel or speaker_labels is enabled, a list of turn-by-turn utterance objects.
@@ -1984,6 +2105,7 @@ public enum Components {
             ///   - webhook_auth_header_name: The header name to be sent with the transcript completed or failed webhook requests
             ///   - speed_boost: Whether speed boost is enabled
             ///   - auto_highlights: Whether Key Phrases is enabled, either true or false
+            ///   - auto_highlights_result: An array of results for the Key Phrases model, if it is enabled.
             ///   - audio_start_from: The point in time, in milliseconds, in the file at which the transcription was started
             ///   - audio_end_at: The point in time, in milliseconds, in the file at which the transcription was terminated
             ///   - word_boost: The list of custom vocabulary to boost transcription probability for
@@ -1991,12 +2113,15 @@ public enum Components {
             ///   - filter_profanity: Whether [Profanity Filtering](https://www.assemblyai.com/docs/models/speech-recognition#profanity-filtering) is enabled, either true or false
             ///   - redact_pii: Whether [PII Redaction](https://www.assemblyai.com/docs/models/pii-redaction) is enabled, either true or false
             ///   - redact_pii_audio: Whether a redacted version of the audio file was generated,
+            ///   - redact_pii_audio_quality: The audio quality of the PII-redacted audio file, if redact_pii_audio is enabled.
             ///   - redact_pii_policies: The list of PII Redaction policies that were enabled, if PII Redaction is enabled.
             ///   - redact_pii_sub: The replacement logic for detected PII, can be "entity_type" or "hash". See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more details.
             ///   - speaker_labels: Whether [Speaker diarization](https://www.assemblyai.com/docs/models/speaker-diarization) is enabled, can be true or false
             ///   - speakers_expected: Tell the speaker label model how many speakers it should attempt to identify, up to 10. See [Speaker diarization](https://www.assemblyai.com/docs/models/speaker-diarization) for more details.
             ///   - content_safety: Whether [Content Moderation](https://www.assemblyai.com/docs/models/content-moderation) is enabled, can be true or false
+            ///   - content_safety_labels: An array of results for the Content Moderation model, if it is enabled.
             ///   - iab_categories: Whether [Topic Detection](https://www.assemblyai.com/docs/models/topic-detection) is enabled, can be true or false
+            ///   - iab_categories_result: The result of the Topic Detection model, if it is enabled.
             ///   - custom_spelling: Customize how words are spelled and formatted using to and from values
             ///   - auto_chapters: Whether [Auto Chapters](https://www.assemblyai.com/docs/models/auto-chapters) is enabled, can be true or false
             ///   - chapters: An array of temporally sequential chapters for the audio file
@@ -2021,8 +2146,9 @@ public enum Components {
                 status: Components.Schemas.TranscriptStatus,
                 language_code: Components.Schemas.Transcript.language_codePayload? = nil,
                 language_detection: Swift.Bool? = nil,
-                language_confidence_threshold: Swift.Float? = nil,
-                language_confidence: Swift.Double? = nil,
+                language_confidence_threshold: Swift.Float,
+                language_confidence: Swift.Double,
+                speech_model: Components.Schemas.SpeechModel,
                 text: Swift.String? = nil,
                 words: [Components.Schemas.TranscriptWord]? = nil,
                 utterances: [Components.Schemas.TranscriptUtterance]? = nil,
@@ -2038,6 +2164,7 @@ public enum Components {
                 webhook_auth_header_name: Swift.String? = nil,
                 speed_boost: Swift.Bool? = nil,
                 auto_highlights: Swift.Bool,
+                auto_highlights_result: Components.Schemas.AutoHighlightsResult? = nil,
                 audio_start_from: Swift.Int? = nil,
                 audio_end_at: Swift.Int? = nil,
                 word_boost: [Swift.String]? = nil,
@@ -2045,12 +2172,15 @@ public enum Components {
                 filter_profanity: Swift.Bool? = nil,
                 redact_pii: Swift.Bool,
                 redact_pii_audio: Swift.Bool? = nil,
+                redact_pii_audio_quality: Components.Schemas.RedactPiiAudioQuality? = nil,
                 redact_pii_policies: [Components.Schemas.PiiPolicy]? = nil,
                 redact_pii_sub: Components.Schemas.SubstitutionPolicy? = nil,
                 speaker_labels: Swift.Bool? = nil,
                 speakers_expected: Swift.Int? = nil,
                 content_safety: Swift.Bool? = nil,
+                content_safety_labels: Components.Schemas.ContentSafetyLabelsResult? = nil,
                 iab_categories: Swift.Bool? = nil,
+                iab_categories_result: Components.Schemas.TopicDetectionModelResult? = nil,
                 custom_spelling: [Components.Schemas.TranscriptCustomSpelling]? = nil,
                 auto_chapters: Swift.Bool? = nil,
                 chapters: [Components.Schemas.Chapter]? = nil,
@@ -2077,6 +2207,7 @@ public enum Components {
                 self.language_detection = language_detection
                 self.language_confidence_threshold = language_confidence_threshold
                 self.language_confidence = language_confidence
+                self.speech_model = speech_model
                 self.text = text
                 self.words = words
                 self.utterances = utterances
@@ -2092,6 +2223,7 @@ public enum Components {
                 self.webhook_auth_header_name = webhook_auth_header_name
                 self.speed_boost = speed_boost
                 self.auto_highlights = auto_highlights
+                self.auto_highlights_result = auto_highlights_result
                 self.audio_start_from = audio_start_from
                 self.audio_end_at = audio_end_at
                 self.word_boost = word_boost
@@ -2099,12 +2231,15 @@ public enum Components {
                 self.filter_profanity = filter_profanity
                 self.redact_pii = redact_pii
                 self.redact_pii_audio = redact_pii_audio
+                self.redact_pii_audio_quality = redact_pii_audio_quality
                 self.redact_pii_policies = redact_pii_policies
                 self.redact_pii_sub = redact_pii_sub
                 self.speaker_labels = speaker_labels
                 self.speakers_expected = speakers_expected
                 self.content_safety = content_safety
+                self.content_safety_labels = content_safety_labels
                 self.iab_categories = iab_categories
+                self.iab_categories_result = iab_categories_result
                 self.custom_spelling = custom_spelling
                 self.auto_chapters = auto_chapters
                 self.chapters = chapters
@@ -2132,6 +2267,7 @@ public enum Components {
                 case language_detection
                 case language_confidence_threshold
                 case language_confidence
+                case speech_model
                 case text
                 case words
                 case utterances
@@ -2147,6 +2283,7 @@ public enum Components {
                 case webhook_auth_header_name
                 case speed_boost
                 case auto_highlights
+                case auto_highlights_result
                 case audio_start_from
                 case audio_end_at
                 case word_boost
@@ -2154,12 +2291,15 @@ public enum Components {
                 case filter_profanity
                 case redact_pii
                 case redact_pii_audio
+                case redact_pii_audio_quality
                 case redact_pii_policies
                 case redact_pii_sub
                 case speaker_labels
                 case speakers_expected
                 case content_safety
+                case content_safety_labels
                 case iab_categories
+                case iab_categories_result
                 case custom_spelling
                 case auto_chapters
                 case chapters
@@ -2201,13 +2341,17 @@ public enum Components {
                     Swift.Bool.self,
                     forKey: .language_detection
                 )
-                language_confidence_threshold = try container.decodeIfPresent(
+                language_confidence_threshold = try container.decode(
                     Swift.Float.self,
                     forKey: .language_confidence_threshold
                 )
-                language_confidence = try container.decodeIfPresent(
+                language_confidence = try container.decode(
                     Swift.Double.self,
                     forKey: .language_confidence
+                )
+                speech_model = try container.decode(
+                    Components.Schemas.SpeechModel.self,
+                    forKey: .speech_model
                 )
                 text = try container.decodeIfPresent(
                     Swift.String.self,
@@ -2269,6 +2413,10 @@ public enum Components {
                     Swift.Bool.self,
                     forKey: .auto_highlights
                 )
+                auto_highlights_result = try container.decodeIfPresent(
+                    Components.Schemas.AutoHighlightsResult.self,
+                    forKey: .auto_highlights_result
+                )
                 audio_start_from = try container.decodeIfPresent(
                     Swift.Int.self,
                     forKey: .audio_start_from
@@ -2297,6 +2445,10 @@ public enum Components {
                     Swift.Bool.self,
                     forKey: .redact_pii_audio
                 )
+                redact_pii_audio_quality = try container.decodeIfPresent(
+                    Components.Schemas.RedactPiiAudioQuality.self,
+                    forKey: .redact_pii_audio_quality
+                )
                 redact_pii_policies = try container.decodeIfPresent(
                     [Components.Schemas.PiiPolicy].self,
                     forKey: .redact_pii_policies
@@ -2317,9 +2469,17 @@ public enum Components {
                     Swift.Bool.self,
                     forKey: .content_safety
                 )
+                content_safety_labels = try container.decodeIfPresent(
+                    Components.Schemas.ContentSafetyLabelsResult.self,
+                    forKey: .content_safety_labels
+                )
                 iab_categories = try container.decodeIfPresent(
                     Swift.Bool.self,
                     forKey: .iab_categories
+                )
+                iab_categories_result = try container.decodeIfPresent(
+                    Components.Schemas.TopicDetectionModelResult.self,
+                    forKey: .iab_categories_result
                 )
                 custom_spelling = try container.decodeIfPresent(
                     [Components.Schemas.TranscriptCustomSpelling].self,
@@ -2401,6 +2561,7 @@ public enum Components {
                     "language_detection",
                     "language_confidence_threshold",
                     "language_confidence",
+                    "speech_model",
                     "text",
                     "words",
                     "utterances",
@@ -2416,6 +2577,7 @@ public enum Components {
                     "webhook_auth_header_name",
                     "speed_boost",
                     "auto_highlights",
+                    "auto_highlights_result",
                     "audio_start_from",
                     "audio_end_at",
                     "word_boost",
@@ -2423,12 +2585,15 @@ public enum Components {
                     "filter_profanity",
                     "redact_pii",
                     "redact_pii_audio",
+                    "redact_pii_audio_quality",
                     "redact_pii_policies",
                     "redact_pii_sub",
                     "speaker_labels",
                     "speakers_expected",
                     "content_safety",
+                    "content_safety_labels",
                     "iab_categories",
+                    "iab_categories_result",
                     "custom_spelling",
                     "auto_chapters",
                     "chapters",
@@ -2829,7 +2994,7 @@ public enum Components {
             /// The speaker of the sentence if [Speaker Diarization](https://www.assemblyai.com/docs/models/speaker-diarization) is enabled, else null
             ///
             /// - Remark: Generated from `#/components/schemas/SentimentAnalysisResult/speaker`.
-            public var speaker: Swift.String?
+            public var speaker: Swift.String
             /// Creates a new `SentimentAnalysisResult`.
             ///
             /// - Parameters:
@@ -2847,7 +3012,7 @@ public enum Components {
                 sentiment: Components.Schemas.Sentiment,
                 confidence: Swift.Double,
                 channel: Swift.String? = nil,
-                speaker: Swift.String? = nil
+                speaker: Swift.String
             ) {
                 self.text = text
                 self.start = start
@@ -2892,7 +3057,7 @@ public enum Components {
                     Swift.String.self,
                     forKey: .channel
                 )
-                speaker = try container.decodeIfPresent(
+                speaker = try container.decode(
                     Swift.String.self,
                     forKey: .speaker
                 )
@@ -3299,7 +3464,7 @@ public enum Components {
             /// The speaker of the word if [Speaker Diarization](https://www.assemblyai.com/docs/models/speaker-diarization) is enabled, else null
             ///
             /// - Remark: Generated from `#/components/schemas/TranscriptWord/speaker`.
-            public var speaker: Swift.String?
+            public var speaker: Swift.String
             /// Creates a new `TranscriptWord`.
             ///
             /// - Parameters:
@@ -3315,7 +3480,7 @@ public enum Components {
                 end: Swift.Int,
                 text: Swift.String,
                 channel: Swift.String? = nil,
-                speaker: Swift.String? = nil
+                speaker: Swift.String
             ) {
                 self.confidence = confidence
                 self.start = start
@@ -3354,7 +3519,7 @@ public enum Components {
                     Swift.String.self,
                     forKey: .channel
                 )
-                speaker = try container.decodeIfPresent(
+                speaker = try container.decode(
                     Swift.String.self,
                     forKey: .speaker
                 )
@@ -3397,7 +3562,7 @@ public enum Components {
             /// The speaker of the sentence if [Speaker Diarization](https://www.assemblyai.com/docs/models/speaker-diarization) is enabled, else null
             ///
             /// - Remark: Generated from `#/components/schemas/TranscriptSentence/speaker`.
-            public var speaker: Swift.String?
+            public var speaker: Swift.String
             /// Creates a new `TranscriptSentence`.
             ///
             /// - Parameters:
@@ -3415,7 +3580,7 @@ public enum Components {
                 confidence: Swift.Double,
                 words: [Components.Schemas.TranscriptWord],
                 channel: Swift.String? = nil,
-                speaker: Swift.String? = nil
+                speaker: Swift.String
             ) {
                 self.text = text
                 self.start = start
@@ -3460,7 +3625,7 @@ public enum Components {
                     Swift.String.self,
                     forKey: .channel
                 )
-                speaker = try container.decodeIfPresent(
+                speaker = try container.decode(
                     Swift.String.self,
                     forKey: .speaker
                 )
@@ -3711,11 +3876,11 @@ public enum Components {
             /// The URL to the next page of transcripts. The previous URL always points to a page with older transcripts.
             ///
             /// - Remark: Generated from `#/components/schemas/PageDetails/prev_url`.
-            public var prev_url: Swift.String?
+            public var prev_url: Swift.String
             /// The URL to the next page of transcripts. The next URL always points to a page with newer transcripts.
             ///
             /// - Remark: Generated from `#/components/schemas/PageDetails/next_url`.
-            public var next_url: Swift.String?
+            public var next_url: Swift.String
             /// Creates a new `PageDetails`.
             ///
             /// - Parameters:
@@ -3728,8 +3893,8 @@ public enum Components {
                 limit: Swift.Int,
                 result_count: Swift.Int,
                 current_url: Swift.String,
-                prev_url: Swift.String? = nil,
-                next_url: Swift.String? = nil
+                prev_url: Swift.String,
+                next_url: Swift.String
             ) {
                 self.limit = limit
                 self.result_count = result_count
@@ -3758,11 +3923,11 @@ public enum Components {
                     Swift.String.self,
                     forKey: .current_url
                 )
-                prev_url = try container.decodeIfPresent(
+                prev_url = try container.decode(
                     Swift.String.self,
                     forKey: .prev_url
                 )
-                next_url = try container.decodeIfPresent(
+                next_url = try container.decode(
                     Swift.String.self,
                     forKey: .next_url
                 )
@@ -3890,7 +4055,7 @@ public enum Components {
             /// The date and time the transcript was completed
             ///
             /// - Remark: Generated from `#/components/schemas/TranscriptListItem/completed`.
-            public var completed: Swift.String?
+            public var completed: Swift.String
             /// The URL to the audio file
             ///
             /// - Remark: Generated from `#/components/schemas/TranscriptListItem/audio_url`.
@@ -3898,7 +4063,7 @@ public enum Components {
             /// Error message of why the transcript failed
             ///
             /// - Remark: Generated from `#/components/schemas/TranscriptListItem/error`.
-            public var error: Swift.String?
+            public var error: Swift.String
             /// Creates a new `TranscriptListItem`.
             ///
             /// - Parameters:
@@ -3914,9 +4079,9 @@ public enum Components {
                 resource_url: Swift.String,
                 status: Components.Schemas.TranscriptStatus,
                 created: Swift.String,
-                completed: Swift.String? = nil,
+                completed: Swift.String,
                 audio_url: Swift.String,
-                error: Swift.String? = nil
+                error: Swift.String
             ) {
                 self.id = id
                 self.resource_url = resource_url
@@ -3953,7 +4118,7 @@ public enum Components {
                     Swift.String.self,
                     forKey: .created
                 )
-                completed = try container.decodeIfPresent(
+                completed = try container.decode(
                     Swift.String.self,
                     forKey: .completed
                 )
@@ -3961,7 +4126,7 @@ public enum Components {
                     Swift.String.self,
                     forKey: .audio_url
                 )
-                error = try container.decodeIfPresent(
+                error = try container.decode(
                     Swift.String.self,
                     forKey: .error
                 )

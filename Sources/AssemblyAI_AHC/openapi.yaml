@@ -1203,11 +1203,9 @@ components:
           description: |
             The language of your audio file. Possible values are found in [Supported Languages](https://www.assemblyai.com/docs/concepts/supported-languages).
             The default value is 'en_us'.
-          oneOf:
-            - anyOf:
-                - $ref: "#/components/schemas/TranscriptLanguageCode"
-                - type: string
-            - type: "null"
+          anyOf:
+            - $ref: "#/components/schemas/TranscriptLanguageCode"
+            - type: string
           default: en_us
           x-ts-type: LiteralUnion<TranscriptLanguageCode, string> | null
           x-go-type: TranscriptLanguageCode
@@ -1234,9 +1232,7 @@ components:
           x-label: Speech model
           description: The speech model to use for the transcription. When `null`, the "best" model is used.
           default: best
-          oneOf:
-            - $ref: "#/components/schemas/SpeechModel"
-            - type: "null"
+          $ref: "#/components/schemas/SpeechModel"
 
         punctuate:
           x-label: Punctuate
@@ -1275,13 +1271,13 @@ components:
         webhook_auth_header_name:
           x-label: Webhook auth header name
           description: The header name to be sent with the transcript completed or failed webhook requests
-          type: [string, "null"]
+          type: string
           default: null
 
         webhook_auth_header_value:
           x-label: Webhook auth header value
           description: The header value to send back with the transcript completed or failed webhook requests for added security
-          type: [string, "null"]
+          type: string
           default: null
 
         auto_highlights:
@@ -1349,9 +1345,7 @@ components:
         redact_pii_sub:
           x-label: Redact PII substitution
           description: The replacement logic for detected PII, can be "entity_type" or "hash". See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more details.
-          oneOf:
-            - $ref: "#/components/schemas/SubstitutionPolicy"
-            - type: "null"
+          $ref: "#/components/schemas/SubstitutionPolicy"
           default: hash
 
         speaker_labels:
@@ -1363,7 +1357,7 @@ components:
         speakers_expected:
           x-label: Speakers expected
           description: Tells the speaker label model how many speakers it should attempt to identify, up to 10. See [Speaker diarization](https://www.assemblyai.com/docs/models/speaker-diarization) for more details.
-          type: [integer, "null"]
+          type: integer
           default: null
 
         content_safety:
@@ -1417,7 +1411,7 @@ components:
           description: |
             Reject audio files that contain less than this fraction of speech.
             Valid values are in the range [0, 1] inclusive.
-          type: [number, "null"]
+          type: number
           format: float
           minimum: 0
           maximum: 1
@@ -1668,7 +1662,7 @@ components:
         channel:
           x-label: Channel
           description: The channel of this utterance. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially.
-          type: [string, "null"]
+          type: string
         speaker:
           x-label: Speaker
           description: The speaker of this utterance, where each speaker is assigned a sequential capital letter - e.g. "A" for Speaker A, "B" for Speaker B, etc.
@@ -2526,14 +2520,14 @@ components:
         language_detection:
           x-label: Language detection
           description: Whether [Automatic language detection](https://www.assemblyai.com/docs/models/speech-recognition#automatic-language-detection) is enabled, either true or false
-          type: [boolean, "null"]
+          type: boolean
 
         language_confidence_threshold:
           x-label: Language confidence threshold
           description: |
             The confidence threshold for the automatically detected language.
             An error will be returned if the language confidence is below this threshold.
-          type: [number, "null"]
+          type: number
           format: float
           minimum: 0
           maximum: 1
@@ -2541,7 +2535,7 @@ components:
         language_confidence:
           x-label: Language confidence
           description: The confidence score for the detected language, between 0.0 (low confidence) and 1.0 (high confidence)
-          type: [number, "null"]
+          type: number
           format: double
           minimum: 0
           maximum: 1
@@ -2550,21 +2544,19 @@ components:
           x-label: Speech model
           description: The speech model used for the transcription. When `null`, the default model is used.
           default: null
-          oneOf:
-            - $ref: "#/components/schemas/SpeechModel"
-            - type: "null"
+          $ref: "#/components/schemas/SpeechModel"
 
         text:
           x-label: Text
           description: The textual transcript of your media file
-          type: [string, "null"]
+          type: string
 
         words:
           x-label: Words
           description: |
             An array of temporally-sequential word objects, one for each word in the transcript.
             See [Speech recognition](https://www.assemblyai.com/docs/models/speech-recognition) for more information.
-          type: [array, "null"]
+          type: array
           items:
             x-label: Word
             $ref: "#/components/schemas/TranscriptWord"
@@ -2574,7 +2566,7 @@ components:
           description: |
             When dual_channel or speaker_labels is enabled, a list of turn-by-turn utterance objects.
             See [Speaker diarization](https://www.assemblyai.com/docs/models/speaker-diarization) for more information.
-          type: [array, "null"]
+          type: array
           items:
             x-label: Utterance
             $ref: "#/components/schemas/TranscriptUtterance"
@@ -2582,7 +2574,7 @@ components:
         confidence:
           x-label: Confidence
           description: The confidence score for the transcript, between 0.0 (low confidence) and 1.0 (high confidence)
-          type: [number, "null"]
+          type: number
           format: double
           minimum: 0
           maximum: 1
@@ -2590,27 +2582,27 @@ components:
         audio_duration:
           x-label: Audio duration
           description: The duration of this transcript object's media file, in seconds
-          type: [integer, "null"]
+          type: integer
 
         punctuate:
           x-label: Punctuate
           description: Whether Automatic Punctuation is enabled, either true or false
-          type: [boolean, "null"]
+          type: boolean
 
         format_text:
           x-label: Format text
           description: Whether Text Formatting is enabled, either true or false
-          type: [boolean, "null"]
+          type: boolean
 
         disfluencies:
           x-label: Disfluencies
           description: Transcribe Filler Words, like "umm", in your media file; can be true or false
-          type: [boolean, "null"]
+          type: boolean
 
         dual_channel:
           x-label: Dual channel
           description: Whether [Dual channel transcription](https://www.assemblyai.com/docs/models/speech-recognition#dual-channel-transcription) was enabled in the transcription request, either true or false
-          type: [boolean, "null"]
+          type: boolean
           deprecated: true
 
         webhook_url:
@@ -2619,13 +2611,13 @@ components:
             The URL to which we send webhook requests.
             We sends two different types of webhook requests.
             One request when a transcript is completed or failed, and one request when the redacted audio is ready if redact_pii_audio is enabled.
-          type: [string, "null"]
+          type: string
           format: url
 
         webhook_status_code:
           x-label: Webhook HTTP status code
           description: The status code we received from your server when delivering the transcript completed or failed webhook request, if a webhook URL was provided
-          type: [integer, "null"]
+          type: integer
 
         webhook_auth:
           x-label: Webhook auth enabled
@@ -2635,12 +2627,12 @@ components:
         webhook_auth_header_name:
           x-label: Webhook auth header name
           description: The header name to be sent with the transcript completed or failed webhook requests
-          type: [string, "null"]
+          type: string
 
         speed_boost:
           x-label: Speed boost
           description: Whether speed boost is enabled
-          type: [boolean, "null"]
+          type: boolean
           deprecated: true
 
         auto_highlights:
@@ -2653,19 +2645,17 @@ components:
           description: |
             An array of results for the Key Phrases model, if it is enabled.
             See [Key Phrases](https://www.assemblyai.com/docs/models/key-phrases) for more information.
-          oneOf:
-            - $ref: "#/components/schemas/AutoHighlightsResult"
-            - type: "null"
+          $ref: "#/components/schemas/AutoHighlightsResult"
 
         audio_start_from:
           x-label: Audio start from
           description: The point in time, in milliseconds, in the file at which the transcription was started
-          type: [integer, "null"]
+          type: integer
 
         audio_end_at:
           x-label: Audio end at
           description: The point in time, in milliseconds, in the file at which the transcription was terminated
-          type: [integer, "null"]
+          type: integer
 
         word_boost:
           x-label: Word boost
@@ -2678,12 +2668,12 @@ components:
         boost_param:
           x-label: Boost
           description: The word boost parameter value
-          type: [string, "null"]
+          type: string
 
         filter_profanity:
           x-label: Filter profanity
           description: Whether [Profanity Filtering](https://www.assemblyai.com/docs/models/speech-recognition#profanity-filtering) is enabled, either true or false
-          type: [boolean, "null"]
+          type: boolean
 
         redact_pii:
           x-label: Redact PII
@@ -2695,23 +2685,21 @@ components:
           description: |
             Whether a redacted version of the audio file was generated,
             either true or false. See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more information.
-          type: [boolean, "null"]
+          type: boolean
 
         redact_pii_audio_quality:
           x-label: Redact PII audio quality
           description: |
             The audio quality of the PII-redacted audio file, if redact_pii_audio is enabled.
             See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more information.
-          oneOf:
-            - $ref: "#/components/schemas/RedactPiiAudioQuality"
-            - type: "null"
+          $ref: "#/components/schemas/RedactPiiAudioQuality"
 
         redact_pii_policies:
           x-label: Redact PII policies
           description: |
             The list of PII Redaction policies that were enabled, if PII Redaction is enabled.
             See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more information.
-          type: [array, "null"]
+          type: array
           items:
             x-label: PII policy
             $ref: "#/components/schemas/PiiPolicy"
@@ -2724,45 +2712,41 @@ components:
         speaker_labels:
           x-label: Speaker labels
           description: Whether [Speaker diarization](https://www.assemblyai.com/docs/models/speaker-diarization) is enabled, can be true or false
-          type: [boolean, "null"]
+          type: boolean
 
         speakers_expected:
           x-label: Speakers expected
           description: Tell the speaker label model how many speakers it should attempt to identify, up to 10. See [Speaker diarization](https://www.assemblyai.com/docs/models/speaker-diarization) for more details.
-          type: [integer, "null"]
+          type: integer
 
         content_safety:
           x-label: Content Moderation
           description: Whether [Content Moderation](https://www.assemblyai.com/docs/models/content-moderation) is enabled, can be true or false
-          type: [boolean, "null"]
+          type: boolean
 
         content_safety_labels:
           x-label: Content Moderation labels
           description: |
             An array of results for the Content Moderation model, if it is enabled.
             See [Content moderation](https://www.assemblyai.com/docs/models/content-moderation) for more information.
-          oneOf:
-            - $ref: "#/components/schemas/ContentSafetyLabelsResult"
-            - type: "null"
+          $ref: "#/components/schemas/ContentSafetyLabelsResult"
 
         iab_categories:
           x-label: Topic Detection
           description: Whether [Topic Detection](https://www.assemblyai.com/docs/models/topic-detection) is enabled, can be true or false
-          type: [boolean, "null"]
+          type: boolean
 
         iab_categories_result:
           x-label: Topic Detection result
           description: |
             The result of the Topic Detection model, if it is enabled.
             See [Topic Detection](https://www.assemblyai.com/docs/models/topic-detection) for more information.
-          oneOf:
-            - $ref: "#/components/schemas/TopicDetectionModelResult"
-            - type: "null"
+          $ref: "#/components/schemas/TopicDetectionModelResult"
 
         custom_spelling:
           x-label: Custom spellings
           description: Customize how words are spelled and formatted using to and from values
-          type: [array, "null"]
+          type: array
           items:
             x-label: Custom spelling
             $ref: "#/components/schemas/TranscriptCustomSpelling"
@@ -2770,12 +2754,12 @@ components:
         auto_chapters:
           x-label: Auto Chapters enabled
           description: Whether [Auto Chapters](https://www.assemblyai.com/docs/models/auto-chapters) is enabled, can be true or false
-          type: [boolean, "null"]
+          type: boolean
 
         chapters:
           x-label: Chapters
           description: An array of temporally sequential chapters for the audio file
-          type: [array, "null"]
+          type: array
           items:
             x-label: Chapter
             $ref: "#/components/schemas/Chapter"
@@ -2788,24 +2772,24 @@ components:
         summary_type:
           x-label: Summary type
           description: The type of summary generated, if [Summarization](https://www.assemblyai.com/docs/models/summarization) is enabled
-          type: [string, "null"]
+          type: string
 
         summary_model:
           x-label: Summary model
           description: |
             The Summarization model used to generate the summary,
             if [Summarization](https://www.assemblyai.com/docs/models/summarization) is enabled
-          type: [string, "null"]
+          type: string
 
         summary:
           x-label: Summary
           description: The generated summary of the media file, if [Summarization](https://www.assemblyai.com/docs/models/summarization) is enabled
-          type: [string, "null"]
+          type: string
 
         custom_topics:
           x-label: Custom topics enabled
           description: Whether custom topics is enabled, either true or false
-          type: [boolean, "null"]
+          type: boolean
 
         topics:
           x-label: Topics
@@ -2818,14 +2802,14 @@ components:
         sentiment_analysis:
           x-label: Sentiment Analysis
           description: Whether [Sentiment Analysis](https://www.assemblyai.com/docs/models/sentiment-analysis) is enabled, can be true or false
-          type: [boolean, "null"]
+          type: boolean
 
         sentiment_analysis_results:
           x-label: Sentiment Analysis results
           description: |
             An array of results for the Sentiment Analysis model, if it is enabled.
             See [Sentiment Analysis](https://www.assemblyai.com/docs/models/sentiment-analysis) for more information.
-          type: [array, "null"]
+          type: array
           items:
             x-label: Sentiment Analysis result
             $ref: "#/components/schemas/SentimentAnalysisResult"
@@ -2833,14 +2817,14 @@ components:
         entity_detection:
           x-label: Entity Detection
           description: Whether [Entity Detection](https://www.assemblyai.com/docs/models/entity-detection) is enabled, can be true or false
-          type: [boolean, "null"]
+          type: boolean
 
         entities:
           x-label: Entities
           description: |
             An array of results for the Entity Detection model, if it is enabled.
             See [Entity detection](https://www.assemblyai.com/docs/models/entity-detection) for more information.
-          type: [array, "null"]
+          type: array
           items:
             x-label: Entity
             $ref: "#/components/schemas/Entity"
@@ -2850,7 +2834,7 @@ components:
           description: |
             Defaults to null. Reject audio files that contain less than this fraction of speech.
             Valid values are in the range [0, 1] inclusive.
-          type: [number, "null"]
+          type: number
           minimum: 0
           maximum: 1
           format: float
@@ -2858,7 +2842,7 @@ components:
         throttled:
           x-label: Throttled
           description: True while a request is throttled and false when a request is no longer throttled
-          type: [boolean, "null"]
+          type: boolean
 
         error:
           x-label: Error
@@ -4071,11 +4055,11 @@ components:
         channel:
           x-label: Channel
           description: The channel of this utterance. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially.
-          type: [string, "null"]
+          type: string
         speaker:
           x-label: Speaker
           description: The speaker of the sentence if [Speaker Diarization](https://www.assemblyai.com/docs/models/speaker-diarization) is enabled, else null
-          type: [string, "null"]
+          type: string
       example:
         {
           text: "Smoke from hundreds of wildfires in Canada is triggering air quality alerts throughout the US.",
@@ -4523,11 +4507,11 @@ components:
         channel:
           x-label: Channel
           description: The channel of the word. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially.
-          type: [string, "null"]
+          type: string
         speaker:
           x-label: Speaker
           description: The speaker of the word if [Speaker Diarization](https://www.assemblyai.com/docs/models/speaker-diarization) is enabled, else null
-          type: [string, "null"]
+          type: string
       example:
         {
           text: "Smoke",
@@ -4580,11 +4564,11 @@ components:
         channel:
           x-label: Channel
           description: The channel of the sentence. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially.
-          type: [string, "null"]
+          type: string
         speaker:
           x-label: Speaker
           description: The speaker of the sentence if [Speaker Diarization](https://www.assemblyai.com/docs/models/speaker-diarization) is enabled, else null
-          type: [string, "null"]
+          type: string
       example:
         {
           text: "Smoke from hundreds of wildfires in Canada is triggering air quality alerts throughout the US.",
@@ -4976,12 +4960,12 @@ components:
         prev_url:
           x-label: Previous URL
           description: The URL to the next page of transcripts. The previous URL always points to a page with older transcripts.
-          type: [string, "null"]
+          type: string
           format: url
         next_url:
           x-label: Next URL
           description: The URL to the next page of transcripts. The next URL always points to a page with newer transcripts.
-          type: [string, "null"]
+          type: string
           format: url
       example:
         {
@@ -5079,7 +5063,7 @@ components:
         completed:
           x-label: Completed
           description: The date and time the transcript was completed
-          type: [string, "null"]
+          type: string
           pattern: '^(?:(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2}(?:\.\d+)?))$'
           x-fern-type: optional<datetime>
           x-ts-type: Date | null
@@ -5091,7 +5075,7 @@ components:
         error:
           x-label: Error
           description: Error message of why the transcript failed
-          type: [string, "null"]
+          type: string
       example:
         {
           id: "9ea68fd3-f953-42c1-9742-976c447fb463",

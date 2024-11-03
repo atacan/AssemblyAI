@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:AssemblyAI}",
+            "name": "Debug Prepare",
+            "program": "${workspaceFolder:AssemblyAI}/.build/debug/Prepare",
+            "preLaunchTask": "swift: Build Debug Prepare"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:AssemblyAI}",
+            "name": "Release Prepare",
+            "program": "${workspaceFolder:AssemblyAI}/.build/release/Prepare",
+            "preLaunchTask": "swift: Build Release Prepare"
+        }
+    ]
+}
