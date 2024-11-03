@@ -5,11 +5,17 @@ import PackageDescription
 
 let package = Package(
     name: "AssemblyAI",
-    platforms: [.macOS(.v13)],
+    platforms: [
+        .iOS(.v15),
+        .macOS(.v13)
+    ],
     products: [
-        // Products define the executables and libraries a package produces, making them visible to other packages.
-        .library(name: "AssemblyAI", targets: ["AssemblyAI"]),
-        .library(name: "AssemblyAI_AHC", targets: ["AssemblyAI_AHC"]),
+        .library(
+            name: "AssemblyAI",
+            targets: ["AssemblyAI"]),
+        .library(
+            name: "AssemblyAI_AHC",
+            targets: ["AssemblyAI_AHC"])
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-openapi-generator", from: "1.0.0"),
@@ -34,5 +40,14 @@ let package = Package(
             dependencies: ["AssemblyAI"],
             resources: [.copy("Resources")]
         ),
+        .testTarget(
+            name: "AssemblyAI_AHCTests",
+            dependencies: [
+                "AssemblyAI_AHC",
+            ],
+            resources: [
+                .copy("Resources")
+            ]
+        )
     ]
 )

@@ -1,1 +1,36 @@
-{}
+{
+    "tasks": {
+        "version": "2.0.0",
+        "tasks": [
+            {
+                "label": "Generate OpenAPI Code",
+                "type": "shell",
+                "command": "make generate-openapi",
+                "group": {
+                    "kind": "build",
+                    "isDefault": false
+                },
+                "presentation": {
+                    "reveal": "always",
+                    "panel": "shared"
+                },
+                "problemMatcher": []
+            },
+            {
+                "label": "Download OpenAPI Spec",
+                "type": "shell",
+                "command": "make download-openapi",
+                "group": {
+                    "kind": "build",
+                    "isDefault": false
+                },
+                "presentation": {
+                    "reveal": "always",
+                    "panel": "shared"
+                },
+                "problemMatcher": []
+            }
+        ]
+    },
+    "makefile.configureOnOpen": false
+}
