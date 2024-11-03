@@ -30,9 +30,8 @@ format: check_uncommitted
 clean_spm_cache:
 	swift package purge-cache
 
-download:
+download-openapi:
 	swift run Prepare
 
 generate-openapi:
-	# automatically provide the "yes" response
-	echo "yes" | swift package generate-code-from-openapi
+	swift package --allow-writing-to-package-directory generate-code-from-openapi

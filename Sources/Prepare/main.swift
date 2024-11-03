@@ -11,7 +11,7 @@ func replaceOneOfNullableReferences(text: String) async throws -> String {
     return newText
 }
 
-func runCommand(_ command: String) throws {
+func runCommand(_ command: String, workingDirectory: String? = nil) throws {
     let task = Process()
     let pipe = Pipe()
 
@@ -20,6 +20,10 @@ func runCommand(_ command: String) throws {
     task.arguments = ["-c", command]
     task.executableURL = URL(fileURLWithPath: "/bin/zsh")
     task.standardInput = nil
+    
+    if let workingDirectory {
+        task.currentDirectoryURL = URL(fileURLWithPath: workingDirectory)
+    }
 
     try task.run()
 
@@ -28,13 +32,6 @@ func runCommand(_ command: String) throws {
 
     print(#function, command, "\n", output)
 }
-
-let fileURL = URL(
-    string: "https://raw.githubusercontent.com/AssemblyAI/assemblyai-api-spec/refs/heads/main/openapi.yml"
-)!
-let destinationPaths = [
-    "/Users/atacan/Developer/Repositories/AssemblyAI/Sources/AssemblyAI_AHC/openapi.yaml"
-]
 
 func downloadFile(from fileURL: URL, to destinationPaths: [String]) async throws {
     let (tempLocalUrl, _) = try await URLSession.shared.download(from: fileURL)
@@ -87,5 +84,28 @@ func downloadFile(from fileURL: URL, to destinationPaths: [String]) async throws
         try await group.waitForAll()
     }
 }
+
+// MARK: - Execute
+
+let currentFile = URL(fileURLWithPath: #file)
+let projectRoot = currentFile
+    .deletingLastPathComponent() // Remove 'main.swift'
+    .deletingLastPathComponent() // Remove 'Prepare'
+    .deletingLastPathComponent() // Remove 'Sources'
+
+let destinationPaths = [
+    projectRoot
+        .appendingPathComponent("Sources")
+        .appendingPathComponent("AssemblyAI_AHC")
+        .appendingPathComponent("openapi.yaml")
+        .path
+]
+
 // Execute the download
-try await downloadFile(from: fileURL, to: destinationPaths)
+let remoteFileURL = URL(
+    string: "https://raw.githubusercontent.com/AssemblyAI/assemblyai-api-spec/refs/heads/main/openapi.yml"
+)!
+
+try await downloadFile(from: remoteFileURL, to: destinationPaths)
+// Generate the code
+try runCommand("make generate-openapi", workingDirectory: projectRoot.path)
