@@ -125,46 +125,50 @@ func downloadFile(from fileURL: URL, to destinationUrls: [URL]) async throws {
                       type: object
                 """
         )
-        .replacingOccurrences(of: """
-    Transcript:
-      x-label: Transcript
-      description: A transcript object
-      type: object
-      x-fern-sdk-group-name: transcripts
-      additionalProperties: false
-""", with: """
-    Transcript:
-      x-label: Transcript
-      description: A transcript object
-      type: object
-      x-fern-sdk-group-name: transcripts
-      additionalProperties: true
-"""
+        .replacingOccurrences(
+            of: """
+                    Transcript:
+                      x-label: Transcript
+                      description: A transcript object
+                      type: object
+                      x-fern-sdk-group-name: transcripts
+                      additionalProperties: false
+                """,
+            with: """
+                    Transcript:
+                      x-label: Transcript
+                      description: A transcript object
+                      type: object
+                      x-fern-sdk-group-name: transcripts
+                      additionalProperties: true
+                """
         )
-        .replacingOccurrences(of: """
-    TranscriptWord:
-      x-label: Word
-      type: object
-      x-fern-sdk-group-name: transcripts
-      additionalProperties: false
-      required:
-        - confidence
-        - start
-        - end
-        - text
-        - speaker
-""", with: """
-    TranscriptWord:
-      x-label: Word
-      type: object
-      x-fern-sdk-group-name: transcripts
-      additionalProperties: false
-      required:
-        - confidence
-        - start
-        - end
-        - text
-"""
+        .replacingOccurrences(
+            of: """
+                    TranscriptWord:
+                      x-label: Word
+                      type: object
+                      x-fern-sdk-group-name: transcripts
+                      additionalProperties: false
+                      required:
+                        - confidence
+                        - start
+                        - end
+                        - text
+                        - speaker
+                """,
+            with: """
+                    TranscriptWord:
+                      x-label: Word
+                      type: object
+                      x-fern-sdk-group-name: transcripts
+                      additionalProperties: false
+                      required:
+                        - confidence
+                        - start
+                        - end
+                        - text
+                """
         )
 
     fileContent = try await replaceOneOfNullableReferences(text: fileContent)

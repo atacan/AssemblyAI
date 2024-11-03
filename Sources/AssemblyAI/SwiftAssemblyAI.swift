@@ -449,8 +449,46 @@ public struct TranscriptOptionalParams: Codable {
 }
 
 public struct TranscriptParams: Codable {
-    
-    public init(audioURL: URL, languageCode: TranscriptLanguageCode? = nil, punctuate: Bool? = nil, formatText: Bool? = nil, dualChannel: Bool? = nil, speechModel: SpeechModel? = nil, webhookURL: URL? = nil, webhookAuthHeaderName: String? = nil, webhookAuthHeaderValue: String? = nil, autoHighlights: Bool? = nil, audioStartFrom: Int? = nil, audioEndAt: Int? = nil, wordBoost: [String]? = nil, boostParam: TranscriptBoostParam? = nil, filterProfanity: Bool? = nil, redactPii: Bool? = nil, redactPiiAudio: Bool? = nil, redactPiiAudioQuality: RedactPiiAudioQuality? = nil, redactPiiPolicies: [PiiPolicy]? = nil, redactPiiSub: SubstitutionPolicy? = nil, speakerLabels: Bool? = nil, speakersExpected: Int? = nil, contentSafety: Bool? = nil, contentSafetyConfidence: Int? = nil, iabCategories: Bool? = nil, languageDetection: Bool? = nil, customSpelling: [TranscriptCustomSpelling]? = nil, disfluencies: Bool? = nil, sentimentAnalysis: Bool? = nil, autoChapters: Bool? = nil, entityDetection: Bool? = nil, speechThreshold: Double? = nil, summarization: Bool? = nil, summaryModel: SummaryModel? = nil, summaryType: SummaryType? = nil, customTopics: Bool? = nil, topics: [String]? = nil) {
+
+    public init(
+        audioURL: URL,
+        languageCode: TranscriptLanguageCode? = nil,
+        punctuate: Bool? = nil,
+        formatText: Bool? = nil,
+        dualChannel: Bool? = nil,
+        speechModel: SpeechModel? = nil,
+        webhookURL: URL? = nil,
+        webhookAuthHeaderName: String? = nil,
+        webhookAuthHeaderValue: String? = nil,
+        autoHighlights: Bool? = nil,
+        audioStartFrom: Int? = nil,
+        audioEndAt: Int? = nil,
+        wordBoost: [String]? = nil,
+        boostParam: TranscriptBoostParam? = nil,
+        filterProfanity: Bool? = nil,
+        redactPii: Bool? = nil,
+        redactPiiAudio: Bool? = nil,
+        redactPiiAudioQuality: RedactPiiAudioQuality? = nil,
+        redactPiiPolicies: [PiiPolicy]? = nil,
+        redactPiiSub: SubstitutionPolicy? = nil,
+        speakerLabels: Bool? = nil,
+        speakersExpected: Int? = nil,
+        contentSafety: Bool? = nil,
+        contentSafetyConfidence: Int? = nil,
+        iabCategories: Bool? = nil,
+        languageDetection: Bool? = nil,
+        customSpelling: [TranscriptCustomSpelling]? = nil,
+        disfluencies: Bool? = nil,
+        sentimentAnalysis: Bool? = nil,
+        autoChapters: Bool? = nil,
+        entityDetection: Bool? = nil,
+        speechThreshold: Double? = nil,
+        summarization: Bool? = nil,
+        summaryModel: SummaryModel? = nil,
+        summaryType: SummaryType? = nil,
+        customTopics: Bool? = nil,
+        topics: [String]? = nil
+    ) {
         self.audioURL = audioURL
         self.languageCode = languageCode
         self.punctuate = punctuate
@@ -489,7 +527,7 @@ public struct TranscriptParams: Codable {
         self.customTopics = customTopics
         self.topics = topics
     }
-    
+
     let audioURL: URL
     let languageCode: TranscriptLanguageCode?
     let punctuate: Bool?
