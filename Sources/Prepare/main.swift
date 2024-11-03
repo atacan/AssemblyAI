@@ -20,7 +20,7 @@ func runCommand(_ command: String, workingDirectory: String? = nil) throws {
     task.arguments = ["-c", command]
     task.executableURL = URL(fileURLWithPath: "/bin/zsh")
     task.standardInput = nil
-    
+
     if let workingDirectory {
         task.currentDirectoryURL = URL(fileURLWithPath: workingDirectory)
     }
@@ -33,7 +33,7 @@ func runCommand(_ command: String, workingDirectory: String? = nil) throws {
     print(#function, command, "\n", output)
 }
 
-func downloadFile(from fileURL: URL, to destinationPaths: [String]) async throws {
+func downloadFile(from fileURL: URL, to destinationUrls: [URL]) async throws {
     let (tempLocalUrl, _) = try await URLSession.shared.download(from: fileURL)
 
     let fileData = try Data(contentsOf: tempLocalUrl)
@@ -69,16 +69,22 @@ func downloadFile(from fileURL: URL, to destinationPaths: [String]) async throws
 
     // Save to each destination path
     try await withThrowingTaskGroup(of: Void.self) { group in
-        for destinationPath in destinationPaths {
+        for destinationUrl in destinationUrls {
             group.addTask { [fileContent] in
                 try fileContent.write(
-                    toFile: destinationPath,
+                    to: destinationUrl,
                     atomically: true,
                     encoding: .utf8
                 )
+                do {
+                    let originalContent = String(data: fileData, encoding: .utf8)!
+                    // Save the file to the same folder with name "original.yaml"
+                    let originalFileURL = destinationUrl.deletingLastPathComponent().appendingPathComponent("original.yaml")
+                    try originalContent.write(to: originalFileURL, atomically: true, encoding: .utf8)
+                }
                 // Downgrade to 3.0.0
                 // try runCommand("openapi-down-convert --input \(destinationPath) --output \(destinationPath)")
-                print("Successfully downloaded and saved file to: \(destinationPath)")
+                print("Successfully downloaded and saved file to: \(destinationUrl)")
             }
         }
         try await group.waitForAll()
@@ -88,17 +94,17 @@ func downloadFile(from fileURL: URL, to destinationPaths: [String]) async throws
 // MARK: - Execute
 
 let currentFile = URL(fileURLWithPath: #file)
-let projectRoot = currentFile
-    .deletingLastPathComponent() // Remove 'main.swift'
-    .deletingLastPathComponent() // Remove 'Prepare'
-    .deletingLastPathComponent() // Remove 'Sources'
+let projectRoot =
+    currentFile
+    .deletingLastPathComponent()  // Remove 'main.swift'
+    .deletingLastPathComponent()  // Remove 'Prepare'
+    .deletingLastPathComponent()  // Remove 'Sources'
 
-let destinationPaths = [
+let destinationUrls = [
     projectRoot
         .appendingPathComponent("Sources")
         .appendingPathComponent("AssemblyAI_AHC")
         .appendingPathComponent("openapi.yaml")
-        .path
 ]
 
 // Execute the download
@@ -106,6 +112,6 @@ let remoteFileURL = URL(
     string: "https://raw.githubusercontent.com/AssemblyAI/assemblyai-api-spec/refs/heads/main/openapi.yml"
 )!
 
-try await downloadFile(from: remoteFileURL, to: destinationPaths)
+try await downloadFile(from: remoteFileURL, to: destinationUrls)
 // Generate the code
 try runCommand("make generate-openapi", workingDirectory: projectRoot.path)
