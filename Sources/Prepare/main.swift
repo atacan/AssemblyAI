@@ -42,8 +42,6 @@ func downloadFile(from fileURL: URL, to destinationUrls: [URL]) async throws {
     // Apply content modifications
     fileContent =
         fileContent
-        // Fix overflowing integers
-        .replacingOccurrences(of: "9223372036854776000", with: "922337203685477600")
         // Remove the null type
         .replacingOccurrences(of: #"type: [array, "null"]"#, with: "type: array")
         .replacingOccurrences(of: #"type: [boolean, "null"]"#, with: "type: boolean")

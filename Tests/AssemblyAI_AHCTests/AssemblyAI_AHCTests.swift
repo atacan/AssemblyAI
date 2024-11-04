@@ -40,7 +40,7 @@ final class AssemblyAI_AHCTests {
         #expect(transcript.id == "6cfe335a-a92c-4079-ad88-7be3f0fd7bf5")
     }
 
-    @Test func testUploadFile() async throws {
+    @Test func testUploadFile_and_PollToTranscribe() async throws {
         // Upload the audio file to AssemblyAI
         let audioFileUrl = Bundle.module.url(forResource: "Resources/amazing-things", withExtension: "wav")!
         let audioData = try Data(contentsOf: audioFileUrl)

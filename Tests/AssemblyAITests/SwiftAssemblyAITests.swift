@@ -18,27 +18,27 @@ final class AssemblyAITests: XCTestCase {
         let jsonFileURL = URL(fileURLWithPath: "post_transcript_response.json", relativeTo: referenceTestResourcesDirectory)
         let response = try Data(contentsOf: jsonFileURL)
         let transcript = try JSONDecoder().decode(Transcript.self, from: response)
-        print(transcript)
+        dump(transcript)
     }
 
     func test_Decoding_completed_transcript_response() throws {
         let jsonFileURL = URL(fileURLWithPath: "transcript_completed.json", relativeTo: referenceTestResourcesDirectory)
         let response = try Data(contentsOf: jsonFileURL)
         let transcript = try JSONDecoder().decode(Transcript.self, from: response)
-        print(transcript)
+        dump(transcript)
     }
 
     func test_Decoding_default_transcript_response() throws {
         let jsonFileURL = URL(fileURLWithPath: "transcript_default.json", relativeTo: referenceTestResourcesDirectory)
         let response = try Data(contentsOf: jsonFileURL)
         let transcript = try JSONDecoder().decode(Transcript.self, from: response)
-        print(transcript)
+        dump(transcript)
     }
 
     func test_Decoding_queeud_transcript_response() throws {
         let jsonFileURL = URL(fileURLWithPath: "transcript_queued.json", relativeTo: referenceTestResourcesDirectory)
         let response = try Data(contentsOf: jsonFileURL)
         let transcript = try JSONDecoder().decode(Transcript.self, from: response)
-        print(transcript)
+        dump(transcript)
     }
 }
