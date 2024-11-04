@@ -1,0 +1,52 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Generate OpenAPI Code",
+			"type": "shell",
+			"command": "make generate-openapi",
+			"group": {
+				"kind": "build",
+				"isDefault": false
+			},
+			"presentation": {
+				"reveal": "always",
+				"panel": "shared"
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "Download OpenAPI Spec",
+			"type": "shell",
+			"command": "make download-openapi",
+			"group": {
+				"kind": "build",
+				"isDefault": false
+			},
+			"presentation": {
+				"reveal": "always",
+				"panel": "shared"
+			},
+			"problemMatcher": []
+		},
+		{
+			"type": "swift",
+			"args": [
+				"build",
+				"--target",
+				"AssemblyAI_AHC",
+				"-Xswiftc",
+				"-diagnostic-style=llvm"
+			],
+			"env": {},
+			"cwd": "/Users/atacan/Developer/Repositories/AssemblyAI",
+			"disableTaskQueue": true,
+			"dontTriggerTestDiscovery": true,
+			"showBuildStatus": "swiftStatus",
+			"group": "build",
+			"problemMatcher": [],
+			"label": "swift: Build Debug AssemblyAI_AHC",
+			"detail": "swift build --target AssemblyAI_AHC -Xswiftc -diagnostic-style=llvm"
+		}
+	]
+}
