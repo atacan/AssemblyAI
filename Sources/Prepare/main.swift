@@ -11,43 +11,18 @@ func replaceOneOfNullableReferences(text: String) async throws -> String {
     return newText
 }
 
-func runCommand(_ command: String, workingDirectory: String? = nil) throws {
-    let task = Process()
-    let pipe = Pipe()
+func replaceNullTypes(text: String) async throws -> String {
+    text
+        // MARK: - Remove the null type
 
-    task.standardOutput = pipe
-    task.standardError = pipe
-    task.arguments = ["-c", command]
-    task.executableURL = URL(fileURLWithPath: "/bin/zsh")
-    task.standardInput = nil
-
-    if let workingDirectory {
-        task.currentDirectoryURL = URL(fileURLWithPath: workingDirectory)
-    }
-
-    try task.run()
-
-    let data = pipe.fileHandleForReading.readDataToEndOfFile()
-    let output = String(data: data, encoding: .utf8)!
-
-    print(#function, command, "\n", output)
-}
-
-func downloadFile(from fileURL: URL, to destinationUrls: [URL]) async throws {
-    let (tempLocalUrl, _) = try await URLSession.shared.download(from: fileURL)
-
-    let fileData = try Data(contentsOf: tempLocalUrl)
-    var fileContent = String(data: fileData, encoding: .utf8)!
-
-    // Apply content modifications
-    fileContent =
-        fileContent
-        // Remove the null type
         .replacingOccurrences(of: #"type: [array, "null"]"#, with: "type: array")
         .replacingOccurrences(of: #"type: [boolean, "null"]"#, with: "type: boolean")
         .replacingOccurrences(of: #"type: [integer, "null"]"#, with: "type: integer")
         .replacingOccurrences(of: #"type: [number, "null"]"#, with: "type: number")
         .replacingOccurrences(of: #"type: [string, "null"]"#, with: "type: string")
+
+        // MARK: - Fix nullable properties
+
         .replacingOccurrences(
             of: """
                           oneOf:
@@ -168,8 +143,234 @@ func downloadFile(from fileURL: URL, to destinationUrls: [URL]) async throws {
                         - text
                 """
         )
+}
 
+// MARK: - Fix Response Content Types
+
+func replaceResponseContentTypes(text: String) async throws -> String {
+
+    return text.replacingOccurrences(of: """
+      responses:
+        "200":
+          description: The exported captions as text
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: |
+                  WEBVTT
+                  00:12.340 --> 00:16.220
+                  Last year I showed these two slides said that demonstrate
+                  00:16.200 --> 00:20.040
+                  that the Arctic ice cap which for most of the last 3,000,000 years has been the
+                  00:20.020 --> 00:25.040
+                  size of the lower 48 States has shrunk by 40% but this understates
+              examples:
+                srt:
+                  $ref: "#/components/examples/SrtSubtitlesResponse"
+                vtt:
+                  $ref: "#/components/examples/VttSubtitlesResponse"
+""", with: """
+      responses:
+        "200":
+          description: The exported captions as text
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: |
+                  WEBVTT
+                  00:12.340 --> 00:16.220
+                  Last year I showed these two slides said that demonstrate
+                  00:16.200 --> 00:20.040
+                  that the Arctic ice cap which for most of the last 3,000,000 years has been the
+                  00:20.020 --> 00:25.040
+                  size of the lower 48 States has shrunk by 40% but this understates
+              examples:
+                srt:
+                  $ref: "#/components/examples/SrtSubtitlesResponse"
+                vtt:
+                  $ref: "#/components/examples/VttSubtitlesResponse"
+            text/html:
+              schema:
+                type: string
+"""
+    )
+    .replacingOccurrences(of: """
+  responses:
+    BadRequest:
+      x-label: Bad request
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example: { "error": "This is a sample error message" }
+    Unauthorized:
+      x-label: Unauthorized
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            { "error": "Authentication error, API token missing/invalid" }
+    NotFound:
+      x-label: Not found
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example: { "error": "Not found" }
+    TooManyRequests:
+      x-label: Too many requests
+      description: Too many requests
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example: { "error": "Too Many Requests" }
+      headers:
+        Retry-After:
+          description: The number of seconds to wait before retrying the request
+          schema:
+            type: integer
+    InternalServerError:
+      x-label: Internal server error
+      description: An error occurred while processing the request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example: { "error": "Internal Server Error" }
+    ServiceUnavailable:
+      x-label: Service unavailable
+      description: Service unavailable
+    GatewayTimeout:
+      x-label: Gateway timeout
+      description: Gateway timeout
+
+  securitySchemes:
+    ApiKey:
+      type: apiKey
+      in: header
+      name: Authorization
+""", with: """
+  responses:
+    BadRequest:
+      x-label: Bad request
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example: { "error": "This is a sample error message" }
+        text/plain:
+          schema:
+            type: string
+          example: This is a sample error message
+    Unauthorized:
+      x-label: Unauthorized
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            { "error": "Authentication error, API token missing/invalid" }
+        text/plain:
+          schema:
+            type: string
+          example: Authentication error, API token missing/invalid
+    NotFound:
+      x-label: Not found
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example: { "error": "Not found" }
+        text/plain:
+          schema:
+            type: string
+          example: Not found
+    TooManyRequests:
+      x-label: Too many requests
+      description: Too many requests
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example: { "error": "Too Many Requests" }
+        text/plain:
+          schema:
+            type: string
+          example: Too Many Requests
+      headers:
+        Retry-After:
+          description: The number of seconds to wait before retrying the request
+          schema:
+            type: integer
+    InternalServerError:
+      x-label: Internal server error
+      description: An error occurred while processing the request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example: { "error": "Internal Server Error" }
+        text/plain:
+          schema:
+            type: string
+          example: Internal Server Error
+    ServiceUnavailable:
+      x-label: Service unavailable
+      description: Service unavailable
+    GatewayTimeout:
+      x-label: Gateway timeout
+      description: Gateway timeout
+
+  securitySchemes:
+    ApiKey:
+      type: apiKey
+      in: header
+      name: Authorization
+""")
+}
+
+func runCommand(_ command: String, workingDirectory: String? = nil) throws {
+    let task = Process()
+    let pipe = Pipe()
+
+    task.standardOutput = pipe
+    task.standardError = pipe
+    task.arguments = ["-c", command]
+    task.executableURL = URL(fileURLWithPath: "/bin/zsh")
+    task.standardInput = nil
+
+    if let workingDirectory {
+        task.currentDirectoryURL = URL(fileURLWithPath: workingDirectory)
+    }
+
+    try task.run()
+
+    let data = pipe.fileHandleForReading.readDataToEndOfFile()
+    let output = String(data: data, encoding: .utf8)!
+
+    print(#function, command, "\n", output)
+}
+
+func downloadFile(from fileURL: URL, to destinationUrls: [URL]) async throws {
+    let (tempLocalUrl, _) = try await URLSession.shared.download(from: fileURL)
+
+    let fileData = try Data(contentsOf: tempLocalUrl)
+    var fileContent = String(data: fileData, encoding: .utf8)!
+
+    // Apply content modifications
+    fileContent = try await replaceNullTypes(text: fileContent)
     fileContent = try await replaceOneOfNullableReferences(text: fileContent)
+    fileContent = try await replaceResponseContentTypes(text: fileContent)
 
     // Save to each destination path
     try await withThrowingTaskGroup(of: Void.self) { group in
