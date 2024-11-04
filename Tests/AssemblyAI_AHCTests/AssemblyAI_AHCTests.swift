@@ -25,7 +25,7 @@ final class AssemblyAI_AHCTests {
         let authMiddleware = AuthenticationMiddleware(apiKey: apiKey)
 
         return Client(
-            serverURL: URL(string: "https://api.assemblyai.com")!,
+            serverURL: Constants.baseURL,
             transport: AsyncHTTPClientTransport(),
             middlewares: [
                 authMiddleware
