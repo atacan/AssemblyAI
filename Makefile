@@ -34,4 +34,4 @@ download-openapi:
 	swift run Prepare
 
 generate-openapi:
-	swift package --allow-writing-to-package-directory generate-code-from-openapi
+	swift run swift-openapi-generator generate --output-directory Sources/AssemblyAI_AHC/GeneratedSources --config Sources/AssemblyAI_AHC/openapi-generator-config.yaml Sources/AssemblyAI_AHC/openapi.yaml
