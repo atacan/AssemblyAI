@@ -1,6 +1,6 @@
 import Foundation
 
-public struct AssemblyAIScopedURLParameters: Codable {
+public struct AssemblyAIScopedURLParameters: Sendable, Codable {
     public var languageCode: AssemblyAI.TranscriptLanguageCode?
     public var languageDetection: Bool?
 

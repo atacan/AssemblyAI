@@ -125,7 +125,7 @@ public enum SpeechModel: String, Codable, CaseIterable {
     case conformer2 = "conformer-2"
 }
 
-public enum TranscriptLanguageCode: String, Codable, CaseIterable {
+public enum TranscriptLanguageCode: String, Sendable, Codable, CaseIterable {
     case en = "en"
     case enAu = "en_au"
     case enUk = "en_uk"
