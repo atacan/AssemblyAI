@@ -1,0 +1,333 @@
+{
+    "audio_duration": 17.0,
+    "confidence": 0.9798802,
+    "id": "6a68afea-0827-4462-9e56-cfb242f978d2",
+    "sentences": [
+        {
+            "confidence": 0.95712,
+            "end": 3435,
+            "speaker": null,
+            "start": 495,
+            "text": "And lots of times you need to give people more than one link at a time.",
+            "words": [
+                {
+                    "confidence": 0.95712,
+                    "end": 607,
+                    "speaker": null,
+                    "start": 495,
+                    "text": "And"
+                },
+                {
+                    "confidence": 0.98757,
+                    "end": 807,
+                    "speaker": null,
+                    "start": 631,
+                    "text": "lots"
+                },
+                {
+                    "confidence": 0.99873,
+                    "end": 967,
+                    "speaker": null,
+                    "start": 831,
+                    "text": "of"
+                },
+                {
+                    "confidence": 0.9978,
+                    "end": 1199,
+                    "speaker": null,
+                    "start": 991,
+                    "text": "times"
+                },
+                {
+                    "confidence": 0.96143,
+                    "end": 1383,
+                    "speaker": null,
+                    "start": 1247,
+                    "text": "you"
+                },
+                {
+                    "confidence": 0.99541,
+                    "end": 1503,
+                    "speaker": null,
+                    "start": 1399,
+                    "text": "need"
+                },
+                {
+                    "confidence": 0.99717,
+                    "end": 1623,
+                    "speaker": null,
+                    "start": 1519,
+                    "text": "to"
+                },
+                {
+                    "confidence": 0.99751,
+                    "end": 1767,
+                    "speaker": null,
+                    "start": 1639,
+                    "text": "give"
+                },
+                {
+                    "confidence": 0.99935,
+                    "end": 1975,
+                    "speaker": null,
+                    "start": 1791,
+                    "text": "people"
+                },
+                {
+                    "confidence": 0.99958,
+                    "end": 2143,
+                    "speaker": null,
+                    "start": 2015,
+                    "text": "more"
+                },
+                {
+                    "confidence": 0.99764,
+                    "end": 2287,
+                    "speaker": null,
+                    "start": 2159,
+                    "text": "than"
+                },
+                {
+                    "confidence": 0.99908,
+                    "end": 2423,
+                    "speaker": null,
+                    "start": 2311,
+                    "text": "one"
+                },
+                {
+                    "confidence": 0.99212,
+                    "end": 2567,
+                    "speaker": null,
+                    "start": 2439,
+                    "text": "link"
+                },
+                {
+                    "confidence": 0.99708,
+                    "end": 2703,
+                    "speaker": null,
+                    "start": 2591,
+                    "text": "at"
+                },
+                {
+                    "confidence": 0.99871,
+                    "end": 2847,
+                    "speaker": null,
+                    "start": 2719,
+                    "text": "a"
+                },
+                {
+                    "confidence": 0.99185,
+                    "end": 3435,
+                    "speaker": null,
+                    "start": 2871,
+                    "text": "time."
+                }
+            ]
+        },
+        {
+            "confidence": 0.70841,
+            "end": 15175,
+            "speaker": null,
+            "start": 3775,
+            "text": "You band could give their fans a couple new videos from a live concert, behind the scenes photo gallery an album to purchase like these next few links.",
+            "words": [
+                {
+                    "confidence": 0.70841,
+                    "end": 4495,
+                    "speaker": null,
+                    "start": 3775,
+                    "text": "You"
+                },
+                {
+                    "confidence": 0.98757,
+                    "end": 4975,
+                    "speaker": null,
+                    "start": 4655,
+                    "text": "band"
+                },
+                {
+                    "confidence": 0.91709,
+                    "end": 5191,
+                    "speaker": null,
+                    "start": 5015,
+                    "text": "could"
+                },
+                {
+                    "confidence": 0.9985,
+                    "end": 5535,
+                    "speaker": null,
+                    "start": 5223,
+                    "text": "give"
+                },
+                {
+                    "confidence": 0.99207,
+                    "end": 5855,
+                    "speaker": null,
+                    "start": 5615,
+                    "text": "their"
+                },
+                {
+                    "confidence": 0.99566,
+                    "end": 6143,
+                    "speaker": null,
+                    "start": 5895,
+                    "text": "fans"
+                },
+                {
+                    "confidence": 0.99662,
+                    "end": 6343,
+                    "speaker": null,
+                    "start": 6199,
+                    "text": "a"
+                },
+                {
+                    "confidence": 0.99521,
+                    "end": 6639,
+                    "speaker": null,
+                    "start": 6359,
+                    "text": "couple"
+                },
+                {
+                    "confidence": 0.9899,
+                    "end": 6943,
+                    "speaker": null,
+                    "start": 6687,
+                    "text": "new"
+                },
+                {
+                    "confidence": 0.99597,
+                    "end": 7543,
+                    "speaker": null,
+                    "start": 6999,
+                    "text": "videos"
+                },
+                {
+                    "confidence": 0.99764,
+                    "end": 7927,
+                    "speaker": null,
+                    "start": 7679,
+                    "text": "from"
+                },
+                {
+                    "confidence": 0.96289,
+                    "end": 8087,
+                    "speaker": null,
+                    "start": 7951,
+                    "text": "a"
+                },
+                {
+                    "confidence": 0.99596,
+                    "end": 8343,
+                    "speaker": null,
+                    "start": 8111,
+                    "text": "live"
+                },
+                {
+                    "confidence": 0.99837,
+                    "end": 9115,
+                    "speaker": null,
+                    "start": 8399,
+                    "text": "concert,"
+                },
+                {
+                    "confidence": 0.99833,
+                    "end": 9927,
+                    "speaker": null,
+                    "start": 9615,
+                    "text": "behind"
+                },
+                {
+                    "confidence": 0.99266,
+                    "end": 10087,
+                    "speaker": null,
+                    "start": 9951,
+                    "text": "the"
+                },
+                {
+                    "confidence": 0.96852,
+                    "end": 10335,
+                    "speaker": null,
+                    "start": 10111,
+                    "text": "scenes"
+                },
+                {
+                    "confidence": 0.99844,
+                    "end": 10647,
+                    "speaker": null,
+                    "start": 10375,
+                    "text": "photo"
+                },
+                {
+                    "confidence": 0.99399,
+                    "end": 11435,
+                    "speaker": null,
+                    "start": 10711,
+                    "text": "gallery"
+                },
+                {
+                    "confidence": 0.89121,
+                    "end": 12471,
+                    "speaker": null,
+                    "start": 12135,
+                    "text": "an"
+                },
+                {
+                    "confidence": 0.99646,
+                    "end": 12791,
+                    "speaker": null,
+                    "start": 12503,
+                    "text": "album"
+                },
+                {
+                    "confidence": 0.99614,
+                    "end": 12967,
+                    "speaker": null,
+                    "start": 12823,
+                    "text": "to"
+                },
+                {
+                    "confidence": 0.99139,
+                    "end": 13715,
+                    "speaker": null,
+                    "start": 12991,
+                    "text": "purchase"
+                },
+                {
+                    "confidence": 0.96852,
+                    "end": 14423,
+                    "speaker": null,
+                    "start": 14135,
+                    "text": "like"
+                },
+                {
+                    "confidence": 0.96195,
+                    "end": 14591,
+                    "speaker": null,
+                    "start": 14439,
+                    "text": "these"
+                },
+                {
+                    "confidence": 0.98843,
+                    "end": 14791,
+                    "speaker": null,
+                    "start": 14623,
+                    "text": "next"
+                },
+                {
+                    "confidence": 0.9912300000000001,
+                    "end": 14991,
+                    "speaker": null,
+                    "start": 14823,
+                    "text": "few"
+                },
+                {
+                    "confidence": 0.97745,
+                    "end": 15175,
+                    "speaker": null,
+                    "start": 15023,
+                    "text": "links."
+                }
+            ]
+        }
+    ]
+}

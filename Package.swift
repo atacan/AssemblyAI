@@ -22,6 +22,7 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-openapi-runtime", from: "1.0.0"),
         // .package(url: "https://github.com/apple/swift-openapi-urlsession", from: "1.0.0"),
         .package(url: "https://github.com/swift-server/swift-openapi-async-http-client", from: "1.0.0"),
+        .package(url: "git@github.com:atacan/UsefulThings.git", branch: "main"),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -49,6 +50,7 @@ let package = Package(
             name: "AssemblyAI_AHCTests",
             dependencies: [
                 "AssemblyAI_AHC",
+                .product(name: "UsefulThings", package: "UsefulThings"),
             ],
             resources: [
                 .copy("Resources")

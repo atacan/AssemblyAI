@@ -17,10 +17,14 @@ import struct Foundation.Data
 import struct Foundation.Date
 #endif
 
+import UsefulThings
+
 final class AssemblyAI_AHCTests {
     let client = {
         // get api key from environment
-        let apiKey = ProcessInfo.processInfo.environment["ASSEMBLYAI_API_KEY"]!
+        let thisFile = URL(fileURLWithPath: #file)
+        let rootFolder = thisFile.deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
+        let apiKey = getEnvironmentVariable("ASSEMBLYAI_API_KEY", from: rootFolder.appendingPathComponent(".env"))!
 
         let authMiddleware = AuthenticationMiddleware(apiKey: apiKey)
 
@@ -60,8 +64,15 @@ final class AssemblyAI_AHCTests {
 
         let text = transcript.text
         let wordsJoined = transcript.words?.map { $0.text }.joined(separator: " ")
-        print(text)
+
         #expect(text == wordsJoined)
+    }
+
+    @Test func testDecodingSentencesResponse() throws {
+        let jsonUrl = Bundle.module.url(forResource: "Resources/sentences-response", withExtension: "json")!
+        let jsonData = try Data(contentsOf: jsonUrl)
+        let sentences = try JSONDecoder().decode(Components.Schemas.SentencesResponse.self, from: jsonData)
+        #expect(sentences.sentences.count >= 1)
     }
 
     @Test func testExample() throws {
