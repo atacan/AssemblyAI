@@ -143,6 +143,35 @@ func replaceNullTypes(text: String) async throws -> String {
                         - text
                 """
         )
+        .replacingOccurrences(
+            of: """
+    TranscriptSentence:
+      x-label: Sentence
+      type: object
+      x-fern-sdk-group-name: transcripts
+      additionalProperties: false
+      required:
+        - text
+        - start
+        - end
+        - confidence
+        - words
+        - speaker
+""",
+            with: """
+    TranscriptSentence:
+      x-label: Sentence
+      type: object
+      x-fern-sdk-group-name: transcripts
+      additionalProperties: false
+      required:
+        - text
+        - start
+        - end
+        - confidence
+        - words
+"""
+        )
 }
 
 // MARK: - Fix Response Content Types

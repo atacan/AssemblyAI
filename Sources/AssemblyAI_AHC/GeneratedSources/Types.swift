@@ -13,15 +13,20 @@ import struct Foundation.Date
 public protocol APIProtocol: Sendable {
     /// Upload a media file
     ///
+    /// <Note>To upload a media file to our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
     /// Upload a media file to AssemblyAI's servers.
+    ///
     ///
     /// - Remark: HTTP `POST /v2/upload`.
     /// - Remark: Generated from `#/paths//v2/upload/post(uploadFile)`.
     func uploadFile(_ input: Operations.uploadFile.Input) async throws -> Operations.uploadFile.Output
     /// List transcripts
     ///
-    /// Retrieve a list of transcripts you created.
-    /// Transcripts are sorted from newest to oldest. The previous URL always points to a page with older transcripts.
+    /// <Note>To retrieve your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
+    /// Retrieve a list of transcripts you created. 
+    /// Transcripts are sorted from newest to oldest and can be retrieved for the last 90 days of usage. The previous URL always points to a page with older transcripts.
+    ///
+    /// If you need to retrieve transcripts from more than 90 days ago please reach out to our Support team at support@assemblyai.com.
     ///
     ///
     /// - Remark: HTTP `GET /v2/transcript`.
@@ -29,76 +34,88 @@ public protocol APIProtocol: Sendable {
     func listTranscripts(_ input: Operations.listTranscripts.Input) async throws -> Operations.listTranscripts.Output
     /// Transcribe audio
     ///
+    /// <Note>To use our EU server for transcription, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
     /// Create a transcript from a media file that is accessible via a URL.
+    ///
     ///
     /// - Remark: HTTP `POST /v2/transcript`.
     /// - Remark: Generated from `#/paths//v2/transcript/post(createTranscript)`.
     func createTranscript(_ input: Operations.createTranscript.Input) async throws -> Operations.createTranscript.Output
     /// Get transcript
     ///
+    /// <Note>To retrieve your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
     /// Get the transcript resource. The transcript is ready when the "status" is "completed".
+    ///
     ///
     /// - Remark: HTTP `GET /v2/transcript/{transcript_id}`.
     /// - Remark: Generated from `#/paths//v2/transcript/{transcript_id}/get(getTranscript)`.
     func getTranscript(_ input: Operations.getTranscript.Input) async throws -> Operations.getTranscript.Output
     /// Delete transcript
     ///
+    /// <Note>To delete your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
     /// Remove the data from the transcript and mark it as deleted.
+    ///
     ///
     /// - Remark: HTTP `DELETE /v2/transcript/{transcript_id}`.
     /// - Remark: Generated from `#/paths//v2/transcript/{transcript_id}/delete(deleteTranscript)`.
     func deleteTranscript(_ input: Operations.deleteTranscript.Input) async throws -> Operations.deleteTranscript.Output
     /// Get subtitles for transcript
     ///
+    /// <Note>To retrieve your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
     /// Export your transcript in SRT or VTT format to use with a video player for subtitles and closed captions.
+    ///
     ///
     /// - Remark: HTTP `GET /v2/transcript/{transcript_id}/{subtitle_format}`.
     /// - Remark: Generated from `#/paths//v2/transcript/{transcript_id}/{subtitle_format}/get(getSubtitles)`.
     func getSubtitles(_ input: Operations.getSubtitles.Input) async throws -> Operations.getSubtitles.Output
     /// Get sentences in transcript
     ///
+    /// <Note>To retrieve your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
     /// Get the transcript split by sentences. The API will attempt to semantically segment the transcript into sentences to create more reader-friendly transcripts.
+    ///
     ///
     /// - Remark: HTTP `GET /v2/transcript/{transcript_id}/sentences`.
     /// - Remark: Generated from `#/paths//v2/transcript/{transcript_id}/sentences/get(getTranscriptSentences)`.
     func getTranscriptSentences(_ input: Operations.getTranscriptSentences.Input) async throws -> Operations.getTranscriptSentences.Output
     /// Get paragraphs in transcript
     ///
+    /// <Note>To retrieve your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
     /// Get the transcript split by paragraphs. The API will attempt to semantically segment your transcript into paragraphs to create more reader-friendly transcripts.
+    ///
     ///
     /// - Remark: HTTP `GET /v2/transcript/{transcript_id}/paragraphs`.
     /// - Remark: Generated from `#/paths//v2/transcript/{transcript_id}/paragraphs/get(getTranscriptParagraphs)`.
     func getTranscriptParagraphs(_ input: Operations.getTranscriptParagraphs.Input) async throws -> Operations.getTranscriptParagraphs.Output
     /// Search words in transcript
     ///
+    /// <Note>To search through a transcription created on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
     /// Search through the transcript for keywords. You can search for individual words, numbers, or phrases containing up to five words or numbers.
+    ///
     ///
     /// - Remark: HTTP `GET /v2/transcript/{transcript_id}/word-search`.
     /// - Remark: Generated from `#/paths//v2/transcript/{transcript_id}/word-search/get(wordSearch)`.
     func wordSearch(_ input: Operations.wordSearch.Input) async throws -> Operations.wordSearch.Output
     /// Get redacted audio
     ///
+    /// <Warning> Redacted audio creation is not supported on the EU endpoint. </Warning>
     /// Retrieve the redacted audio object containing the status and URL to the redacted audio.
+    ///
     ///
     /// - Remark: HTTP `GET /v2/transcript/{transcript_id}/redacted-audio`.
     /// - Remark: Generated from `#/paths//v2/transcript/{transcript_id}/redacted-audio/get(getRedactedAudio)`.
     func getRedactedAudio(_ input: Operations.getRedactedAudio.Input) async throws -> Operations.getRedactedAudio.Output
-    /// Create temporary authentication token for Streaming STT
-    ///
-    /// Create a temporary authentication token for Streaming Speech-to-Text
-    ///
-    /// - Remark: HTTP `POST /v2/realtime/token`.
-    /// - Remark: Generated from `#/paths//v2/realtime/token/post(createTemporaryToken)`.
-    func createTemporaryToken(_ input: Operations.createTemporaryToken.Input) async throws -> Operations.createTemporaryToken.Output
     /// Run a task using LeMUR
     ///
+    /// <Warning>LeMUR is currently not available on the EU endpoint.</Warning>
     /// Use the LeMUR task endpoint to input your own LLM prompt.
+    ///
     ///
     /// - Remark: HTTP `POST /lemur/v3/generate/task`.
     /// - Remark: Generated from `#/paths//lemur/v3/generate/task/post(lemurTask)`.
     func lemurTask(_ input: Operations.lemurTask.Input) async throws -> Operations.lemurTask.Output
     /// Summarize a transcript using LeMUR
     ///
+    /// <Warning>LeMUR is currently not available on the EU endpoint.</Warning>
     /// Custom Summary allows you to distill a piece of audio into a few impactful sentences.
     /// You can give the model context to obtain more targeted results while outputting the results in a variety of formats described in human language.
     ///
@@ -108,6 +125,7 @@ public protocol APIProtocol: Sendable {
     func lemurSummary(_ input: Operations.lemurSummary.Input) async throws -> Operations.lemurSummary.Output
     /// Ask questions using LeMUR
     ///
+    /// <Warning>LeMUR is currently not available on the EU endpoint.</Warning>
     /// Question & Answer allows you to ask free-form questions about a single transcript or a group of transcripts.
     /// The questions can be any whose answers you find useful, such as judging whether a caller is likely to become a customer or whether all items on a meeting's agenda were covered.
     ///
@@ -115,15 +133,9 @@ public protocol APIProtocol: Sendable {
     /// - Remark: HTTP `POST /lemur/v3/generate/question-answer`.
     /// - Remark: Generated from `#/paths//lemur/v3/generate/question-answer/post(lemurQuestionAnswer)`.
     func lemurQuestionAnswer(_ input: Operations.lemurQuestionAnswer.Input) async throws -> Operations.lemurQuestionAnswer.Output
-    /// Extract action items
-    ///
-    /// Use LeMUR to generate a list of action items from a transcript
-    ///
-    /// - Remark: HTTP `POST /lemur/v3/generate/action-items`.
-    /// - Remark: Generated from `#/paths//lemur/v3/generate/action-items/post(lemurActionItems)`.
-    func lemurActionItems(_ input: Operations.lemurActionItems.Input) async throws -> Operations.lemurActionItems.Output
     /// Retrieve LeMUR response
     ///
+    /// <Warning>LeMUR is currently not available on the EU endpoint.</Warning>
     /// Retrieve a LeMUR response that was previously generated.
     ///
     ///
@@ -132,6 +144,7 @@ public protocol APIProtocol: Sendable {
     func getLemurResponse(_ input: Operations.getLemurResponse.Input) async throws -> Operations.getLemurResponse.Output
     /// Purge LeMUR request data
     ///
+    /// <Warning>LeMUR is currently not available on the EU endpoint.</Warning>
     /// Delete the data for a previously submitted LeMUR request.
     /// The LLM response data, as well as any context provided in the original request will be removed.
     ///
@@ -145,7 +158,9 @@ public protocol APIProtocol: Sendable {
 extension APIProtocol {
     /// Upload a media file
     ///
+    /// <Note>To upload a media file to our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
     /// Upload a media file to AssemblyAI's servers.
+    ///
     ///
     /// - Remark: HTTP `POST /v2/upload`.
     /// - Remark: Generated from `#/paths//v2/upload/post(uploadFile)`.
@@ -160,8 +175,11 @@ extension APIProtocol {
     }
     /// List transcripts
     ///
-    /// Retrieve a list of transcripts you created.
-    /// Transcripts are sorted from newest to oldest. The previous URL always points to a page with older transcripts.
+    /// <Note>To retrieve your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
+    /// Retrieve a list of transcripts you created. 
+    /// Transcripts are sorted from newest to oldest and can be retrieved for the last 90 days of usage. The previous URL always points to a page with older transcripts.
+    ///
+    /// If you need to retrieve transcripts from more than 90 days ago please reach out to our Support team at support@assemblyai.com.
     ///
     ///
     /// - Remark: HTTP `GET /v2/transcript`.
@@ -177,7 +195,9 @@ extension APIProtocol {
     }
     /// Transcribe audio
     ///
+    /// <Note>To use our EU server for transcription, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
     /// Create a transcript from a media file that is accessible via a URL.
+    ///
     ///
     /// - Remark: HTTP `POST /v2/transcript`.
     /// - Remark: Generated from `#/paths//v2/transcript/post(createTranscript)`.
@@ -192,7 +212,9 @@ extension APIProtocol {
     }
     /// Get transcript
     ///
+    /// <Note>To retrieve your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
     /// Get the transcript resource. The transcript is ready when the "status" is "completed".
+    ///
     ///
     /// - Remark: HTTP `GET /v2/transcript/{transcript_id}`.
     /// - Remark: Generated from `#/paths//v2/transcript/{transcript_id}/get(getTranscript)`.
@@ -207,7 +229,9 @@ extension APIProtocol {
     }
     /// Delete transcript
     ///
+    /// <Note>To delete your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
     /// Remove the data from the transcript and mark it as deleted.
+    ///
     ///
     /// - Remark: HTTP `DELETE /v2/transcript/{transcript_id}`.
     /// - Remark: Generated from `#/paths//v2/transcript/{transcript_id}/delete(deleteTranscript)`.
@@ -222,7 +246,9 @@ extension APIProtocol {
     }
     /// Get subtitles for transcript
     ///
+    /// <Note>To retrieve your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
     /// Export your transcript in SRT or VTT format to use with a video player for subtitles and closed captions.
+    ///
     ///
     /// - Remark: HTTP `GET /v2/transcript/{transcript_id}/{subtitle_format}`.
     /// - Remark: Generated from `#/paths//v2/transcript/{transcript_id}/{subtitle_format}/get(getSubtitles)`.
@@ -239,7 +265,9 @@ extension APIProtocol {
     }
     /// Get sentences in transcript
     ///
+    /// <Note>To retrieve your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
     /// Get the transcript split by sentences. The API will attempt to semantically segment the transcript into sentences to create more reader-friendly transcripts.
+    ///
     ///
     /// - Remark: HTTP `GET /v2/transcript/{transcript_id}/sentences`.
     /// - Remark: Generated from `#/paths//v2/transcript/{transcript_id}/sentences/get(getTranscriptSentences)`.
@@ -254,7 +282,9 @@ extension APIProtocol {
     }
     /// Get paragraphs in transcript
     ///
+    /// <Note>To retrieve your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
     /// Get the transcript split by paragraphs. The API will attempt to semantically segment your transcript into paragraphs to create more reader-friendly transcripts.
+    ///
     ///
     /// - Remark: HTTP `GET /v2/transcript/{transcript_id}/paragraphs`.
     /// - Remark: Generated from `#/paths//v2/transcript/{transcript_id}/paragraphs/get(getTranscriptParagraphs)`.
@@ -269,7 +299,9 @@ extension APIProtocol {
     }
     /// Search words in transcript
     ///
+    /// <Note>To search through a transcription created on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
     /// Search through the transcript for keywords. You can search for individual words, numbers, or phrases containing up to five words or numbers.
+    ///
     ///
     /// - Remark: HTTP `GET /v2/transcript/{transcript_id}/word-search`.
     /// - Remark: Generated from `#/paths//v2/transcript/{transcript_id}/word-search/get(wordSearch)`.
@@ -286,7 +318,9 @@ extension APIProtocol {
     }
     /// Get redacted audio
     ///
+    /// <Warning> Redacted audio creation is not supported on the EU endpoint. </Warning>
     /// Retrieve the redacted audio object containing the status and URL to the redacted audio.
+    ///
     ///
     /// - Remark: HTTP `GET /v2/transcript/{transcript_id}/redacted-audio`.
     /// - Remark: Generated from `#/paths//v2/transcript/{transcript_id}/redacted-audio/get(getRedactedAudio)`.
@@ -299,24 +333,11 @@ extension APIProtocol {
             headers: headers
         ))
     }
-    /// Create temporary authentication token for Streaming STT
-    ///
-    /// Create a temporary authentication token for Streaming Speech-to-Text
-    ///
-    /// - Remark: HTTP `POST /v2/realtime/token`.
-    /// - Remark: Generated from `#/paths//v2/realtime/token/post(createTemporaryToken)`.
-    public func createTemporaryToken(
-        headers: Operations.createTemporaryToken.Input.Headers = .init(),
-        body: Operations.createTemporaryToken.Input.Body
-    ) async throws -> Operations.createTemporaryToken.Output {
-        try await createTemporaryToken(Operations.createTemporaryToken.Input(
-            headers: headers,
-            body: body
-        ))
-    }
     /// Run a task using LeMUR
     ///
+    /// <Warning>LeMUR is currently not available on the EU endpoint.</Warning>
     /// Use the LeMUR task endpoint to input your own LLM prompt.
+    ///
     ///
     /// - Remark: HTTP `POST /lemur/v3/generate/task`.
     /// - Remark: Generated from `#/paths//lemur/v3/generate/task/post(lemurTask)`.
@@ -331,6 +352,7 @@ extension APIProtocol {
     }
     /// Summarize a transcript using LeMUR
     ///
+    /// <Warning>LeMUR is currently not available on the EU endpoint.</Warning>
     /// Custom Summary allows you to distill a piece of audio into a few impactful sentences.
     /// You can give the model context to obtain more targeted results while outputting the results in a variety of formats described in human language.
     ///
@@ -348,6 +370,7 @@ extension APIProtocol {
     }
     /// Ask questions using LeMUR
     ///
+    /// <Warning>LeMUR is currently not available on the EU endpoint.</Warning>
     /// Question & Answer allows you to ask free-form questions about a single transcript or a group of transcripts.
     /// The questions can be any whose answers you find useful, such as judging whether a caller is likely to become a customer or whether all items on a meeting's agenda were covered.
     ///
@@ -363,23 +386,9 @@ extension APIProtocol {
             body: body
         ))
     }
-    /// Extract action items
-    ///
-    /// Use LeMUR to generate a list of action items from a transcript
-    ///
-    /// - Remark: HTTP `POST /lemur/v3/generate/action-items`.
-    /// - Remark: Generated from `#/paths//lemur/v3/generate/action-items/post(lemurActionItems)`.
-    public func lemurActionItems(
-        headers: Operations.lemurActionItems.Input.Headers = .init(),
-        body: Operations.lemurActionItems.Input.Body
-    ) async throws -> Operations.lemurActionItems.Output {
-        try await lemurActionItems(Operations.lemurActionItems.Input(
-            headers: headers,
-            body: body
-        ))
-    }
     /// Retrieve LeMUR response
     ///
+    /// <Warning>LeMUR is currently not available on the EU endpoint.</Warning>
     /// Retrieve a LeMUR response that was previously generated.
     ///
     ///
@@ -396,6 +405,7 @@ extension APIProtocol {
     }
     /// Purge LeMUR request data
     ///
+    /// <Warning>LeMUR is currently not available on the EU endpoint.</Warning>
     /// Delete the data for a previously submitted LeMUR request.
     /// The LLM response data, as well as any context provided in the original request will be removed.
     ///
@@ -838,7 +848,7 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/language_confidence_threshold`.
             public var language_confidence_threshold: Swift.Float?
-            /// The speech model to use for the transcription. When `null`, the "best" model is used.
+            /// The speech model to use for the transcription. When `null`, the `universal` model is used.
             ///
             /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/speech_model`.
             public var speech_model: Components.Schemas.SpeechModel?
@@ -854,6 +864,10 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/disfluencies`.
             public var disfluencies: Swift.Bool?
+            /// Enable [Multichannel](https://www.assemblyai.com/docs/models/speech-recognition#multichannel-transcription) transcription, can be true or false.
+            ///
+            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/multichannel`.
+            public var multichannel: Swift.Bool?
             /// Enable [Dual Channel](https://www.assemblyai.com/docs/models/speech-recognition#dual-channel-transcription) transcription, can be true or false.
             ///
             /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/dual_channel`.
@@ -889,6 +903,7 @@ public enum Components {
             /// The list of custom vocabulary to boost transcription probability for
             ///
             /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/word_boost`.
+            @available(*, deprecated)
             public var word_boost: [Swift.String]?
             /// How much to boost specified words
             ///
@@ -942,6 +957,17 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/custom_spelling`.
             public var custom_spelling: [Components.Schemas.TranscriptCustomSpelling]?
+            /// <Warning>`keyterms_prompt` is only supported when the `speech_model` is specified as `slam-1`</Warning>
+            /// Improve accuracy with up to 1000 domain-specific words or phrases (maximum 6 words per phrase).
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/keyterms_prompt`.
+            public var keyterms_prompt: [Swift.String]?
+            /// This parameter does not currently have any functionality attached to it.
+            ///
+            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/prompt`.
+            @available(*, deprecated)
+            public var prompt: Swift.String?
             /// Enable [Sentiment Analysis](https://www.assemblyai.com/docs/models/sentiment-analysis), can be true or false
             ///
             /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/sentiment_analysis`.
@@ -975,6 +1001,7 @@ public enum Components {
             /// Enable custom topics, either true or false
             ///
             /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/custom_topics`.
+            @available(*, deprecated)
             public var custom_topics: Swift.Bool?
             /// The list of custom topics
             ///
@@ -986,10 +1013,11 @@ public enum Components {
             ///   - language_code: The language of your audio file. Possible values are found in [Supported Languages](https://www.assemblyai.com/docs/concepts/supported-languages).
             ///   - language_detection: Enable [Automatic language detection](https://www.assemblyai.com/docs/models/speech-recognition#automatic-language-detection), either true or false.
             ///   - language_confidence_threshold: The confidence threshold for the automatically detected language.
-            ///   - speech_model: The speech model to use for the transcription. When `null`, the "best" model is used.
+            ///   - speech_model: The speech model to use for the transcription. When `null`, the `universal` model is used.
             ///   - punctuate: Enable Automatic Punctuation, can be true or false
             ///   - format_text: Enable Text Formatting, can be true or false
             ///   - disfluencies: Transcribe Filler Words, like "umm", in your media file; can be true or false
+            ///   - multichannel: Enable [Multichannel](https://www.assemblyai.com/docs/models/speech-recognition#multichannel-transcription) transcription, can be true or false.
             ///   - dual_channel: Enable [Dual Channel](https://www.assemblyai.com/docs/models/speech-recognition#dual-channel-transcription) transcription, can be true or false.
             ///   - webhook_url: The URL to which we send webhook requests.
             ///   - webhook_auth_header_name: The header name to be sent with the transcript completed or failed webhook requests
@@ -1011,6 +1039,8 @@ public enum Components {
             ///   - content_safety_confidence: The confidence threshold for the Content Moderation model. Values must be between 25 and 100.
             ///   - iab_categories: Enable [Topic Detection](https://www.assemblyai.com/docs/models/topic-detection), can be true or false
             ///   - custom_spelling: Customize how words are spelled and formatted using to and from values
+            ///   - keyterms_prompt: <Warning>`keyterms_prompt` is only supported when the `speech_model` is specified as `slam-1`</Warning>
+            ///   - prompt: This parameter does not currently have any functionality attached to it.
             ///   - sentiment_analysis: Enable [Sentiment Analysis](https://www.assemblyai.com/docs/models/sentiment-analysis), can be true or false
             ///   - auto_chapters: Enable [Auto Chapters](https://www.assemblyai.com/docs/models/auto-chapters), can be true or false
             ///   - entity_detection: Enable [Entity Detection](https://www.assemblyai.com/docs/models/entity-detection), can be true or false
@@ -1028,6 +1058,7 @@ public enum Components {
                 punctuate: Swift.Bool? = nil,
                 format_text: Swift.Bool? = nil,
                 disfluencies: Swift.Bool? = nil,
+                multichannel: Swift.Bool? = nil,
                 dual_channel: Swift.Bool? = nil,
                 webhook_url: Swift.String? = nil,
                 webhook_auth_header_name: Swift.String? = nil,
@@ -1049,6 +1080,8 @@ public enum Components {
                 content_safety_confidence: Swift.Int? = nil,
                 iab_categories: Swift.Bool? = nil,
                 custom_spelling: [Components.Schemas.TranscriptCustomSpelling]? = nil,
+                keyterms_prompt: [Swift.String]? = nil,
+                prompt: Swift.String? = nil,
                 sentiment_analysis: Swift.Bool? = nil,
                 auto_chapters: Swift.Bool? = nil,
                 entity_detection: Swift.Bool? = nil,
@@ -1066,6 +1099,7 @@ public enum Components {
                 self.punctuate = punctuate
                 self.format_text = format_text
                 self.disfluencies = disfluencies
+                self.multichannel = multichannel
                 self.dual_channel = dual_channel
                 self.webhook_url = webhook_url
                 self.webhook_auth_header_name = webhook_auth_header_name
@@ -1087,6 +1121,8 @@ public enum Components {
                 self.content_safety_confidence = content_safety_confidence
                 self.iab_categories = iab_categories
                 self.custom_spelling = custom_spelling
+                self.keyterms_prompt = keyterms_prompt
+                self.prompt = prompt
                 self.sentiment_analysis = sentiment_analysis
                 self.auto_chapters = auto_chapters
                 self.entity_detection = entity_detection
@@ -1105,6 +1141,7 @@ public enum Components {
                 case punctuate
                 case format_text
                 case disfluencies
+                case multichannel
                 case dual_channel
                 case webhook_url
                 case webhook_auth_header_name
@@ -1126,6 +1163,8 @@ public enum Components {
                 case content_safety_confidence
                 case iab_categories
                 case custom_spelling
+                case keyterms_prompt
+                case prompt
                 case sentiment_analysis
                 case auto_chapters
                 case entity_detection
@@ -1165,6 +1204,10 @@ public enum Components {
                 disfluencies = try container.decodeIfPresent(
                     Swift.Bool.self,
                     forKey: .disfluencies
+                )
+                multichannel = try container.decodeIfPresent(
+                    Swift.Bool.self,
+                    forKey: .multichannel
                 )
                 dual_channel = try container.decodeIfPresent(
                     Swift.Bool.self,
@@ -1250,6 +1293,14 @@ public enum Components {
                     [Components.Schemas.TranscriptCustomSpelling].self,
                     forKey: .custom_spelling
                 )
+                keyterms_prompt = try container.decodeIfPresent(
+                    [Swift.String].self,
+                    forKey: .keyterms_prompt
+                )
+                prompt = try container.decodeIfPresent(
+                    Swift.String.self,
+                    forKey: .prompt
+                )
                 sentiment_analysis = try container.decodeIfPresent(
                     Swift.Bool.self,
                     forKey: .sentiment_analysis
@@ -1294,6 +1345,7 @@ public enum Components {
                     "punctuate",
                     "format_text",
                     "disfluencies",
+                    "multichannel",
                     "dual_channel",
                     "webhook_url",
                     "webhook_auth_header_name",
@@ -1315,6 +1367,8 @@ public enum Components {
                     "content_safety_confidence",
                     "iab_categories",
                     "custom_spelling",
+                    "keyterms_prompt",
+                    "prompt",
                     "sentiment_analysis",
                     "auto_chapters",
                     "entity_detection",
@@ -1417,7 +1471,7 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/TranscriptCustomSpelling/from`.
             public var from: [Swift.String]
-            /// Word or phrase to replace with
+            /// Word to replace with
             ///
             /// - Remark: Generated from `#/components/schemas/TranscriptCustomSpelling/to`.
             public var to: Swift.String
@@ -1425,7 +1479,7 @@ public enum Components {
             ///
             /// - Parameters:
             ///   - from: Words or phrases to replace
-            ///   - to: Word or phrase to replace with
+            ///   - to: Word to replace with
             public init(
                 from: [Swift.String],
                 to: Swift.String
@@ -1629,6 +1683,8 @@ public enum Components {
         @frozen public enum SpeechModel: String, Codable, Hashable, Sendable, CaseIterable {
             case best = "best"
             case nano = "nano"
+            case slam_hyphen_1 = "slam-1"
+            case universal = "universal"
         }
         /// The language of your audio file. Possible values are found in [Supported Languages](https://www.assemblyai.com/docs/concepts/supported-languages).
         /// The default value is 'en_us'.
@@ -1844,7 +1900,7 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/Transcript/language_confidence`.
             public var language_confidence: Swift.Double?
-            /// The speech model used for the transcription. When `null`, the default model is used.
+            /// The speech model used for the transcription. When `null`, the `universal` model is used.
             ///
             /// - Remark: Generated from `#/components/schemas/Transcript/speech_model`.
             public var speech_model: Components.Schemas.SpeechModel?
@@ -1858,8 +1914,8 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/Transcript/words`.
             public var words: [Components.Schemas.TranscriptWord]?
-            /// When dual_channel or speaker_labels is enabled, a list of turn-by-turn utterance objects.
-            /// See [Speaker diarization](https://www.assemblyai.com/docs/models/speaker-diarization) for more information.
+            /// When multichannel or speaker_labels is enabled, a list of turn-by-turn utterance objects.
+            /// See [Speaker diarization](https://www.assemblyai.com/docs/speech-to-text/speaker-diarization) and [Multichannel transcription](https://www.assemblyai.com/docs/speech-to-text/speech-recognition#multichannel-transcription) for more information.
             ///
             ///
             /// - Remark: Generated from `#/components/schemas/Transcript/utterances`.
@@ -1884,6 +1940,14 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/Transcript/disfluencies`.
             public var disfluencies: Swift.Bool?
+            /// Whether [Multichannel transcription](https://www.assemblyai.com/docs/models/speech-recognition#multichannel-transcription) was enabled in the transcription request, either true or false
+            ///
+            /// - Remark: Generated from `#/components/schemas/Transcript/multichannel`.
+            public var multichannel: Swift.Bool?
+            /// The number of audio channels in the audio file. This is only present when multichannel is enabled.
+            ///
+            /// - Remark: Generated from `#/components/schemas/Transcript/audio_channels`.
+            public var audio_channels: Swift.Int?
             /// Whether [Dual channel transcription](https://www.assemblyai.com/docs/models/speech-recognition#dual-channel-transcription) was enabled in the transcription request, either true or false
             ///
             /// - Remark: Generated from `#/components/schemas/Transcript/dual_channel`.
@@ -1934,6 +1998,7 @@ public enum Components {
             /// The list of custom vocabulary to boost transcription probability for
             ///
             /// - Remark: Generated from `#/components/schemas/Transcript/word_boost`.
+            @available(*, deprecated)
             public var word_boost: [Swift.String]?
             /// The word boost parameter value
             ///
@@ -2001,6 +2066,16 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/Transcript/custom_spelling`.
             public var custom_spelling: [Components.Schemas.TranscriptCustomSpelling]?
+            /// Improve accuracy with up to 1000 domain-specific words or phrases (maximum 6 words per phrase).
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/Transcript/keyterms_prompt`.
+            public var keyterms_prompt: [Swift.String]?
+            /// This parameter does not currently have any functionality attached to it.
+            ///
+            /// - Remark: Generated from `#/components/schemas/Transcript/prompt`.
+            @available(*, deprecated)
+            public var prompt: Swift.String?
             /// Whether [Auto Chapters](https://www.assemblyai.com/docs/models/auto-chapters) is enabled, can be true or false
             ///
             /// - Remark: Generated from `#/components/schemas/Transcript/auto_chapters`.
@@ -2030,6 +2105,7 @@ public enum Components {
             /// Whether custom topics is enabled, either true or false
             ///
             /// - Remark: Generated from `#/components/schemas/Transcript/custom_topics`.
+            @available(*, deprecated)
             public var custom_topics: Swift.Bool?
             /// The list of custom topics provided if custom topics is enabled
             ///
@@ -2091,15 +2167,17 @@ public enum Components {
             ///   - language_detection: Whether [Automatic language detection](https://www.assemblyai.com/docs/models/speech-recognition#automatic-language-detection) is enabled, either true or false
             ///   - language_confidence_threshold: The confidence threshold for the automatically detected language.
             ///   - language_confidence: The confidence score for the detected language, between 0.0 (low confidence) and 1.0 (high confidence)
-            ///   - speech_model: The speech model used for the transcription. When `null`, the default model is used.
+            ///   - speech_model: The speech model used for the transcription. When `null`, the `universal` model is used.
             ///   - text: The textual transcript of your media file
             ///   - words: An array of temporally-sequential word objects, one for each word in the transcript.
-            ///   - utterances: When dual_channel or speaker_labels is enabled, a list of turn-by-turn utterance objects.
+            ///   - utterances: When multichannel or speaker_labels is enabled, a list of turn-by-turn utterance objects.
             ///   - confidence: The confidence score for the transcript, between 0.0 (low confidence) and 1.0 (high confidence)
             ///   - audio_duration: The duration of this transcript object's media file, in seconds
             ///   - punctuate: Whether Automatic Punctuation is enabled, either true or false
             ///   - format_text: Whether Text Formatting is enabled, either true or false
             ///   - disfluencies: Transcribe Filler Words, like "umm", in your media file; can be true or false
+            ///   - multichannel: Whether [Multichannel transcription](https://www.assemblyai.com/docs/models/speech-recognition#multichannel-transcription) was enabled in the transcription request, either true or false
+            ///   - audio_channels: The number of audio channels in the audio file. This is only present when multichannel is enabled.
             ///   - dual_channel: Whether [Dual channel transcription](https://www.assemblyai.com/docs/models/speech-recognition#dual-channel-transcription) was enabled in the transcription request, either true or false
             ///   - webhook_url: The URL to which we send webhook requests.
             ///   - webhook_status_code: The status code we received from your server when delivering the transcript completed or failed webhook request, if a webhook URL was provided
@@ -2125,6 +2203,8 @@ public enum Components {
             ///   - iab_categories: Whether [Topic Detection](https://www.assemblyai.com/docs/models/topic-detection) is enabled, can be true or false
             ///   - iab_categories_result: The result of the Topic Detection model, if it is enabled.
             ///   - custom_spelling: Customize how words are spelled and formatted using to and from values
+            ///   - keyterms_prompt: Improve accuracy with up to 1000 domain-specific words or phrases (maximum 6 words per phrase).
+            ///   - prompt: This parameter does not currently have any functionality attached to it.
             ///   - auto_chapters: Whether [Auto Chapters](https://www.assemblyai.com/docs/models/auto-chapters) is enabled, can be true or false
             ///   - chapters: An array of temporally sequential chapters for the audio file
             ///   - summarization: Whether [Summarization](https://www.assemblyai.com/docs/models/summarization) is enabled, either true or false
@@ -2160,6 +2240,8 @@ public enum Components {
                 punctuate: Swift.Bool? = nil,
                 format_text: Swift.Bool? = nil,
                 disfluencies: Swift.Bool? = nil,
+                multichannel: Swift.Bool? = nil,
+                audio_channels: Swift.Int? = nil,
                 dual_channel: Swift.Bool? = nil,
                 webhook_url: Swift.String? = nil,
                 webhook_status_code: Swift.Int? = nil,
@@ -2185,6 +2267,8 @@ public enum Components {
                 iab_categories: Swift.Bool? = nil,
                 iab_categories_result: Components.Schemas.TopicDetectionModelResult? = nil,
                 custom_spelling: [Components.Schemas.TranscriptCustomSpelling]? = nil,
+                keyterms_prompt: [Swift.String]? = nil,
+                prompt: Swift.String? = nil,
                 auto_chapters: Swift.Bool? = nil,
                 chapters: [Components.Schemas.Chapter]? = nil,
                 summarization: Swift.Bool,
@@ -2220,6 +2304,8 @@ public enum Components {
                 self.punctuate = punctuate
                 self.format_text = format_text
                 self.disfluencies = disfluencies
+                self.multichannel = multichannel
+                self.audio_channels = audio_channels
                 self.dual_channel = dual_channel
                 self.webhook_url = webhook_url
                 self.webhook_status_code = webhook_status_code
@@ -2245,6 +2331,8 @@ public enum Components {
                 self.iab_categories = iab_categories
                 self.iab_categories_result = iab_categories_result
                 self.custom_spelling = custom_spelling
+                self.keyterms_prompt = keyterms_prompt
+                self.prompt = prompt
                 self.auto_chapters = auto_chapters
                 self.chapters = chapters
                 self.summarization = summarization
@@ -2281,6 +2369,8 @@ public enum Components {
                 case punctuate
                 case format_text
                 case disfluencies
+                case multichannel
+                case audio_channels
                 case dual_channel
                 case webhook_url
                 case webhook_status_code
@@ -2306,6 +2396,8 @@ public enum Components {
                 case iab_categories
                 case iab_categories_result
                 case custom_spelling
+                case keyterms_prompt
+                case prompt
                 case auto_chapters
                 case chapters
                 case summarization
@@ -2389,6 +2481,14 @@ public enum Components {
                 disfluencies = try container.decodeIfPresent(
                     Swift.Bool.self,
                     forKey: .disfluencies
+                )
+                multichannel = try container.decodeIfPresent(
+                    Swift.Bool.self,
+                    forKey: .multichannel
+                )
+                audio_channels = try container.decodeIfPresent(
+                    Swift.Int.self,
+                    forKey: .audio_channels
                 )
                 dual_channel = try container.decodeIfPresent(
                     Swift.Bool.self,
@@ -2490,6 +2590,14 @@ public enum Components {
                     [Components.Schemas.TranscriptCustomSpelling].self,
                     forKey: .custom_spelling
                 )
+                keyterms_prompt = try container.decodeIfPresent(
+                    [Swift.String].self,
+                    forKey: .keyterms_prompt
+                )
+                prompt = try container.decodeIfPresent(
+                    Swift.String.self,
+                    forKey: .prompt
+                )
                 auto_chapters = try container.decodeIfPresent(
                     Swift.Bool.self,
                     forKey: .auto_chapters
@@ -2575,6 +2683,8 @@ public enum Components {
                     "punctuate",
                     "format_text",
                     "disfluencies",
+                    "multichannel",
+                    "audio_channels",
                     "dual_channel",
                     "webhook_url",
                     "webhook_status_code",
@@ -2600,6 +2710,8 @@ public enum Components {
                     "iab_categories",
                     "iab_categories_result",
                     "custom_spelling",
+                    "keyterms_prompt",
+                    "prompt",
                     "auto_chapters",
                     "chapters",
                     "summarization",
@@ -2684,6 +2796,14 @@ public enum Components {
                 try container.encodeIfPresent(
                     disfluencies,
                     forKey: .disfluencies
+                )
+                try container.encodeIfPresent(
+                    multichannel,
+                    forKey: .multichannel
+                )
+                try container.encodeIfPresent(
+                    audio_channels,
+                    forKey: .audio_channels
                 )
                 try container.encodeIfPresent(
                     dual_channel,
@@ -2784,6 +2904,14 @@ public enum Components {
                 try container.encodeIfPresent(
                     custom_spelling,
                     forKey: .custom_spelling
+                )
+                try container.encodeIfPresent(
+                    keyterms_prompt,
+                    forKey: .keyterms_prompt
+                )
+                try container.encodeIfPresent(
+                    prompt,
+                    forKey: .prompt
                 )
                 try container.encodeIfPresent(
                     auto_chapters,
@@ -3803,7 +3931,7 @@ public enum Components {
             /// The speaker of the sentence if [Speaker Diarization](https://www.assemblyai.com/docs/models/speaker-diarization) is enabled, else null
             ///
             /// - Remark: Generated from `#/components/schemas/TranscriptSentence/speaker`.
-            public var speaker: Swift.String
+            public var speaker: Swift.String?
             /// Creates a new `TranscriptSentence`.
             ///
             /// - Parameters:
@@ -3821,7 +3949,7 @@ public enum Components {
                 confidence: Swift.Double,
                 words: [Components.Schemas.TranscriptWord],
                 channel: Swift.String? = nil,
-                speaker: Swift.String
+                speaker: Swift.String? = nil
             ) {
                 self.text = text
                 self.start = start
@@ -3866,7 +3994,7 @@ public enum Components {
                     Swift.String.self,
                     forKey: .channel
                 )
-                speaker = try container.decode(
+                speaker = try container.decodeIfPresent(
                     Swift.String.self,
                     forKey: .speaker
                 )
@@ -4430,6 +4558,7 @@ public enum Components {
         public struct UploadedFile: Codable, Hashable, Sendable {
             /// A URL that points to your audio file, accessible only by AssemblyAI's servers
             ///
+            ///
             /// - Remark: Generated from `#/components/schemas/UploadedFile/upload_url`.
             public var upload_url: Swift.String
             /// Creates a new `UploadedFile`.
@@ -4979,7 +5108,7 @@ public enum Components {
             ///
             ///
             /// - Remark: Generated from `#/components/schemas/LemurBaseParams/final_model`.
-            public var final_model: Components.Schemas.LemurBaseParams.final_modelPayload?
+            public var final_model: Components.Schemas.LemurBaseParams.final_modelPayload
             /// Max output size in tokens, up to 4000
             ///
             /// - Remark: Generated from `#/components/schemas/LemurBaseParams/max_output_size`.
@@ -5004,7 +5133,7 @@ public enum Components {
                 transcript_ids: [Swift.String]? = nil,
                 input_text: Swift.String? = nil,
                 context: Components.Schemas.LemurBaseParams.contextPayload? = nil,
-                final_model: Components.Schemas.LemurBaseParams.final_modelPayload? = nil,
+                final_model: Components.Schemas.LemurBaseParams.final_modelPayload,
                 max_output_size: Swift.Int? = nil,
                 temperature: Swift.Float? = nil
             ) {
@@ -5037,7 +5166,7 @@ public enum Components {
                     Components.Schemas.LemurBaseParams.contextPayload.self,
                     forKey: .context
                 )
-                final_model = try container.decodeIfPresent(
+                final_model = try container.decode(
                     Components.Schemas.LemurBaseParams.final_modelPayload.self,
                     forKey: .final_model
                 )
@@ -5408,16 +5537,12 @@ public enum Components {
         ///
         /// - Remark: Generated from `#/components/schemas/LemurModel`.
         @frozen public enum LemurModel: String, Codable, Hashable, Sendable, CaseIterable {
+            case anthropic_sol_claude_hyphen_3_hyphen_7_hyphen_sonnet_hyphen_20250219 = "anthropic/claude-3-7-sonnet-20250219"
             case anthropic_sol_claude_hyphen_3_hyphen_5_hyphen_sonnet = "anthropic/claude-3-5-sonnet"
+            case anthropic_sol_claude_hyphen_3_hyphen_5_hyphen_haiku_hyphen_20241022 = "anthropic/claude-3-5-haiku-20241022"
             case anthropic_sol_claude_hyphen_3_hyphen_opus = "anthropic/claude-3-opus"
             case anthropic_sol_claude_hyphen_3_hyphen_haiku = "anthropic/claude-3-haiku"
             case anthropic_sol_claude_hyphen_3_hyphen_sonnet = "anthropic/claude-3-sonnet"
-            case anthropic_sol_claude_hyphen_2_hyphen_1 = "anthropic/claude-2-1"
-            case anthropic_sol_claude_hyphen_2 = "anthropic/claude-2"
-            case _default = "default"
-            case anthropic_sol_claude_hyphen_instant_hyphen_1_hyphen_2 = "anthropic/claude-instant-1-2"
-            case basic = "basic"
-            case assemblyai_sol_mistral_hyphen_7b = "assemblyai/mistral-7b"
         }
         /// The usage numbers for the LeMUR request
         ///
@@ -5829,7 +5954,9 @@ public enum Components {
 public enum Operations {
     /// Upload a media file
     ///
+    /// <Note>To upload a media file to our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
     /// Upload a media file to AssemblyAI's servers.
+    ///
     ///
     /// - Remark: HTTP `POST /v2/upload`.
     /// - Remark: Generated from `#/paths//v2/upload/post(uploadFile)`.
@@ -6135,8 +6262,11 @@ public enum Operations {
     }
     /// List transcripts
     ///
-    /// Retrieve a list of transcripts you created.
-    /// Transcripts are sorted from newest to oldest. The previous URL always points to a page with older transcripts.
+    /// <Note>To retrieve your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
+    /// Retrieve a list of transcripts you created. 
+    /// Transcripts are sorted from newest to oldest and can be retrieved for the last 90 days of usage. The previous URL always points to a page with older transcripts.
+    ///
+    /// If you need to retrieve transcripts from more than 90 days ago please reach out to our Support team at support@assemblyai.com.
     ///
     ///
     /// - Remark: HTTP `GET /v2/transcript`.
@@ -6490,7 +6620,9 @@ public enum Operations {
     }
     /// Transcribe audio
     ///
+    /// <Note>To use our EU server for transcription, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
     /// Create a transcript from a media file that is accessible via a URL.
+    ///
     ///
     /// - Remark: HTTP `POST /v2/transcript`.
     /// - Remark: Generated from `#/paths//v2/transcript/post(createTranscript)`.
@@ -6796,7 +6928,9 @@ public enum Operations {
     }
     /// Get transcript
     ///
+    /// <Note>To retrieve your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
     /// Get the transcript resource. The transcript is ready when the "status" is "completed".
+    ///
     ///
     /// - Remark: HTTP `GET /v2/transcript/{transcript_id}`.
     /// - Remark: Generated from `#/paths//v2/transcript/{transcript_id}/get(getTranscript)`.
@@ -7111,7 +7245,9 @@ public enum Operations {
     }
     /// Delete transcript
     ///
+    /// <Note>To delete your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
     /// Remove the data from the transcript and mark it as deleted.
+    ///
     ///
     /// - Remark: HTTP `DELETE /v2/transcript/{transcript_id}`.
     /// - Remark: Generated from `#/paths//v2/transcript/{transcript_id}/delete(deleteTranscript)`.
@@ -7426,7 +7562,9 @@ public enum Operations {
     }
     /// Get subtitles for transcript
     ///
+    /// <Note>To retrieve your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
     /// Export your transcript in SRT or VTT format to use with a video player for subtitles and closed captions.
+    ///
     ///
     /// - Remark: HTTP `GET /v2/transcript/{transcript_id}/{subtitle_format}`.
     /// - Remark: Generated from `#/paths//v2/transcript/{transcript_id}/{subtitle_format}/get(getSubtitles)`.
@@ -7798,7 +7936,9 @@ public enum Operations {
     }
     /// Get sentences in transcript
     ///
+    /// <Note>To retrieve your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
     /// Get the transcript split by sentences. The API will attempt to semantically segment the transcript into sentences to create more reader-friendly transcripts.
+    ///
     ///
     /// - Remark: HTTP `GET /v2/transcript/{transcript_id}/sentences`.
     /// - Remark: Generated from `#/paths//v2/transcript/{transcript_id}/sentences/get(getTranscriptSentences)`.
@@ -8113,7 +8253,9 @@ public enum Operations {
     }
     /// Get paragraphs in transcript
     ///
+    /// <Note>To retrieve your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
     /// Get the transcript split by paragraphs. The API will attempt to semantically segment your transcript into paragraphs to create more reader-friendly transcripts.
+    ///
     ///
     /// - Remark: HTTP `GET /v2/transcript/{transcript_id}/paragraphs`.
     /// - Remark: Generated from `#/paths//v2/transcript/{transcript_id}/paragraphs/get(getTranscriptParagraphs)`.
@@ -8428,7 +8570,9 @@ public enum Operations {
     }
     /// Search words in transcript
     ///
+    /// <Note>To search through a transcription created on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
     /// Search through the transcript for keywords. You can search for individual words, numbers, or phrases containing up to five words or numbers.
+    ///
     ///
     /// - Remark: HTTP `GET /v2/transcript/{transcript_id}/word-search`.
     /// - Remark: Generated from `#/paths//v2/transcript/{transcript_id}/word-search/get(wordSearch)`.
@@ -8761,7 +8905,9 @@ public enum Operations {
     }
     /// Get redacted audio
     ///
+    /// <Warning> Redacted audio creation is not supported on the EU endpoint. </Warning>
     /// Retrieve the redacted audio object containing the status and URL to the redacted audio.
+    ///
     ///
     /// - Remark: HTTP `GET /v2/transcript/{transcript_id}/redacted-audio`.
     /// - Remark: Generated from `#/paths//v2/transcript/{transcript_id}/redacted-audio/get(getRedactedAudio)`.
@@ -9074,315 +9220,11 @@ public enum Operations {
             }
         }
     }
-    /// Create temporary authentication token for Streaming STT
-    ///
-    /// Create a temporary authentication token for Streaming Speech-to-Text
-    ///
-    /// - Remark: HTTP `POST /v2/realtime/token`.
-    /// - Remark: Generated from `#/paths//v2/realtime/token/post(createTemporaryToken)`.
-    public enum createTemporaryToken {
-        public static let id: Swift.String = "createTemporaryToken"
-        public struct Input: Sendable, Hashable {
-            /// - Remark: Generated from `#/paths/v2/realtime/token/POST/header`.
-            public struct Headers: Sendable, Hashable {
-                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.createTemporaryToken.AcceptableContentType>]
-                /// Creates a new `Headers`.
-                ///
-                /// - Parameters:
-                ///   - accept:
-                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.createTemporaryToken.AcceptableContentType>] = .defaultValues()) {
-                    self.accept = accept
-                }
-            }
-            public var headers: Operations.createTemporaryToken.Input.Headers
-            /// - Remark: Generated from `#/paths/v2/realtime/token/POST/requestBody`.
-            @frozen public enum Body: Sendable, Hashable {
-                /// - Remark: Generated from `#/paths/v2/realtime/token/POST/requestBody/content/application\/json`.
-                case json(Components.Schemas.CreateRealtimeTemporaryTokenParams)
-            }
-            public var body: Operations.createTemporaryToken.Input.Body
-            /// Creates a new `Input`.
-            ///
-            /// - Parameters:
-            ///   - headers:
-            ///   - body:
-            public init(
-                headers: Operations.createTemporaryToken.Input.Headers = .init(),
-                body: Operations.createTemporaryToken.Input.Body
-            ) {
-                self.headers = headers
-                self.body = body
-            }
-        }
-        @frozen public enum Output: Sendable, Hashable {
-            public struct Ok: Sendable, Hashable {
-                /// - Remark: Generated from `#/paths/v2/realtime/token/POST/responses/200/content`.
-                @frozen public enum Body: Sendable, Hashable {
-                    /// - Remark: Generated from `#/paths/v2/realtime/token/POST/responses/200/content/application\/json`.
-                    case json(Components.Schemas.RealtimeTemporaryTokenResponse)
-                    /// The associated value of the enum case if `self` is `.json`.
-                    ///
-                    /// - Throws: An error if `self` is not `.json`.
-                    /// - SeeAlso: `.json`.
-                    public var json: Components.Schemas.RealtimeTemporaryTokenResponse {
-                        get throws {
-                            switch self {
-                            case let .json(body):
-                                return body
-                            }
-                        }
-                    }
-                }
-                /// Received HTTP response body
-                public var body: Operations.createTemporaryToken.Output.Ok.Body
-                /// Creates a new `Ok`.
-                ///
-                /// - Parameters:
-                ///   - body: Received HTTP response body
-                public init(body: Operations.createTemporaryToken.Output.Ok.Body) {
-                    self.body = body
-                }
-            }
-            /// Temporary authentication token generated
-            ///
-            /// - Remark: Generated from `#/paths//v2/realtime/token/post(createTemporaryToken)/responses/200`.
-            ///
-            /// HTTP response code: `200 ok`.
-            case ok(Operations.createTemporaryToken.Output.Ok)
-            /// The associated value of the enum case if `self` is `.ok`.
-            ///
-            /// - Throws: An error if `self` is not `.ok`.
-            /// - SeeAlso: `.ok`.
-            public var ok: Operations.createTemporaryToken.Output.Ok {
-                get throws {
-                    switch self {
-                    case let .ok(response):
-                        return response
-                    default:
-                        try throwUnexpectedResponseStatus(
-                            expectedStatus: "ok",
-                            response: self
-                        )
-                    }
-                }
-            }
-            /// Bad request
-            ///
-            /// - Remark: Generated from `#/paths//v2/realtime/token/post(createTemporaryToken)/responses/400`.
-            ///
-            /// HTTP response code: `400 badRequest`.
-            case badRequest(Components.Responses.BadRequest)
-            /// The associated value of the enum case if `self` is `.badRequest`.
-            ///
-            /// - Throws: An error if `self` is not `.badRequest`.
-            /// - SeeAlso: `.badRequest`.
-            public var badRequest: Components.Responses.BadRequest {
-                get throws {
-                    switch self {
-                    case let .badRequest(response):
-                        return response
-                    default:
-                        try throwUnexpectedResponseStatus(
-                            expectedStatus: "badRequest",
-                            response: self
-                        )
-                    }
-                }
-            }
-            /// Unauthorized
-            ///
-            /// - Remark: Generated from `#/paths//v2/realtime/token/post(createTemporaryToken)/responses/401`.
-            ///
-            /// HTTP response code: `401 unauthorized`.
-            case unauthorized(Components.Responses.Unauthorized)
-            /// The associated value of the enum case if `self` is `.unauthorized`.
-            ///
-            /// - Throws: An error if `self` is not `.unauthorized`.
-            /// - SeeAlso: `.unauthorized`.
-            public var unauthorized: Components.Responses.Unauthorized {
-                get throws {
-                    switch self {
-                    case let .unauthorized(response):
-                        return response
-                    default:
-                        try throwUnexpectedResponseStatus(
-                            expectedStatus: "unauthorized",
-                            response: self
-                        )
-                    }
-                }
-            }
-            /// Not found
-            ///
-            /// - Remark: Generated from `#/paths//v2/realtime/token/post(createTemporaryToken)/responses/404`.
-            ///
-            /// HTTP response code: `404 notFound`.
-            case notFound(Components.Responses.NotFound)
-            /// The associated value of the enum case if `self` is `.notFound`.
-            ///
-            /// - Throws: An error if `self` is not `.notFound`.
-            /// - SeeAlso: `.notFound`.
-            public var notFound: Components.Responses.NotFound {
-                get throws {
-                    switch self {
-                    case let .notFound(response):
-                        return response
-                    default:
-                        try throwUnexpectedResponseStatus(
-                            expectedStatus: "notFound",
-                            response: self
-                        )
-                    }
-                }
-            }
-            /// Too many requests
-            ///
-            /// - Remark: Generated from `#/paths//v2/realtime/token/post(createTemporaryToken)/responses/429`.
-            ///
-            /// HTTP response code: `429 tooManyRequests`.
-            case tooManyRequests(Components.Responses.TooManyRequests)
-            /// The associated value of the enum case if `self` is `.tooManyRequests`.
-            ///
-            /// - Throws: An error if `self` is not `.tooManyRequests`.
-            /// - SeeAlso: `.tooManyRequests`.
-            public var tooManyRequests: Components.Responses.TooManyRequests {
-                get throws {
-                    switch self {
-                    case let .tooManyRequests(response):
-                        return response
-                    default:
-                        try throwUnexpectedResponseStatus(
-                            expectedStatus: "tooManyRequests",
-                            response: self
-                        )
-                    }
-                }
-            }
-            /// An error occurred while processing the request
-            ///
-            /// - Remark: Generated from `#/paths//v2/realtime/token/post(createTemporaryToken)/responses/500`.
-            ///
-            /// HTTP response code: `500 internalServerError`.
-            case internalServerError(Components.Responses.InternalServerError)
-            /// The associated value of the enum case if `self` is `.internalServerError`.
-            ///
-            /// - Throws: An error if `self` is not `.internalServerError`.
-            /// - SeeAlso: `.internalServerError`.
-            public var internalServerError: Components.Responses.InternalServerError {
-                get throws {
-                    switch self {
-                    case let .internalServerError(response):
-                        return response
-                    default:
-                        try throwUnexpectedResponseStatus(
-                            expectedStatus: "internalServerError",
-                            response: self
-                        )
-                    }
-                }
-            }
-            /// Service unavailable
-            ///
-            /// - Remark: Generated from `#/paths//v2/realtime/token/post(createTemporaryToken)/responses/503`.
-            ///
-            /// HTTP response code: `503 serviceUnavailable`.
-            case serviceUnavailable(Components.Responses.ServiceUnavailable)
-            /// Service unavailable
-            ///
-            /// - Remark: Generated from `#/paths//v2/realtime/token/post(createTemporaryToken)/responses/503`.
-            ///
-            /// HTTP response code: `503 serviceUnavailable`.
-            public static var serviceUnavailable: Self {
-                .serviceUnavailable(.init())
-            }
-            /// The associated value of the enum case if `self` is `.serviceUnavailable`.
-            ///
-            /// - Throws: An error if `self` is not `.serviceUnavailable`.
-            /// - SeeAlso: `.serviceUnavailable`.
-            public var serviceUnavailable: Components.Responses.ServiceUnavailable {
-                get throws {
-                    switch self {
-                    case let .serviceUnavailable(response):
-                        return response
-                    default:
-                        try throwUnexpectedResponseStatus(
-                            expectedStatus: "serviceUnavailable",
-                            response: self
-                        )
-                    }
-                }
-            }
-            /// Gateway timeout
-            ///
-            /// - Remark: Generated from `#/paths//v2/realtime/token/post(createTemporaryToken)/responses/504`.
-            ///
-            /// HTTP response code: `504 gatewayTimeout`.
-            case gatewayTimeout(Components.Responses.GatewayTimeout)
-            /// Gateway timeout
-            ///
-            /// - Remark: Generated from `#/paths//v2/realtime/token/post(createTemporaryToken)/responses/504`.
-            ///
-            /// HTTP response code: `504 gatewayTimeout`.
-            public static var gatewayTimeout: Self {
-                .gatewayTimeout(.init())
-            }
-            /// The associated value of the enum case if `self` is `.gatewayTimeout`.
-            ///
-            /// - Throws: An error if `self` is not `.gatewayTimeout`.
-            /// - SeeAlso: `.gatewayTimeout`.
-            public var gatewayTimeout: Components.Responses.GatewayTimeout {
-                get throws {
-                    switch self {
-                    case let .gatewayTimeout(response):
-                        return response
-                    default:
-                        try throwUnexpectedResponseStatus(
-                            expectedStatus: "gatewayTimeout",
-                            response: self
-                        )
-                    }
-                }
-            }
-            /// Undocumented response.
-            ///
-            /// A response with a code that is not documented in the OpenAPI document.
-            case undocumented(statusCode: Swift.Int, OpenAPIRuntime.UndocumentedPayload)
-        }
-        @frozen public enum AcceptableContentType: AcceptableProtocol {
-            case json
-            case plainText
-            case other(Swift.String)
-            public init?(rawValue: Swift.String) {
-                switch rawValue.lowercased() {
-                case "application/json":
-                    self = .json
-                case "text/plain":
-                    self = .plainText
-                default:
-                    self = .other(rawValue)
-                }
-            }
-            public var rawValue: Swift.String {
-                switch self {
-                case let .other(string):
-                    return string
-                case .json:
-                    return "application/json"
-                case .plainText:
-                    return "text/plain"
-                }
-            }
-            public static var allCases: [Self] {
-                [
-                    .json,
-                    .plainText
-                ]
-            }
-        }
-    }
     /// Run a task using LeMUR
     ///
+    /// <Warning>LeMUR is currently not available on the EU endpoint.</Warning>
     /// Use the LeMUR task endpoint to input your own LLM prompt.
+    ///
     ///
     /// - Remark: HTTP `POST /lemur/v3/generate/task`.
     /// - Remark: Generated from `#/paths//lemur/v3/generate/task/post(lemurTask)`.
@@ -9725,6 +9567,7 @@ public enum Operations {
     }
     /// Summarize a transcript using LeMUR
     ///
+    /// <Warning>LeMUR is currently not available on the EU endpoint.</Warning>
     /// Custom Summary allows you to distill a piece of audio into a few impactful sentences.
     /// You can give the model context to obtain more targeted results while outputting the results in a variety of formats described in human language.
     ///
@@ -10070,6 +9913,7 @@ public enum Operations {
     }
     /// Ask questions using LeMUR
     ///
+    /// <Warning>LeMUR is currently not available on the EU endpoint.</Warning>
     /// Question & Answer allows you to ask free-form questions about a single transcript or a group of transcripts.
     /// The questions can be any whose answers you find useful, such as judging whether a caller is likely to become a customer or whether all items on a meeting's agenda were covered.
     ///
@@ -10413,351 +10257,9 @@ public enum Operations {
             }
         }
     }
-    /// Extract action items
-    ///
-    /// Use LeMUR to generate a list of action items from a transcript
-    ///
-    /// - Remark: HTTP `POST /lemur/v3/generate/action-items`.
-    /// - Remark: Generated from `#/paths//lemur/v3/generate/action-items/post(lemurActionItems)`.
-    public enum lemurActionItems {
-        public static let id: Swift.String = "lemurActionItems"
-        public struct Input: Sendable, Hashable {
-            /// - Remark: Generated from `#/paths/lemur/v3/generate/action-items/POST/header`.
-            public struct Headers: Sendable, Hashable {
-                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.lemurActionItems.AcceptableContentType>]
-                /// Creates a new `Headers`.
-                ///
-                /// - Parameters:
-                ///   - accept:
-                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.lemurActionItems.AcceptableContentType>] = .defaultValues()) {
-                    self.accept = accept
-                }
-            }
-            public var headers: Operations.lemurActionItems.Input.Headers
-            /// - Remark: Generated from `#/paths/lemur/v3/generate/action-items/POST/requestBody`.
-            @frozen public enum Body: Sendable, Hashable {
-                /// - Remark: Generated from `#/paths/lemur/v3/generate/action-items/POST/requestBody/content/application\/json`.
-                case json(Components.Schemas.LemurActionItemsParams)
-            }
-            public var body: Operations.lemurActionItems.Input.Body
-            /// Creates a new `Input`.
-            ///
-            /// - Parameters:
-            ///   - headers:
-            ///   - body:
-            public init(
-                headers: Operations.lemurActionItems.Input.Headers = .init(),
-                body: Operations.lemurActionItems.Input.Body
-            ) {
-                self.headers = headers
-                self.body = body
-            }
-        }
-        @frozen public enum Output: Sendable, Hashable {
-            public struct Ok: Sendable, Hashable {
-                /// - Remark: Generated from `#/paths/lemur/v3/generate/action-items/POST/responses/200/headers`.
-                public struct Headers: Sendable, Hashable {
-                    /// Maximum number of allowed requests in a 60 second window.
-                    ///
-                    /// - Remark: Generated from `#/paths/lemur/v3/generate/action-items/POST/responses/200/headers/X-RateLimit-Limit`.
-                    public var X_hyphen_RateLimit_hyphen_Limit: Swift.Int?
-                    /// Number of remaining requests in the current time window.
-                    ///
-                    /// - Remark: Generated from `#/paths/lemur/v3/generate/action-items/POST/responses/200/headers/X-RateLimit-Remaining`.
-                    public var X_hyphen_RateLimit_hyphen_Remaining: Swift.Int?
-                    /// Number of seconds until the remaining requests resets to the value of X-RateLimit-Limit.
-                    ///
-                    /// - Remark: Generated from `#/paths/lemur/v3/generate/action-items/POST/responses/200/headers/X-RateLimit-Reset`.
-                    public var X_hyphen_RateLimit_hyphen_Reset: Swift.Int?
-                    /// Creates a new `Headers`.
-                    ///
-                    /// - Parameters:
-                    ///   - X_hyphen_RateLimit_hyphen_Limit: Maximum number of allowed requests in a 60 second window.
-                    ///   - X_hyphen_RateLimit_hyphen_Remaining: Number of remaining requests in the current time window.
-                    ///   - X_hyphen_RateLimit_hyphen_Reset: Number of seconds until the remaining requests resets to the value of X-RateLimit-Limit.
-                    public init(
-                        X_hyphen_RateLimit_hyphen_Limit: Swift.Int? = nil,
-                        X_hyphen_RateLimit_hyphen_Remaining: Swift.Int? = nil,
-                        X_hyphen_RateLimit_hyphen_Reset: Swift.Int? = nil
-                    ) {
-                        self.X_hyphen_RateLimit_hyphen_Limit = X_hyphen_RateLimit_hyphen_Limit
-                        self.X_hyphen_RateLimit_hyphen_Remaining = X_hyphen_RateLimit_hyphen_Remaining
-                        self.X_hyphen_RateLimit_hyphen_Reset = X_hyphen_RateLimit_hyphen_Reset
-                    }
-                }
-                /// Received HTTP response headers
-                public var headers: Operations.lemurActionItems.Output.Ok.Headers
-                /// - Remark: Generated from `#/paths/lemur/v3/generate/action-items/POST/responses/200/content`.
-                @frozen public enum Body: Sendable, Hashable {
-                    /// - Remark: Generated from `#/paths/lemur/v3/generate/action-items/POST/responses/200/content/application\/json`.
-                    case json(Components.Schemas.LemurActionItemsResponse)
-                    /// The associated value of the enum case if `self` is `.json`.
-                    ///
-                    /// - Throws: An error if `self` is not `.json`.
-                    /// - SeeAlso: `.json`.
-                    public var json: Components.Schemas.LemurActionItemsResponse {
-                        get throws {
-                            switch self {
-                            case let .json(body):
-                                return body
-                            }
-                        }
-                    }
-                }
-                /// Received HTTP response body
-                public var body: Operations.lemurActionItems.Output.Ok.Body
-                /// Creates a new `Ok`.
-                ///
-                /// - Parameters:
-                ///   - headers: Received HTTP response headers
-                ///   - body: Received HTTP response body
-                public init(
-                    headers: Operations.lemurActionItems.Output.Ok.Headers = .init(),
-                    body: Operations.lemurActionItems.Output.Ok.Body
-                ) {
-                    self.headers = headers
-                    self.body = body
-                }
-            }
-            /// LeMUR action items response
-            ///
-            /// - Remark: Generated from `#/paths//lemur/v3/generate/action-items/post(lemurActionItems)/responses/200`.
-            ///
-            /// HTTP response code: `200 ok`.
-            case ok(Operations.lemurActionItems.Output.Ok)
-            /// The associated value of the enum case if `self` is `.ok`.
-            ///
-            /// - Throws: An error if `self` is not `.ok`.
-            /// - SeeAlso: `.ok`.
-            public var ok: Operations.lemurActionItems.Output.Ok {
-                get throws {
-                    switch self {
-                    case let .ok(response):
-                        return response
-                    default:
-                        try throwUnexpectedResponseStatus(
-                            expectedStatus: "ok",
-                            response: self
-                        )
-                    }
-                }
-            }
-            /// Bad request
-            ///
-            /// - Remark: Generated from `#/paths//lemur/v3/generate/action-items/post(lemurActionItems)/responses/400`.
-            ///
-            /// HTTP response code: `400 badRequest`.
-            case badRequest(Components.Responses.BadRequest)
-            /// The associated value of the enum case if `self` is `.badRequest`.
-            ///
-            /// - Throws: An error if `self` is not `.badRequest`.
-            /// - SeeAlso: `.badRequest`.
-            public var badRequest: Components.Responses.BadRequest {
-                get throws {
-                    switch self {
-                    case let .badRequest(response):
-                        return response
-                    default:
-                        try throwUnexpectedResponseStatus(
-                            expectedStatus: "badRequest",
-                            response: self
-                        )
-                    }
-                }
-            }
-            /// Unauthorized
-            ///
-            /// - Remark: Generated from `#/paths//lemur/v3/generate/action-items/post(lemurActionItems)/responses/401`.
-            ///
-            /// HTTP response code: `401 unauthorized`.
-            case unauthorized(Components.Responses.Unauthorized)
-            /// The associated value of the enum case if `self` is `.unauthorized`.
-            ///
-            /// - Throws: An error if `self` is not `.unauthorized`.
-            /// - SeeAlso: `.unauthorized`.
-            public var unauthorized: Components.Responses.Unauthorized {
-                get throws {
-                    switch self {
-                    case let .unauthorized(response):
-                        return response
-                    default:
-                        try throwUnexpectedResponseStatus(
-                            expectedStatus: "unauthorized",
-                            response: self
-                        )
-                    }
-                }
-            }
-            /// Not found
-            ///
-            /// - Remark: Generated from `#/paths//lemur/v3/generate/action-items/post(lemurActionItems)/responses/404`.
-            ///
-            /// HTTP response code: `404 notFound`.
-            case notFound(Components.Responses.NotFound)
-            /// The associated value of the enum case if `self` is `.notFound`.
-            ///
-            /// - Throws: An error if `self` is not `.notFound`.
-            /// - SeeAlso: `.notFound`.
-            public var notFound: Components.Responses.NotFound {
-                get throws {
-                    switch self {
-                    case let .notFound(response):
-                        return response
-                    default:
-                        try throwUnexpectedResponseStatus(
-                            expectedStatus: "notFound",
-                            response: self
-                        )
-                    }
-                }
-            }
-            /// Too many requests
-            ///
-            /// - Remark: Generated from `#/paths//lemur/v3/generate/action-items/post(lemurActionItems)/responses/429`.
-            ///
-            /// HTTP response code: `429 tooManyRequests`.
-            case tooManyRequests(Components.Responses.TooManyRequests)
-            /// The associated value of the enum case if `self` is `.tooManyRequests`.
-            ///
-            /// - Throws: An error if `self` is not `.tooManyRequests`.
-            /// - SeeAlso: `.tooManyRequests`.
-            public var tooManyRequests: Components.Responses.TooManyRequests {
-                get throws {
-                    switch self {
-                    case let .tooManyRequests(response):
-                        return response
-                    default:
-                        try throwUnexpectedResponseStatus(
-                            expectedStatus: "tooManyRequests",
-                            response: self
-                        )
-                    }
-                }
-            }
-            /// An error occurred while processing the request
-            ///
-            /// - Remark: Generated from `#/paths//lemur/v3/generate/action-items/post(lemurActionItems)/responses/500`.
-            ///
-            /// HTTP response code: `500 internalServerError`.
-            case internalServerError(Components.Responses.InternalServerError)
-            /// The associated value of the enum case if `self` is `.internalServerError`.
-            ///
-            /// - Throws: An error if `self` is not `.internalServerError`.
-            /// - SeeAlso: `.internalServerError`.
-            public var internalServerError: Components.Responses.InternalServerError {
-                get throws {
-                    switch self {
-                    case let .internalServerError(response):
-                        return response
-                    default:
-                        try throwUnexpectedResponseStatus(
-                            expectedStatus: "internalServerError",
-                            response: self
-                        )
-                    }
-                }
-            }
-            /// Service unavailable
-            ///
-            /// - Remark: Generated from `#/paths//lemur/v3/generate/action-items/post(lemurActionItems)/responses/503`.
-            ///
-            /// HTTP response code: `503 serviceUnavailable`.
-            case serviceUnavailable(Components.Responses.ServiceUnavailable)
-            /// Service unavailable
-            ///
-            /// - Remark: Generated from `#/paths//lemur/v3/generate/action-items/post(lemurActionItems)/responses/503`.
-            ///
-            /// HTTP response code: `503 serviceUnavailable`.
-            public static var serviceUnavailable: Self {
-                .serviceUnavailable(.init())
-            }
-            /// The associated value of the enum case if `self` is `.serviceUnavailable`.
-            ///
-            /// - Throws: An error if `self` is not `.serviceUnavailable`.
-            /// - SeeAlso: `.serviceUnavailable`.
-            public var serviceUnavailable: Components.Responses.ServiceUnavailable {
-                get throws {
-                    switch self {
-                    case let .serviceUnavailable(response):
-                        return response
-                    default:
-                        try throwUnexpectedResponseStatus(
-                            expectedStatus: "serviceUnavailable",
-                            response: self
-                        )
-                    }
-                }
-            }
-            /// Gateway timeout
-            ///
-            /// - Remark: Generated from `#/paths//lemur/v3/generate/action-items/post(lemurActionItems)/responses/504`.
-            ///
-            /// HTTP response code: `504 gatewayTimeout`.
-            case gatewayTimeout(Components.Responses.GatewayTimeout)
-            /// Gateway timeout
-            ///
-            /// - Remark: Generated from `#/paths//lemur/v3/generate/action-items/post(lemurActionItems)/responses/504`.
-            ///
-            /// HTTP response code: `504 gatewayTimeout`.
-            public static var gatewayTimeout: Self {
-                .gatewayTimeout(.init())
-            }
-            /// The associated value of the enum case if `self` is `.gatewayTimeout`.
-            ///
-            /// - Throws: An error if `self` is not `.gatewayTimeout`.
-            /// - SeeAlso: `.gatewayTimeout`.
-            public var gatewayTimeout: Components.Responses.GatewayTimeout {
-                get throws {
-                    switch self {
-                    case let .gatewayTimeout(response):
-                        return response
-                    default:
-                        try throwUnexpectedResponseStatus(
-                            expectedStatus: "gatewayTimeout",
-                            response: self
-                        )
-                    }
-                }
-            }
-            /// Undocumented response.
-            ///
-            /// A response with a code that is not documented in the OpenAPI document.
-            case undocumented(statusCode: Swift.Int, OpenAPIRuntime.UndocumentedPayload)
-        }
-        @frozen public enum AcceptableContentType: AcceptableProtocol {
-            case json
-            case plainText
-            case other(Swift.String)
-            public init?(rawValue: Swift.String) {
-                switch rawValue.lowercased() {
-                case "application/json":
-                    self = .json
-                case "text/plain":
-                    self = .plainText
-                default:
-                    self = .other(rawValue)
-                }
-            }
-            public var rawValue: Swift.String {
-                switch self {
-                case let .other(string):
-                    return string
-                case .json:
-                    return "application/json"
-                case .plainText:
-                    return "text/plain"
-                }
-            }
-            public static var allCases: [Self] {
-                [
-                    .json,
-                    .plainText
-                ]
-            }
-        }
-    }
     /// Retrieve LeMUR response
     ///
+    /// <Warning>LeMUR is currently not available on the EU endpoint.</Warning>
     /// Retrieve a LeMUR response that was previously generated.
     ///
     ///
@@ -11076,6 +10578,7 @@ public enum Operations {
     }
     /// Purge LeMUR request data
     ///
+    /// <Warning>LeMUR is currently not available on the EU endpoint.</Warning>
     /// Delete the data for a previously submitted LeMUR request.
     /// The LLM response data, as well as any context provided in the original request will be removed.
     ///

@@ -13,6 +13,7 @@ info:
 servers:
   - url: https://api.assemblyai.com
     description: AssemblyAI API
+    x-fern-server-name: Default
 
 tags:
   - name: transcript
@@ -37,13 +38,18 @@ paths:
       tags:
         - transcript
       summary: Upload a media file
-      description: Upload a media file to AssemblyAI's servers.
+      description: |
+        <Note>To upload a media file to our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
+        Upload a media file to AssemblyAI's servers.
       operationId: uploadFile
       x-fern-sdk-group-name: files
       x-fern-sdk-method-name: upload
       requestBody:
         content:
-          application/octet-stream: {}
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
       responses:
         "200":
           x-label: Media file uploaded
@@ -72,7 +78,9 @@ paths:
       tags:
         - transcript
       summary: Transcribe audio
-      description: Create a transcript from a media file that is accessible via a URL.
+      description: |
+        <Note>To use our EU server for transcription, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
+        Create a transcript from a media file that is accessible via a URL.
       operationId: createTranscript
       x-fern-sdk-group-name: transcripts
       x-fern-sdk-method-name: submit
@@ -163,8 +171,11 @@ paths:
       x-fern-request-name: ListTranscriptParams
       operationId: listTranscripts
       description: |
-        Retrieve a list of transcripts you created.
-        Transcripts are sorted from newest to oldest. The previous URL always points to a page with older transcripts.
+        <Note>To retrieve your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
+        Retrieve a list of transcripts you created. 
+        Transcripts are sorted from newest to oldest and can be retrieved for the last 90 days of usage. The previous URL always points to a page with older transcripts.
+
+        If you need to retrieve transcripts from more than 90 days ago please reach out to our Support team at support@assemblyai.com.
       parameters:
         - name: limit
           x-label: Limit
@@ -240,7 +251,9 @@ paths:
       x-fern-sdk-group-name: transcripts
       x-fern-sdk-method-name: get
       x-fern-request-name: GetTranscriptParams
-      description: Get the transcript resource. The transcript is ready when the "status" is "completed".
+      description: |
+        <Note>To retrieve your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
+        Get the transcript resource. The transcript is ready when the "status" is "completed".
       parameters:
         - name: transcript_id
           x-label: Transcript ID
@@ -290,7 +303,9 @@ paths:
       tags:
         - transcript
       summary: Delete transcript
-      description: Remove the data from the transcript and mark it as deleted.
+      description: |
+        <Note>To delete your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
+        Remove the data from the transcript and mark it as deleted.
       operationId: deleteTranscript
       x-fern-sdk-group-name: transcripts
       x-fern-sdk-method-name: delete
@@ -329,7 +344,9 @@ paths:
       tags:
         - transcript
       summary: Get subtitles for transcript
-      description: Export your transcript in SRT or VTT format to use with a video player for subtitles and closed captions.
+      description: |
+        <Note>To retrieve your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
+        Export your transcript in SRT or VTT format to use with a video player for subtitles and closed captions.
       operationId: getSubtitles
       x-fern-sdk-group-name: transcripts
       x-fern-sdk-method-name: getSubtitles
@@ -403,7 +420,9 @@ paths:
       x-fern-sdk-group-name: transcripts
       x-fern-sdk-method-name: getSentences
       x-fern-request-name: GetSentencesParams
-      description: Get the transcript split by sentences. The API will attempt to semantically segment the transcript into sentences to create more reader-friendly transcripts.
+      description: |
+        <Note>To retrieve your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
+        Get the transcript split by sentences. The API will attempt to semantically segment the transcript into sentences to create more reader-friendly transcripts.
       parameters:
         - name: transcript_id
           x-label: Transcript ID
@@ -443,7 +462,9 @@ paths:
       x-fern-sdk-group-name: transcripts
       x-fern-sdk-method-name: getParagraphs
       x-fern-request-name: GetParagraphsParams
-      description: Get the transcript split by paragraphs. The API will attempt to semantically segment your transcript into paragraphs to create more reader-friendly transcripts.
+      description: |
+        <Note>To retrieve your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
+        Get the transcript split by paragraphs. The API will attempt to semantically segment your transcript into paragraphs to create more reader-friendly transcripts.
       parameters:
         - name: transcript_id
           x-label: Transcript ID
@@ -479,7 +500,9 @@ paths:
       tags:
         - transcript
       summary: Search words in transcript
-      description: Search through the transcript for keywords. You can search for individual words, numbers, or phrases containing up to five words or numbers.
+      description: |
+        <Note>To search through a transcription created on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
+        Search through the transcript for keywords. You can search for individual words, numbers, or phrases containing up to five words or numbers.
       operationId: wordSearch
       x-fern-sdk-group-name: transcripts
       x-fern-sdk-method-name: wordSearch
@@ -532,7 +555,9 @@ paths:
       tags:
         - transcript
       summary: Get redacted audio
-      description: Retrieve the redacted audio object containing the status and URL to the redacted audio.
+      description: |
+        <Warning> Redacted audio creation is not supported on the EU endpoint. </Warning>
+        Retrieve the redacted audio object containing the status and URL to the redacted audio.
       operationId: getRedactedAudio
       x-fern-sdk-group-name: transcripts
       x-fern-sdk-method-name: getRedactedAudio
@@ -568,51 +593,56 @@ paths:
         "504":
           $ref: "#/components/responses/GatewayTimeout"
 
-  /v2/realtime/token:
-    post:
-      tags:
-        - streaming
-      summary: Create temporary authentication token for Streaming STT
-      description: Create a temporary authentication token for Streaming Speech-to-Text
-      operationId: createTemporaryToken
-      x-fern-sdk-group-name: realtime
-      x-fern-sdk-method-name: createTemporaryToken
-      x-fern-request-name: CreateRealtimeTemporaryTokenParams
-      requestBody:
-        description: Params to create a temporary authentication token
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/CreateRealtimeTemporaryTokenParams"
-      responses:
-        "200":
-          description: Temporary authentication token generated
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/RealtimeTemporaryTokenResponse"
-        "400":
-          $ref: "#/components/responses/BadRequest"
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "429":
-          $ref: "#/components/responses/TooManyRequests"
-        "500":
-          $ref: "#/components/responses/InternalServerError"
-        "503":
-          $ref: "#/components/responses/ServiceUnavailable"
-        "504":
-          $ref: "#/components/responses/GatewayTimeout"
+  # /v2/realtime/token:
+  #   post:
+  #     tags:
+  #       - streaming
+  #     summary: Create temporary authentication token for Streaming STT
+  #     description: |
+  #       <Warning>Streaming Speech-to-Text is currently not available on the EU endpoint.</Warning>
+  #       <Note>Any usage associated with a temporary token will be attributed to the API key that generated it.</Note>
+  #       Create a temporary authentication token for Streaming Speech-to-Text
+  #     operationId: createTemporaryToken
+  #     x-fern-sdk-group-name: realtime
+  #     x-fern-sdk-method-name: createTemporaryToken
+  #     x-fern-request-name: CreateRealtimeTemporaryTokenParams
+  #     requestBody:
+  #       description: Params to create a temporary authentication token
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: "#/components/schemas/CreateRealtimeTemporaryTokenParams"
+  #     responses:
+  #       "200":
+  #         description: Temporary authentication token generated
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: "#/components/schemas/RealtimeTemporaryTokenResponse"
+  #       "400":
+  #         $ref: "#/components/responses/BadRequest"
+  #       "401":
+  #         $ref: "#/components/responses/Unauthorized"
+  #       "404":
+  #         $ref: "#/components/responses/NotFound"
+  #       "429":
+  #         $ref: "#/components/responses/TooManyRequests"
+  #       "500":
+  #         $ref: "#/components/responses/InternalServerError"
+  #       "503":
+  #         $ref: "#/components/responses/ServiceUnavailable"
+  #       "504":
+  #         $ref: "#/components/responses/GatewayTimeout"
 
   /lemur/v3/generate/task:
     post:
       tags:
         - LeMUR
       summary: Run a task using LeMUR
-      description: Use the LeMUR task endpoint to input your own LLM prompt.
+      description: |
+        <Warning>LeMUR is currently not available on the EU endpoint.</Warning>
+        Use the LeMUR task endpoint to input your own LLM prompt.
       operationId: lemurTask
       x-fern-sdk-group-name: lemur
       x-fern-sdk-method-name: task
@@ -668,6 +698,7 @@ paths:
         - LeMUR
       summary: Summarize a transcript using LeMUR
       description: |
+        <Warning>LeMUR is currently not available on the EU endpoint.</Warning>
         Custom Summary allows you to distill a piece of audio into a few impactful sentences.
         You can give the model context to obtain more targeted results while outputting the results in a variety of formats described in human language.
       operationId: lemurSummary
@@ -725,6 +756,7 @@ paths:
         - LeMUR
       summary: Ask questions using LeMUR
       description: |
+        <Warning>LeMUR is currently not available on the EU endpoint.</Warning>
         Question & Answer allows you to ask free-form questions about a single transcript or a group of transcripts.
         The questions can be any whose answers you find useful, such as judging whether a caller is likely to become a customer or whether all items on a meeting's agenda were covered.
       operationId: lemurQuestionAnswer
@@ -776,61 +808,61 @@ paths:
         "504":
           $ref: "#/components/responses/GatewayTimeout"
 
-  /lemur/v3/generate/action-items:
-    post:
-      tags:
-        - LeMUR
-      summary: Extract action items
-      operationId: lemurActionItems
-      x-label: Extract action items using LeMUR
-      x-fern-sdk-group-name: lemur
-      x-fern-sdk-method-name: actionItems
-      x-fern-request-name: LemurActionItemsParams
-      description: Use LeMUR to generate a list of action items from a transcript
-      requestBody:
-        description: Params to generate action items from transcripts
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/LemurActionItemsParams"
-      responses:
-        "200":
-          description: LeMUR action items response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/LemurActionItemsResponse"
-          headers:
-            X-RateLimit-Limit:
-              schema:
-                type: integer
-              description: Maximum number of allowed requests in a 60 second window.
-            X-RateLimit-Remaining:
-              schema:
-                type: integer
-              description: Number of remaining requests in the current time window.
-            X-RateLimit-Reset:
-              schema:
-                type: integer
-              description: Number of seconds until the remaining requests resets to the value of X-RateLimit-Limit.
-          links:
-            PurgeLemurRequestDataById:
-              $ref: "#/components/links/PurgeLemurRequestDataById"
-        "400":
-          $ref: "#/components/responses/BadRequest"
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-        "429":
-          $ref: "#/components/responses/TooManyRequests"
-        "500":
-          $ref: "#/components/responses/InternalServerError"
-        "503":
-          $ref: "#/components/responses/ServiceUnavailable"
-        "504":
-          $ref: "#/components/responses/GatewayTimeout"
+  # /lemur/v3/generate/action-items:
+  #   post:
+  #     tags:
+  #       - LeMUR
+  #     summary: Extract action items
+  #     operationId: lemurActionItems
+  #     x-label: Extract action items using LeMUR
+  #     x-fern-sdk-group-name: lemur
+  #     x-fern-sdk-method-name: actionItems
+  #     x-fern-request-name: LemurActionItemsParams
+  #     description: Use LeMUR to generate a list of action items from a transcript
+  #     requestBody:
+  #       description: Params to generate action items from transcripts
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: "#/components/schemas/LemurActionItemsParams"
+  #     responses:
+  #       "200":
+  #         description: LeMUR action items response
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: "#/components/schemas/LemurActionItemsResponse"
+  #         headers:
+  #           X-RateLimit-Limit:
+  #             schema:
+  #               type: integer
+  #             description: Maximum number of allowed requests in a 60 second window.
+  #           X-RateLimit-Remaining:
+  #             schema:
+  #               type: integer
+  #             description: Number of remaining requests in the current time window.
+  #           X-RateLimit-Reset:
+  #             schema:
+  #               type: integer
+  #             description: Number of seconds until the remaining requests resets to the value of X-RateLimit-Limit.
+  #         links:
+  #           PurgeLemurRequestDataById:
+  #             $ref: "#/components/links/PurgeLemurRequestDataById"
+  #       "400":
+  #         $ref: "#/components/responses/BadRequest"
+  #       "401":
+  #         $ref: "#/components/responses/Unauthorized"
+  #       "404":
+  #         $ref: "#/components/responses/NotFound"
+  #       "429":
+  #         $ref: "#/components/responses/TooManyRequests"
+  #       "500":
+  #         $ref: "#/components/responses/InternalServerError"
+  #       "503":
+  #         $ref: "#/components/responses/ServiceUnavailable"
+  #       "504":
+  #         $ref: "#/components/responses/GatewayTimeout"
 
   /lemur/v3/{request_id}:
     get:
@@ -838,6 +870,7 @@ paths:
         - LeMUR
       summary: Retrieve LeMUR response
       description: |
+        <Warning>LeMUR is currently not available on the EU endpoint.</Warning>
         Retrieve a LeMUR response that was previously generated.
       operationId: getLemurResponse
       x-fern-sdk-group-name: lemur
@@ -879,6 +912,7 @@ paths:
         - LeMUR
       summary: Purge LeMUR request data
       description: |
+        <Warning>LeMUR is currently not available on the EU endpoint.</Warning>
         Delete the data for a previously submitted LeMUR request.
         The LLM response data, as well as any context provided in the original request will be removed.
       operationId: purgeLemurRequestData
@@ -1233,8 +1267,8 @@ components:
 
         speech_model:
           x-label: Speech model
-          description: The speech model to use for the transcription. When `null`, the "best" model is used.
-          default: best
+          description: The speech model to use for the transcription. When `null`, the `universal` model is used.
+          default: universal
           $ref: "#/components/schemas/SpeechModel"
 
         punctuate:
@@ -1252,6 +1286,12 @@ components:
         disfluencies:
           x-label: Disfluencies
           description: Transcribe Filler Words, like "umm", in your media file; can be true or false
+          type: boolean
+          default: false
+
+        multichannel:
+          x-label: Multichannel
+          description: Enable [Multichannel](https://www.assemblyai.com/docs/models/speech-recognition#multichannel-transcription) transcription, can be true or false.
           type: boolean
           default: false
 
@@ -1306,6 +1346,7 @@ components:
           items:
             x-label: Word to boost
             type: string
+          deprecated: true
 
         boost_param:
           x-label: Word boost level
@@ -1391,6 +1432,22 @@ components:
             x-label: Custom spelling
             $ref: "#/components/schemas/TranscriptCustomSpelling"
 
+        keyterms_prompt:
+          x-label: Keyterms prompt
+          description: |
+            <Warning>`keyterms_prompt` is only supported when the `speech_model` is specified as `slam-1`</Warning>
+            Improve accuracy with up to 1000 domain-specific words or phrases (maximum 6 words per phrase).
+          type: array
+          items:
+            x-label: Keyterm
+            type: string
+
+        prompt:
+          x-label: Prompt
+          description: This parameter does not currently have any functionality attached to it.
+          type: string
+          deprecated: true
+
         sentiment_analysis:
           x-label: Sentiment Analysis
           description: Enable [Sentiment Analysis](https://www.assemblyai.com/docs/models/sentiment-analysis), can be true or false
@@ -1443,6 +1500,7 @@ components:
           description: Enable custom topics, either true or false
           type: boolean
           default: false
+          deprecated: true
 
         topics:
           x-label: Custom topics
@@ -1459,6 +1517,7 @@ components:
           language_confidence_threshold: 0.7,
           punctuate: true,
           format_text: true,
+          multichannel: true,
           dual_channel: false,
           webhook_url: "https://your-webhook-url.tld/path",
           webhook_auth_header_name: "webhook-secret",
@@ -1518,6 +1577,7 @@ components:
           audio_url: "https://assembly.ai/wildfires.mp3",
           punctuate: true,
           format_text: true,
+          multichannel: true,
           dual_channel: false,
           webhook_url: "https://your-webhook-url/path",
           webhook_auth_header_name: "webhook-secret",
@@ -1625,7 +1685,7 @@ components:
             type: string
         to:
           x-label: To
-          description: Word or phrase to replace with
+          description: Word to replace with
           type: string
       required: [from, to]
       example: { from: ["dicarlo"], to: "Decarlo" }
@@ -2107,10 +2167,18 @@ components:
       enum:
         - best
         - nano
+        - slam-1
+        - universal
       x-fern-enum:
+        universal:
+          name: Universal
+          description: The model optimized for accuracy, low latency, ease of use, and mutli-language support.
+        slam-1:
+          name: Slam-1
+          description: A contextual model optimized for customization.
         best:
           name: Best
-          description: The best model optimized for accuracy.
+          description: The model optimized for accuracy, low latency, ease of use, and mutli-language support.
         nano:
           name: Nano
           description: A lightweight, lower cost model for a wide range of languages.
@@ -2545,7 +2613,7 @@ components:
 
         speech_model:
           x-label: Speech model
-          description: The speech model used for the transcription. When `null`, the default model is used.
+          description: The speech model used for the transcription. When `null`, the `universal` model is used.
           default: null
           $ref: "#/components/schemas/SpeechModel"
 
@@ -2567,8 +2635,8 @@ components:
         utterances:
           x-label: Utterances
           description: |
-            When dual_channel or speaker_labels is enabled, a list of turn-by-turn utterance objects.
-            See [Speaker diarization](https://www.assemblyai.com/docs/models/speaker-diarization) for more information.
+            When multichannel or speaker_labels is enabled, a list of turn-by-turn utterance objects.
+            See [Speaker diarization](https://www.assemblyai.com/docs/speech-to-text/speaker-diarization) and [Multichannel transcription](https://www.assemblyai.com/docs/speech-to-text/speech-recognition#multichannel-transcription) for more information.
           type: array
           items:
             x-label: Utterance
@@ -2601,6 +2669,16 @@ components:
           x-label: Disfluencies
           description: Transcribe Filler Words, like "umm", in your media file; can be true or false
           type: boolean
+
+        multichannel:
+          x-label: Multichannel
+          description: Whether [Multichannel transcription](https://www.assemblyai.com/docs/models/speech-recognition#multichannel-transcription) was enabled in the transcription request, either true or false
+          type: boolean
+
+        audio_channels:
+          x-label: Audio channels
+          description: The number of audio channels in the audio file. This is only present when multichannel is enabled.
+          type: integer
 
         dual_channel:
           x-label: Dual channel
@@ -2667,6 +2745,7 @@ components:
           items:
             x-label: Boosted word
             type: string
+          deprecated: true
 
         boost_param:
           x-label: Boost
@@ -2754,6 +2833,21 @@ components:
             x-label: Custom spelling
             $ref: "#/components/schemas/TranscriptCustomSpelling"
 
+        keyterms_prompt:
+          x-label: Keyterms prompt
+          description: |
+            Improve accuracy with up to 1000 domain-specific words or phrases (maximum 6 words per phrase).
+          type: array
+          items:
+            x-label: Keyterm
+            type: string
+
+        prompt:
+          x-label: Prompt
+          description: This parameter does not currently have any functionality attached to it.
+          type: string
+          deprecated: true
+
         auto_chapters:
           x-label: Auto Chapters enabled
           description: Whether [Auto Chapters](https://www.assemblyai.com/docs/models/auto-chapters) is enabled, can be true or false
@@ -2793,6 +2887,7 @@ components:
           x-label: Custom topics enabled
           description: Whether custom topics is enabled, either true or false
           type: boolean
+          deprecated: true
 
         topics:
           x-label: Topics
@@ -3115,6 +3210,7 @@ components:
           audio_duration: 281,
           punctuate: true,
           format_text: true,
+          multichannel: false,
           dual_channel: false,
           webhook_url: "https://your-webhook-url.tld/path",
           webhook_status_code: 200,
@@ -4522,7 +4618,6 @@ components:
         - end
         - confidence
         - words
-        - speaker
       properties:
         text:
           x-label: Text
@@ -5149,7 +5244,8 @@ components:
       properties:
         upload_url:
           x-label: Uploaded file URL
-          description: A URL that points to your audio file, accessible only by AssemblyAI's servers
+          description: |
+            A URL that points to your audio file, accessible only by AssemblyAI's servers
           type: string
           format: url
       example:
@@ -5416,6 +5512,7 @@ components:
       x-fern-sdk-group-name: lemur
       type: object
       additionalProperties: false
+      required: [final_model]
       properties:
         transcript_ids:
           x-label: Transcript IDs
@@ -5474,7 +5571,7 @@ components:
               "7c3acd18-df4d-4432-88f5-1e89f8827eea",
             ],
           context: "This is an interview about wildfires.",
-          final_model: "anthropic/claude-3-5-sonnet",
+          final_model: "anthropic/claude-3-7-sonnet-20250219",
           temperature: 0,
           max_output_size: 3000,
         }
@@ -5498,7 +5595,7 @@ components:
           transcript_ids: ["64nygnr62k-405c-4ae8-8a6b-d90b40ff3cce"],
           prompt: "List all the locations affected by wildfires.",
           context: "This is an interview about wildfires.",
-          final_model: "anthropic/claude-3-5-sonnet",
+          final_model: "anthropic/claude-3-7-sonnet-20250219",
           temperature: 0,
           max_output_size: 3000,
         }
@@ -5521,7 +5618,7 @@ components:
         {
           transcript_ids: ["47b95ba5-8889-44d8-bc80-5de38306e582"],
           context: "This is an interview about wildfires.",
-          final_model: "anthropic/claude-3-5-sonnet",
+          final_model: "anthropic/claude-3-7-sonnet-20250219",
           temperature: 0,
           max_output_size: 3000,
         }
@@ -5559,7 +5656,7 @@ components:
                 answer_options: ["yes", "no"],
               },
             ],
-          final_model: "anthropic/claude-3-5-sonnet",
+          final_model: "anthropic/claude-3-7-sonnet-20250219",
           temperature: 0,
           max_output_size: 3000,
         }
@@ -5622,7 +5719,7 @@ components:
           transcript_ids: ["64nygnr62k-405c-4ae8-8a6b-d90b40ff3cce"],
           context: "This is an interview about wildfires.",
           answer_format: "Bullet Points",
-          final_model: "anthropic/claude-3-5-sonnet",
+          final_model: "anthropic/claude-3-7-sonnet-20250219",
           temperature: 0,
           max_output_size: 3000,
         }
@@ -5634,16 +5731,12 @@ components:
       description: |
         The model that is used for the final prompt after compression is performed.
       enum:
+        - anthropic/claude-3-7-sonnet-20250219
         - anthropic/claude-3-5-sonnet
+        - anthropic/claude-3-5-haiku-20241022
         - anthropic/claude-3-opus
         - anthropic/claude-3-haiku
         - anthropic/claude-3-sonnet
-        - anthropic/claude-2-1
-        - anthropic/claude-2
-        - default
-        - anthropic/claude-instant-1-2
-        - basic
-        - assemblyai/mistral-7b
       x-fern-enum:
         anthropic/claude-3-5-sonnet:
           description: >
@@ -5679,7 +5772,7 @@ components:
             screamingSnake: ANTHROPIC_CLAUDE3_SONNET
         anthropic/claude-2-1:
           description: >
-            Legacy - deprecating on 02/06/25. Claude 2.1 is a legacy model similar to Claude 2.0. The key difference is that it minimizes model hallucination and system prompts, has a larger context window, and performs better in citations.
+            Sunsetting on 2025-02-06. Claude 2.1 is a legacy model similar to Claude 2.0. The key difference is that it minimizes model hallucination and system prompts, has a larger context window, and performs better in citations.
           casing:
             camel: anthropicClaude2_1
             snake: anthropic_claude2_1
@@ -5687,24 +5780,14 @@ components:
             screamingSnake: ANTHROPIC_CLAUDE2_1
         anthropic/claude-2:
           description: >
-            Legacy - deprecating on 02/06/25. Claude 2.0 is a legacy model that has good complex reasoning. It offers more nuanced responses and improved contextual comprehension.
+            Sunsetting on 2025-02-06. Claude 2.0 is a legacy model that has good complex reasoning. It offers more nuanced responses and improved contextual comprehension.
           casing:
             camel: anthropicClaude2_0
             snake: anthropic_claude2_0
             pascal: AnthropicClaude2_0
             screamingSnake: ANTHROPIC_CLAUDE2_0
         default:
-          description: Legacy - deprecating on 02/06/25. The same as Claude 2.0.
-        anthropic/claude-instant-1-2:
-          description: >
-            Legacy - deprecating on 10/28/24. Claude Instant is a legacy model that is optimized for speed and cost. Claude Instant can complete requests up to 20% faster than Claude 2.0.
-          casing:
-            camel: anthropicClaudeInstant1_2
-            snake: anthropic_claude_instant1_2
-            pascal: AnthropicClaudeInstant1_2
-            screamingSnake: ANTHROPIC_CLAUDE_INSTANT1_2
-        basic:
-          description: Legacy - deprecating on 10/28/24. The same as Claude Instant.
+          description: Legacy - sunsetting on 2025-02-06. The same as Claude 2.0.
         assemblyai/mistral-7b:
           description: >
             LeMUR Mistral 7B is an LLM self-hosted by AssemblyAI.
@@ -5724,15 +5807,11 @@ components:
         anthropic/claude-3-sonnet:
           label: Claude 3 Sonnet (on Anthropic)
         anthropic/claude-2-1:
-          label: Claude 2.1 (on Anthropic)(Legacy - deprecating on 02/06/25)
+          label: Claude 2.1 (on Anthropic) (sunsetting on 2025-02-06)
         anthropic/claude-2:
-          label: Claude 2 (on Anthropic)(Legacy - deprecating on 02/06/25)
+          label: Claude 2 (on Anthropic) (sunsetting on 2025-02-06)
         default:
-          label: Default (Legacy - deprecating on 02/06/25)
-        anthropic/claude-instant-1-2:
-          label: Claude Instant 1.2 (on Anthropic)(Legacy - deprecating on 10/28/24)
-        basic:
-          label: Basic (Legacy - deprecating on 10/28/24)
+          label: Default (sunsetting on 2025-02-06)
         assemblyai/mistral-7b:
           label: Mistral 7B (hosted by AssemblyAI)
 
@@ -5816,6 +5895,7 @@ components:
           audio_duration: 390,
           punctuate: null,
           format_text: null,
+          multichannel: false,
           dual_channel: null,
           webhook_url: "http://deleted_by_user",
           webhook_status_code: null,

@@ -40,7 +40,9 @@ public struct Client: APIProtocol {
     }
     /// Upload a media file
     ///
+    /// <Note>To upload a media file to our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
     /// Upload a media file to AssemblyAI's servers.
+    ///
     ///
     /// - Remark: HTTP `POST /v2/upload`.
     /// - Remark: Generated from `#/paths//v2/upload/post(uploadFile)`.
@@ -280,8 +282,11 @@ public struct Client: APIProtocol {
     }
     /// List transcripts
     ///
-    /// Retrieve a list of transcripts you created.
-    /// Transcripts are sorted from newest to oldest. The previous URL always points to a page with older transcripts.
+    /// <Note>To retrieve your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
+    /// Retrieve a list of transcripts you created. 
+    /// Transcripts are sorted from newest to oldest and can be retrieved for the last 90 days of usage. The previous URL always points to a page with older transcripts.
+    ///
+    /// If you need to retrieve transcripts from more than 90 days ago please reach out to our Support team at support@assemblyai.com.
     ///
     ///
     /// - Remark: HTTP `GET /v2/transcript`.
@@ -553,7 +558,9 @@ public struct Client: APIProtocol {
     }
     /// Transcribe audio
     ///
+    /// <Note>To use our EU server for transcription, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
     /// Create a transcript from a media file that is accessible via a URL.
+    ///
     ///
     /// - Remark: HTTP `POST /v2/transcript`.
     /// - Remark: Generated from `#/paths//v2/transcript/post(createTranscript)`.
@@ -791,7 +798,9 @@ public struct Client: APIProtocol {
     }
     /// Get transcript
     ///
+    /// <Note>To retrieve your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
     /// Get the transcript resource. The transcript is ready when the "status" is "completed".
+    ///
     ///
     /// - Remark: HTTP `GET /v2/transcript/{transcript_id}`.
     /// - Remark: Generated from `#/paths//v2/transcript/{transcript_id}/get(getTranscript)`.
@@ -1022,7 +1031,9 @@ public struct Client: APIProtocol {
     }
     /// Delete transcript
     ///
+    /// <Note>To delete your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
     /// Remove the data from the transcript and mark it as deleted.
+    ///
     ///
     /// - Remark: HTTP `DELETE /v2/transcript/{transcript_id}`.
     /// - Remark: Generated from `#/paths//v2/transcript/{transcript_id}/delete(deleteTranscript)`.
@@ -1253,7 +1264,9 @@ public struct Client: APIProtocol {
     }
     /// Get subtitles for transcript
     ///
+    /// <Note>To retrieve your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
     /// Export your transcript in SRT or VTT format to use with a video player for subtitles and closed captions.
+    ///
     ///
     /// - Remark: HTTP `GET /v2/transcript/{transcript_id}/{subtitle_format}`.
     /// - Remark: Generated from `#/paths//v2/transcript/{transcript_id}/{subtitle_format}/get(getSubtitles)`.
@@ -1501,7 +1514,9 @@ public struct Client: APIProtocol {
     }
     /// Get sentences in transcript
     ///
+    /// <Note>To retrieve your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
     /// Get the transcript split by sentences. The API will attempt to semantically segment the transcript into sentences to create more reader-friendly transcripts.
+    ///
     ///
     /// - Remark: HTTP `GET /v2/transcript/{transcript_id}/sentences`.
     /// - Remark: Generated from `#/paths//v2/transcript/{transcript_id}/sentences/get(getTranscriptSentences)`.
@@ -1732,7 +1747,9 @@ public struct Client: APIProtocol {
     }
     /// Get paragraphs in transcript
     ///
+    /// <Note>To retrieve your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
     /// Get the transcript split by paragraphs. The API will attempt to semantically segment your transcript into paragraphs to create more reader-friendly transcripts.
+    ///
     ///
     /// - Remark: HTTP `GET /v2/transcript/{transcript_id}/paragraphs`.
     /// - Remark: Generated from `#/paths//v2/transcript/{transcript_id}/paragraphs/get(getTranscriptParagraphs)`.
@@ -1963,7 +1980,9 @@ public struct Client: APIProtocol {
     }
     /// Search words in transcript
     ///
+    /// <Note>To search through a transcription created on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
     /// Search through the transcript for keywords. You can search for individual words, numbers, or phrases containing up to five words or numbers.
+    ///
     ///
     /// - Remark: HTTP `GET /v2/transcript/{transcript_id}/word-search`.
     /// - Remark: Generated from `#/paths//v2/transcript/{transcript_id}/word-search/get(wordSearch)`.
@@ -2201,7 +2220,9 @@ public struct Client: APIProtocol {
     }
     /// Get redacted audio
     ///
+    /// <Warning> Redacted audio creation is not supported on the EU endpoint. </Warning>
     /// Retrieve the redacted audio object containing the status and URL to the redacted audio.
+    ///
     ///
     /// - Remark: HTTP `GET /v2/transcript/{transcript_id}/redacted-audio`.
     /// - Remark: Generated from `#/paths//v2/transcript/{transcript_id}/redacted-audio/get(getRedactedAudio)`.
@@ -2430,247 +2451,11 @@ public struct Client: APIProtocol {
             }
         )
     }
-    /// Create temporary authentication token for Streaming STT
-    ///
-    /// Create a temporary authentication token for Streaming Speech-to-Text
-    ///
-    /// - Remark: HTTP `POST /v2/realtime/token`.
-    /// - Remark: Generated from `#/paths//v2/realtime/token/post(createTemporaryToken)`.
-    public func createTemporaryToken(_ input: Operations.createTemporaryToken.Input) async throws -> Operations.createTemporaryToken.Output {
-        try await client.send(
-            input: input,
-            forOperation: Operations.createTemporaryToken.id,
-            serializer: { input in
-                let path = try converter.renderedPath(
-                    template: "/v2/realtime/token",
-                    parameters: []
-                )
-                var request: HTTPTypes.HTTPRequest = .init(
-                    soar_path: path,
-                    method: .post
-                )
-                suppressMutabilityWarning(&request)
-                converter.setAcceptHeader(
-                    in: &request.headerFields,
-                    contentTypes: input.headers.accept
-                )
-                let body: OpenAPIRuntime.HTTPBody?
-                switch input.body {
-                case let .json(value):
-                    body = try converter.setRequiredRequestBodyAsJSON(
-                        value,
-                        headerFields: &request.headerFields,
-                        contentType: "application/json; charset=utf-8"
-                    )
-                }
-                return (request, body)
-            },
-            deserializer: { response, responseBody in
-                switch response.status.code {
-                case 200:
-                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
-                    let body: Operations.createTemporaryToken.Output.Ok.Body
-                    let chosenContentType = try converter.bestContentType(
-                        received: contentType,
-                        options: [
-                            "application/json"
-                        ]
-                    )
-                    switch chosenContentType {
-                    case "application/json":
-                        body = try await converter.getResponseBodyAsJSON(
-                            Components.Schemas.RealtimeTemporaryTokenResponse.self,
-                            from: responseBody,
-                            transforming: { value in
-                                .json(value)
-                            }
-                        )
-                    default:
-                        preconditionFailure("bestContentType chose an invalid content type.")
-                    }
-                    return .ok(.init(body: body))
-                case 400:
-                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
-                    let body: Components.Responses.BadRequest.Body
-                    let chosenContentType = try converter.bestContentType(
-                        received: contentType,
-                        options: [
-                            "application/json",
-                            "text/plain"
-                        ]
-                    )
-                    switch chosenContentType {
-                    case "application/json":
-                        body = try await converter.getResponseBodyAsJSON(
-                            Components.Schemas._Error.self,
-                            from: responseBody,
-                            transforming: { value in
-                                .json(value)
-                            }
-                        )
-                    case "text/plain":
-                        body = try converter.getResponseBodyAsBinary(
-                            OpenAPIRuntime.HTTPBody.self,
-                            from: responseBody,
-                            transforming: { value in
-                                .plainText(value)
-                            }
-                        )
-                    default:
-                        preconditionFailure("bestContentType chose an invalid content type.")
-                    }
-                    return .badRequest(.init(body: body))
-                case 401:
-                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
-                    let body: Components.Responses.Unauthorized.Body
-                    let chosenContentType = try converter.bestContentType(
-                        received: contentType,
-                        options: [
-                            "application/json",
-                            "text/plain"
-                        ]
-                    )
-                    switch chosenContentType {
-                    case "application/json":
-                        body = try await converter.getResponseBodyAsJSON(
-                            Components.Schemas._Error.self,
-                            from: responseBody,
-                            transforming: { value in
-                                .json(value)
-                            }
-                        )
-                    case "text/plain":
-                        body = try converter.getResponseBodyAsBinary(
-                            OpenAPIRuntime.HTTPBody.self,
-                            from: responseBody,
-                            transforming: { value in
-                                .plainText(value)
-                            }
-                        )
-                    default:
-                        preconditionFailure("bestContentType chose an invalid content type.")
-                    }
-                    return .unauthorized(.init(body: body))
-                case 404:
-                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
-                    let body: Components.Responses.NotFound.Body
-                    let chosenContentType = try converter.bestContentType(
-                        received: contentType,
-                        options: [
-                            "application/json",
-                            "text/plain"
-                        ]
-                    )
-                    switch chosenContentType {
-                    case "application/json":
-                        body = try await converter.getResponseBodyAsJSON(
-                            Components.Schemas._Error.self,
-                            from: responseBody,
-                            transforming: { value in
-                                .json(value)
-                            }
-                        )
-                    case "text/plain":
-                        body = try converter.getResponseBodyAsBinary(
-                            OpenAPIRuntime.HTTPBody.self,
-                            from: responseBody,
-                            transforming: { value in
-                                .plainText(value)
-                            }
-                        )
-                    default:
-                        preconditionFailure("bestContentType chose an invalid content type.")
-                    }
-                    return .notFound(.init(body: body))
-                case 429:
-                    let headers: Components.Responses.TooManyRequests.Headers = .init(Retry_hyphen_After: try converter.getOptionalHeaderFieldAsURI(
-                        in: response.headerFields,
-                        name: "Retry-After",
-                        as: Swift.Int.self
-                    ))
-                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
-                    let body: Components.Responses.TooManyRequests.Body
-                    let chosenContentType = try converter.bestContentType(
-                        received: contentType,
-                        options: [
-                            "application/json",
-                            "text/plain"
-                        ]
-                    )
-                    switch chosenContentType {
-                    case "application/json":
-                        body = try await converter.getResponseBodyAsJSON(
-                            Components.Schemas._Error.self,
-                            from: responseBody,
-                            transforming: { value in
-                                .json(value)
-                            }
-                        )
-                    case "text/plain":
-                        body = try converter.getResponseBodyAsBinary(
-                            OpenAPIRuntime.HTTPBody.self,
-                            from: responseBody,
-                            transforming: { value in
-                                .plainText(value)
-                            }
-                        )
-                    default:
-                        preconditionFailure("bestContentType chose an invalid content type.")
-                    }
-                    return .tooManyRequests(.init(
-                        headers: headers,
-                        body: body
-                    ))
-                case 500:
-                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
-                    let body: Components.Responses.InternalServerError.Body
-                    let chosenContentType = try converter.bestContentType(
-                        received: contentType,
-                        options: [
-                            "application/json",
-                            "text/plain"
-                        ]
-                    )
-                    switch chosenContentType {
-                    case "application/json":
-                        body = try await converter.getResponseBodyAsJSON(
-                            Components.Schemas._Error.self,
-                            from: responseBody,
-                            transforming: { value in
-                                .json(value)
-                            }
-                        )
-                    case "text/plain":
-                        body = try converter.getResponseBodyAsBinary(
-                            OpenAPIRuntime.HTTPBody.self,
-                            from: responseBody,
-                            transforming: { value in
-                                .plainText(value)
-                            }
-                        )
-                    default:
-                        preconditionFailure("bestContentType chose an invalid content type.")
-                    }
-                    return .internalServerError(.init(body: body))
-                case 503:
-                    return .serviceUnavailable(.init())
-                case 504:
-                    return .gatewayTimeout(.init())
-                default:
-                    return .undocumented(
-                        statusCode: response.status.code,
-                        .init(
-                            headerFields: response.headerFields,
-                            body: responseBody
-                        )
-                    )
-                }
-            }
-        )
-    }
     /// Run a task using LeMUR
     ///
+    /// <Warning>LeMUR is currently not available on the EU endpoint.</Warning>
     /// Use the LeMUR task endpoint to input your own LLM prompt.
+    ///
     ///
     /// - Remark: HTTP `POST /lemur/v3/generate/task`.
     /// - Remark: Generated from `#/paths//lemur/v3/generate/task/post(lemurTask)`.
@@ -2928,6 +2713,7 @@ public struct Client: APIProtocol {
     }
     /// Summarize a transcript using LeMUR
     ///
+    /// <Warning>LeMUR is currently not available on the EU endpoint.</Warning>
     /// Custom Summary allows you to distill a piece of audio into a few impactful sentences.
     /// You can give the model context to obtain more targeted results while outputting the results in a variety of formats described in human language.
     ///
@@ -3188,6 +2974,7 @@ public struct Client: APIProtocol {
     }
     /// Ask questions using LeMUR
     ///
+    /// <Warning>LeMUR is currently not available on the EU endpoint.</Warning>
     /// Question & Answer allows you to ask free-form questions about a single transcript or a group of transcripts.
     /// The questions can be any whose answers you find useful, such as judging whether a caller is likely to become a customer or whether all items on a meeting's agenda were covered.
     ///
@@ -3446,266 +3233,9 @@ public struct Client: APIProtocol {
             }
         )
     }
-    /// Extract action items
-    ///
-    /// Use LeMUR to generate a list of action items from a transcript
-    ///
-    /// - Remark: HTTP `POST /lemur/v3/generate/action-items`.
-    /// - Remark: Generated from `#/paths//lemur/v3/generate/action-items/post(lemurActionItems)`.
-    public func lemurActionItems(_ input: Operations.lemurActionItems.Input) async throws -> Operations.lemurActionItems.Output {
-        try await client.send(
-            input: input,
-            forOperation: Operations.lemurActionItems.id,
-            serializer: { input in
-                let path = try converter.renderedPath(
-                    template: "/lemur/v3/generate/action-items",
-                    parameters: []
-                )
-                var request: HTTPTypes.HTTPRequest = .init(
-                    soar_path: path,
-                    method: .post
-                )
-                suppressMutabilityWarning(&request)
-                converter.setAcceptHeader(
-                    in: &request.headerFields,
-                    contentTypes: input.headers.accept
-                )
-                let body: OpenAPIRuntime.HTTPBody?
-                switch input.body {
-                case let .json(value):
-                    body = try converter.setRequiredRequestBodyAsJSON(
-                        value,
-                        headerFields: &request.headerFields,
-                        contentType: "application/json; charset=utf-8"
-                    )
-                }
-                return (request, body)
-            },
-            deserializer: { response, responseBody in
-                switch response.status.code {
-                case 200:
-                    let headers: Operations.lemurActionItems.Output.Ok.Headers = .init(
-                        X_hyphen_RateLimit_hyphen_Limit: try converter.getOptionalHeaderFieldAsURI(
-                            in: response.headerFields,
-                            name: "X-RateLimit-Limit",
-                            as: Swift.Int.self
-                        ),
-                        X_hyphen_RateLimit_hyphen_Remaining: try converter.getOptionalHeaderFieldAsURI(
-                            in: response.headerFields,
-                            name: "X-RateLimit-Remaining",
-                            as: Swift.Int.self
-                        ),
-                        X_hyphen_RateLimit_hyphen_Reset: try converter.getOptionalHeaderFieldAsURI(
-                            in: response.headerFields,
-                            name: "X-RateLimit-Reset",
-                            as: Swift.Int.self
-                        )
-                    )
-                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
-                    let body: Operations.lemurActionItems.Output.Ok.Body
-                    let chosenContentType = try converter.bestContentType(
-                        received: contentType,
-                        options: [
-                            "application/json"
-                        ]
-                    )
-                    switch chosenContentType {
-                    case "application/json":
-                        body = try await converter.getResponseBodyAsJSON(
-                            Components.Schemas.LemurActionItemsResponse.self,
-                            from: responseBody,
-                            transforming: { value in
-                                .json(value)
-                            }
-                        )
-                    default:
-                        preconditionFailure("bestContentType chose an invalid content type.")
-                    }
-                    return .ok(.init(
-                        headers: headers,
-                        body: body
-                    ))
-                case 400:
-                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
-                    let body: Components.Responses.BadRequest.Body
-                    let chosenContentType = try converter.bestContentType(
-                        received: contentType,
-                        options: [
-                            "application/json",
-                            "text/plain"
-                        ]
-                    )
-                    switch chosenContentType {
-                    case "application/json":
-                        body = try await converter.getResponseBodyAsJSON(
-                            Components.Schemas._Error.self,
-                            from: responseBody,
-                            transforming: { value in
-                                .json(value)
-                            }
-                        )
-                    case "text/plain":
-                        body = try converter.getResponseBodyAsBinary(
-                            OpenAPIRuntime.HTTPBody.self,
-                            from: responseBody,
-                            transforming: { value in
-                                .plainText(value)
-                            }
-                        )
-                    default:
-                        preconditionFailure("bestContentType chose an invalid content type.")
-                    }
-                    return .badRequest(.init(body: body))
-                case 401:
-                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
-                    let body: Components.Responses.Unauthorized.Body
-                    let chosenContentType = try converter.bestContentType(
-                        received: contentType,
-                        options: [
-                            "application/json",
-                            "text/plain"
-                        ]
-                    )
-                    switch chosenContentType {
-                    case "application/json":
-                        body = try await converter.getResponseBodyAsJSON(
-                            Components.Schemas._Error.self,
-                            from: responseBody,
-                            transforming: { value in
-                                .json(value)
-                            }
-                        )
-                    case "text/plain":
-                        body = try converter.getResponseBodyAsBinary(
-                            OpenAPIRuntime.HTTPBody.self,
-                            from: responseBody,
-                            transforming: { value in
-                                .plainText(value)
-                            }
-                        )
-                    default:
-                        preconditionFailure("bestContentType chose an invalid content type.")
-                    }
-                    return .unauthorized(.init(body: body))
-                case 404:
-                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
-                    let body: Components.Responses.NotFound.Body
-                    let chosenContentType = try converter.bestContentType(
-                        received: contentType,
-                        options: [
-                            "application/json",
-                            "text/plain"
-                        ]
-                    )
-                    switch chosenContentType {
-                    case "application/json":
-                        body = try await converter.getResponseBodyAsJSON(
-                            Components.Schemas._Error.self,
-                            from: responseBody,
-                            transforming: { value in
-                                .json(value)
-                            }
-                        )
-                    case "text/plain":
-                        body = try converter.getResponseBodyAsBinary(
-                            OpenAPIRuntime.HTTPBody.self,
-                            from: responseBody,
-                            transforming: { value in
-                                .plainText(value)
-                            }
-                        )
-                    default:
-                        preconditionFailure("bestContentType chose an invalid content type.")
-                    }
-                    return .notFound(.init(body: body))
-                case 429:
-                    let headers: Components.Responses.TooManyRequests.Headers = .init(Retry_hyphen_After: try converter.getOptionalHeaderFieldAsURI(
-                        in: response.headerFields,
-                        name: "Retry-After",
-                        as: Swift.Int.self
-                    ))
-                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
-                    let body: Components.Responses.TooManyRequests.Body
-                    let chosenContentType = try converter.bestContentType(
-                        received: contentType,
-                        options: [
-                            "application/json",
-                            "text/plain"
-                        ]
-                    )
-                    switch chosenContentType {
-                    case "application/json":
-                        body = try await converter.getResponseBodyAsJSON(
-                            Components.Schemas._Error.self,
-                            from: responseBody,
-                            transforming: { value in
-                                .json(value)
-                            }
-                        )
-                    case "text/plain":
-                        body = try converter.getResponseBodyAsBinary(
-                            OpenAPIRuntime.HTTPBody.self,
-                            from: responseBody,
-                            transforming: { value in
-                                .plainText(value)
-                            }
-                        )
-                    default:
-                        preconditionFailure("bestContentType chose an invalid content type.")
-                    }
-                    return .tooManyRequests(.init(
-                        headers: headers,
-                        body: body
-                    ))
-                case 500:
-                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
-                    let body: Components.Responses.InternalServerError.Body
-                    let chosenContentType = try converter.bestContentType(
-                        received: contentType,
-                        options: [
-                            "application/json",
-                            "text/plain"
-                        ]
-                    )
-                    switch chosenContentType {
-                    case "application/json":
-                        body = try await converter.getResponseBodyAsJSON(
-                            Components.Schemas._Error.self,
-                            from: responseBody,
-                            transforming: { value in
-                                .json(value)
-                            }
-                        )
-                    case "text/plain":
-                        body = try converter.getResponseBodyAsBinary(
-                            OpenAPIRuntime.HTTPBody.self,
-                            from: responseBody,
-                            transforming: { value in
-                                .plainText(value)
-                            }
-                        )
-                    default:
-                        preconditionFailure("bestContentType chose an invalid content type.")
-                    }
-                    return .internalServerError(.init(body: body))
-                case 503:
-                    return .serviceUnavailable(.init())
-                case 504:
-                    return .gatewayTimeout(.init())
-                default:
-                    return .undocumented(
-                        statusCode: response.status.code,
-                        .init(
-                            headerFields: response.headerFields,
-                            body: responseBody
-                        )
-                    )
-                }
-            }
-        )
-    }
     /// Retrieve LeMUR response
     ///
+    /// <Warning>LeMUR is currently not available on the EU endpoint.</Warning>
     /// Retrieve a LeMUR response that was previously generated.
     ///
     ///
@@ -3938,6 +3468,7 @@ public struct Client: APIProtocol {
     }
     /// Purge LeMUR request data
     ///
+    /// <Warning>LeMUR is currently not available on the EU endpoint.</Warning>
     /// Delete the data for a previously submitted LeMUR request.
     /// The LLM response data, as well as any context provided in the original request will be removed.
     ///
