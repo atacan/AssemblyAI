@@ -55,7 +55,6 @@ let package = Package(
             ],
             exclude: [
                 "openapi.yaml",
-                "openapi-generator-config.yaml",
                 "original.yaml",
             ]
         ),
