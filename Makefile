@@ -34,4 +34,5 @@ download-openapi:
 	swift run Prepare
 
 generate-openapi:
-	swift run swift-openapi-generator generate --output-directory Sources/AssemblyAI_AHC/GeneratedSources --config Sources/AssemblyAI_AHC/openapi-generator-config.yaml Sources/AssemblyAI_AHC/openapi.yaml
+	swift run swift-openapi-generator generate --output-directory Sources/AssemblyAI_AHC/GeneratedSources --config ./openapi-generator-config.yaml Sources/AssemblyAI_AHC/openapi.yaml
+	swift run swift-openapi-generator generate --output-directory Sources/AssemblyAIStreaming/GeneratedSources --config ./openapi-generator-config.yaml ./streaming-token.yaml

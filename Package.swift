@@ -7,15 +7,17 @@ let package = Package(
     name: "AssemblyAI",
     platforms: [
         .iOS(.v15),
-        .macOS(.v13)
+        .macOS(.v13),
     ],
     products: [
         .library(
             name: "AssemblyAI",
-            targets: ["AssemblyAI"]),
+            targets: ["AssemblyAI"]
+        ),
         .library(
             name: "AssemblyAI_AHC",
-            targets: ["AssemblyAI_AHC"])
+            targets: ["AssemblyAI_AHC"]
+        ),
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-openapi-generator", from: "1.0.0"),
@@ -28,12 +30,20 @@ let package = Package(
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "AssemblyAI"),
+            name: "AssemblyAI"
+        ),
         .target(
-            name: "AssemblyAI_AHC",
+            name: "AssemblyAICommon",
             dependencies: [
                 .product(name: "OpenAPIRuntime", package: "swift-openapi-runtime"),
                 .product(name: "OpenAPIAsyncHTTPClient", package: "swift-openapi-async-http-client"),
+            ],
+            exclude: []
+        ),
+        .target(
+            name: "AssemblyAI_AHC",
+            dependencies: [
+                "AssemblyAICommon"
             ],
             exclude: [
                 "openapi.yaml",
@@ -41,10 +51,21 @@ let package = Package(
                 "original.yaml",
             ]
         ),
+        .target(
+            name: "AssemblyAIStreaming",
+            dependencies: [
+                "AssemblyAICommon"
+            ],
+            exclude: []
+        ),
         .testTarget(
             name: "AssemblyAITests",
             dependencies: ["AssemblyAI"],
             resources: [.copy("Resources")]
+        ),
+        .testTarget(
+            name: "AssemblyAIStreamingTests",
+            dependencies: ["AssemblyAIStreaming"]
         ),
         .testTarget(
             name: "AssemblyAI_AHCTests",
@@ -68,8 +89,10 @@ let swiftSettings: [SwiftSetting] = [
     .enableUpcomingFeature("BareSlashRegexLiterals"),
     // -warn-concurrency becomes
     .enableUpcomingFeature("StrictConcurrency"),
-    .unsafeFlags(["-enable-actor-data-race-checks"],
-        .when(configuration: .debug)),
+    .unsafeFlags(
+        ["-enable-actor-data-race-checks"],
+        .when(configuration: .debug)
+    ),
 ]
 
 for target in package.targets {

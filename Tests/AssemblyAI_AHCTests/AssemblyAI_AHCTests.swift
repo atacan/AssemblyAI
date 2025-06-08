@@ -1,4 +1,5 @@
 import AsyncHTTPClient
+import AssemblyAICommon
 import Foundation
 import HTTPTypes
 import OpenAPIAsyncHTTPClient
