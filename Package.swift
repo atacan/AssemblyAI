@@ -15,6 +15,10 @@ let package = Package(
             targets: ["AssemblyAI"]
         ),
         .library(
+            name: "AssemblyAIStreaming",
+            targets: ["AssemblyAIStreaming"]
+        ),
+        .library(
             name: "AssemblyAI_AHC",
             targets: ["AssemblyAI_AHC"]
         ),
