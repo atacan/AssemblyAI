@@ -112,3 +112,154 @@ components:
         details:
           type: object
           description: Additional error details if available
+
+    # Added from USM file
+    AudioChunk:
+      type: string
+      format: byte
+      description: Client sends audio data as a base64-encoded string within a JSON object.
+    UpdateConfigurationPayload:
+      type: object
+      properties:
+        type:
+          type: string
+        end_of_turn_confidence_threshold:
+          type: number
+          format: float
+          nullable: true
+          description: Confidence threshold (0-1) for detecting end of turn.
+        min_end_of_turn_silence_when_confident:
+          type: integer
+          nullable: true
+          description: Minimum silence duration in ms when confident about end of turn.
+        max_turn_silence:
+          type: integer
+          nullable: true
+          description: The maximum amount of silence allowed in a turn before end of turn is triggered.
+      required:
+        - type
+
+    ForceEndpointPayload:
+      type: object
+      properties:
+        type:
+          type: string
+      required:
+        - type
+
+    SessionTerminationPayload:
+      type: object
+      properties:
+        type:
+          type: string
+      required:
+        - type
+
+    SessionBeginsPayload:
+      type: object
+      properties:
+        type:
+          type: string
+          description: Identifies the type of the message.
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the streaming session.
+        expires_at:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp indicating when the session will expire.
+      required:
+        - type
+        - id
+        - expires_at
+
+    Word:
+      type: object
+      properties:
+        text:
+          type: string
+          description: The transcribed word.
+        start:
+          type: integer
+          description: Start time in milliseconds relative to the beginning of the audio stream.
+          format: ms
+        end:
+          type: integer
+          description: End time in milliseconds relative to the beginning of the audio stream.
+          format: ms
+        confidence:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+          description: Confidence score for the word (0.0 to 1.0).
+        word_is_final:
+          type: boolean
+          description: Whether the word is final.
+      required:
+        - text
+        - start
+        - end
+        - confidence
+        - word_is_final
+
+    TurnPayload:
+      type: object
+      properties:
+        type:
+          type: string
+        turn_order:
+          type: integer
+          description: Order of this turn in the conversation.
+        turn_is_formatted:
+          type: boolean
+          description: Whether this turn has been formatted.
+        end_of_turn:
+          type: boolean
+          description: Whether this marks the end of a turn.
+        transcript:
+          type: string
+          description: Transcript of all finalized words in the turn.
+        end_of_turn_confidence:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+          description: The confidence score that this is the end of a turn, between 0.0 (low confidence) and 1.0 (high confidence).
+        words:
+          type: array
+          items:
+            $ref: "#/components/schemas/Word"
+          description: Array of word-level details for this turn.
+      required:
+        - type
+        - turn_order
+        - turn_is_formatted
+        - end_of_turn
+        - transcript
+        - end_of_turn_confidence
+        - words
+
+    TerminationPayload:
+      type: object
+      properties:
+        type:
+          type: string
+          description: Indicates the session has been terminated.
+        audio_duration_seconds:
+          type: integer
+          description: Duration of the audio in seconds.
+        session_duration_seconds:
+          type: integer
+          description: Duration of the session in seconds.
+      required:
+        - type
+        - audio_duration_seconds
+        - session_duration_seconds
+
+    ReceivePayload:
+      oneOf:
+        - $ref: "#/components/schemas/SessionBeginsPayload"
+        - $ref: "#/components/schemas/TurnPayload"
+        - $ref: "#/components/schemas/TerminationPayload"
