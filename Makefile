@@ -16,11 +16,12 @@ SWIFT_FORMAT_TARGETS := ./Sources ./Tests
 # Docker Settings
 DOCKER_IMAGE := swift:latest
 
-# Visuals
-RED    := \033[31m
-GREEN  := \033[32m
-YELLOW := \033[33m
-RESET  := \033[0m
+# Visuals: Use tput to get the actual raw color codes
+# This works reliably on macOS and Linux without needing 'echo -e'
+RED    := $(shell tput -Txterm setaf 1)
+GREEN  := $(shell tput -Txterm setaf 2)
+YELLOW := $(shell tput -Txterm setaf 3)
+RESET  := $(shell tput -Txterm sgr0)
 
 # ------------------------------------------------------------------------------
 # Meta Targets
