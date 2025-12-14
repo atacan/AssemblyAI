@@ -37,4 +37,94 @@ info:
 #   - target: "$.components.schemas.LegacyModel.properties.oldField"
 #     remove: true
 
-actions: []
+actions:
+  # Remove existing Transcript required field
+  - target: "$.components.schemas.Transcript.required"
+    remove: true
+
+  # Update Transcript schema required fields and additionalProperties
+  - target: "$.components.schemas.Transcript"
+    update:
+      required:
+        - audio_url
+        - auto_highlights
+        - id
+        - redact_pii
+        - status
+        - summarization
+        - webhook_auth
+      additionalProperties: true
+
+  # Remove existing ContentSafetyLabelsResult required field
+  - target: "$.components.schemas.ContentSafetyLabelsResult.required"
+    remove: true
+
+  # Update ContentSafetyLabelsResult schema required fields
+  - target: "$.components.schemas.ContentSafetyLabelsResult"
+    update:
+      required:
+        - status
+        - results
+        - summary
+        - severity_score_summary
+
+  # Remove required from TopicDetectionModelResult schema
+  - target: "$.components.schemas.TopicDetectionModelResult.required"
+    remove: true
+
+  # Remove existing TranscriptWord required field
+  - target: "$.components.schemas.TranscriptWord.required"
+    remove: true
+
+  # Update TranscriptWord schema required fields
+  - target: "$.components.schemas.TranscriptWord"
+    update:
+      required:
+        - confidence
+        - start
+        - end
+        - text
+
+  # Remove existing TranscriptSentence required field
+  - target: "$.components.schemas.TranscriptSentence.required"
+    remove: true
+
+  # Update TranscriptSentence schema required fields
+  - target: "$.components.schemas.TranscriptSentence"
+    update:
+      required:
+        - text
+        - start
+        - end
+        - confidence
+        - words
+
+  # Add text/html content type to subtitle endpoint response
+  - target: "$.paths./v2/transcript/{transcript_id}/{subtitle_format}.get.responses.200.content"
+    update:
+      text/html:
+        schema:
+          type: string
+
+  # Add UnprocessableContent response definition to components
+  - target: "$.components.responses"
+    update:
+      UnprocessableContent:
+        description: Bad request
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Error"
+
+  # Add 422 response to all operations in all paths
+  - target: "$.paths.*.*.responses"
+    update:
+      '422':
+        $ref: '#/components/responses/UnprocessableContent'
+
+  # Add text/plain content type to all response definitions
+  - target: "$.components.responses.*.content"
+    update:
+      text/plain:
+        schema:
+          type: string
