@@ -3431,11 +3431,11 @@ public enum Components {
             /// The status of the Content Moderation model. Either success, or unavailable in the rare case that the model failed.
             ///
             /// - Remark: Generated from `#/components/schemas/ContentSafetyLabelsResult/status`.
-            public var status: Components.Schemas.AudioIntelligenceModelStatus
+            public var status: Components.Schemas.AudioIntelligenceModelStatus?
             /// An array of results for the Content Moderation model
             ///
             /// - Remark: Generated from `#/components/schemas/ContentSafetyLabelsResult/results`.
-            public var results: [Components.Schemas.ContentSafetyLabelResult]
+            public var results: [Components.Schemas.ContentSafetyLabelResult]?
             /// A summary of the Content Moderation confidence results for the entire audio file
             ///
             /// - Remark: Generated from `#/components/schemas/ContentSafetyLabelsResult/summary`.
@@ -3459,7 +3459,7 @@ public enum Components {
             /// A summary of the Content Moderation confidence results for the entire audio file
             ///
             /// - Remark: Generated from `#/components/schemas/ContentSafetyLabelsResult/summary`.
-            public var summary: Components.Schemas.ContentSafetyLabelsResult.summaryPayload
+            public var summary: Components.Schemas.ContentSafetyLabelsResult.summaryPayload?
             /// A summary of the Content Moderation severity results for the entire audio file
             ///
             /// - Remark: Generated from `#/components/schemas/ContentSafetyLabelsResult/severity_score_summary`.
@@ -3483,7 +3483,7 @@ public enum Components {
             /// A summary of the Content Moderation severity results for the entire audio file
             ///
             /// - Remark: Generated from `#/components/schemas/ContentSafetyLabelsResult/severity_score_summary`.
-            public var severity_score_summary: Components.Schemas.ContentSafetyLabelsResult.severity_score_summaryPayload
+            public var severity_score_summary: Components.Schemas.ContentSafetyLabelsResult.severity_score_summaryPayload?
             /// Creates a new `ContentSafetyLabelsResult`.
             ///
             /// - Parameters:
@@ -3492,10 +3492,10 @@ public enum Components {
             ///   - summary: A summary of the Content Moderation confidence results for the entire audio file
             ///   - severity_score_summary: A summary of the Content Moderation severity results for the entire audio file
             public init(
-                status: Components.Schemas.AudioIntelligenceModelStatus,
-                results: [Components.Schemas.ContentSafetyLabelResult],
-                summary: Components.Schemas.ContentSafetyLabelsResult.summaryPayload,
-                severity_score_summary: Components.Schemas.ContentSafetyLabelsResult.severity_score_summaryPayload
+                status: Components.Schemas.AudioIntelligenceModelStatus? = nil,
+                results: [Components.Schemas.ContentSafetyLabelResult]? = nil,
+                summary: Components.Schemas.ContentSafetyLabelsResult.summaryPayload? = nil,
+                severity_score_summary: Components.Schemas.ContentSafetyLabelsResult.severity_score_summaryPayload? = nil
             ) {
                 self.status = status
                 self.results = results

@@ -148,3 +148,7 @@ actions:
     update:
       items:
         type: string
+
+  # Remove existing ContentSafetyLabelsResult required field, because it comes as `{}`
+  - target: "$.components.schemas.ContentSafetyLabelsResult.required"
+    remove: true

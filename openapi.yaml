@@ -3158,11 +3158,6 @@ components:
             low: 0.22863814977924785
             medium: 0.45014154926938227
             high: 0.32122030095136983
-      required:
-        - status
-        - results
-        - summary
-        - severity_score_summary
     Chapter:
       x-label: Chapter
       description: Chapter of the audio file
