@@ -128,3 +128,23 @@ actions:
       text/plain:
         schema:
           type: string
+
+  # Fix expected_languages in TranscriptOptionalParams - remove incorrect 'objects' field
+  - target: "$.components.schemas.TranscriptOptionalParams.properties.language_detection_options.properties.expected_languages.objects"
+    remove: true
+
+  # Fix expected_languages in TranscriptOptionalParams - add correct 'items' field
+  - target: "$.components.schemas.TranscriptOptionalParams.properties.language_detection_options.properties.expected_languages"
+    update:
+      items:
+        type: string
+
+  # Fix expected_languages in Transcript - remove incorrect 'objects' field
+  - target: "$.components.schemas.Transcript.properties.language_detection_options.properties.expected_languages.objects"
+    remove: true
+
+  # Fix expected_languages in Transcript - add correct 'items' field
+  - target: "$.components.schemas.Transcript.properties.language_detection_options.properties.expected_languages"
+    update:
+      items:
+        type: string
