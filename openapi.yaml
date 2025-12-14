@@ -591,6 +591,80 @@ paths:
           $ref: '#/components/responses/ServiceUnavailable'
         '504':
           $ref: '#/components/responses/GatewayTimeout'
+  /v3/token:
+    get:
+      summary: Generate temporary streaming token
+      description: |
+        Generates a temporary authentication token for use with streaming services.
+      operationId: generateStreamingToken
+      x-fern-sdk-group-name: Streaming API
+      x-fern-sdk-method-name: generateStreamingToken
+      parameters:
+        - name: expires_in_seconds
+          in: query
+          description: |
+            The desired expiration time for the token in seconds.
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 600
+            example: 60
+        - name: max_session_duration_seconds
+          in: query
+          description: |
+            The desired maximum duration for the session started using this token in seconds.
+          required: false
+          schema:
+            type: integer
+            minimum: 60
+            maximum: 10800
+            example: 600
+            default: 10800
+      responses:
+        '200':
+          description: Successfully generated temporary token
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - token
+                  - expires_in_seconds
+                properties:
+                  token:
+                    type: string
+                    description: The temporary authentication token
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+                  expires_in_seconds:
+                    type: integer
+                    description: |
+                      The actual expiration time of the token in seconds.
+                    example: 60
+        '400':
+          description: Bad Request - Invalid parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StreamingTokenError'
+        '401':
+          description: Unauthorized - Invalid or missing API key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StreamingTokenError'
+        '429':
+          description: Too Many Requests - Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StreamingTokenError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StreamingTokenError'
 components:
   links:
     GetTranscriptById:
@@ -5143,6 +5217,20 @@ components:
                 type: string
             formatted_text:
               type: string
+    StreamingTokenError:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: string
+          description: Error message describing what went wrong
+        code:
+          type: string
+          description: Error code for programmatic handling
+        details:
+          type: object
+          description: Additional error details if available
   examples:
     VttSubtitlesResponse:
       value: |

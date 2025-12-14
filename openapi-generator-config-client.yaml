@@ -7,4 +7,4 @@ generate:
 accessModifier: public
 
 additionalImports:
-  - AssemblyaiTypes
+  - AssemblyAITypes

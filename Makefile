@@ -86,7 +86,7 @@ generate: ## Generate Swift code from OpenAPI spec
 	swift run swift-openapi-generator generate \
 		--config openapi-generator-config-types.yaml \
 		openapi.yaml \
-		--output-directory Sources/AssemblyaiTypes/GeneratedSources
+		--output-directory Sources/AssemblyAITypes/GeneratedSources
 	swift run swift-openapi-generator generate \
 		--config openapi-generator-config-client.yaml \
 		openapi.yaml \
