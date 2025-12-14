@@ -933,10 +933,11 @@ components:
               x-label: Code switching confidence threshold
               description: |
                 The confidence threshold for code switching detection. If the code switching confidence is below this threshold, the transcript will be processed in the language with the highest `language_detection_confidence` score.
-              type: float
+              type: number
               minimum: 0
               maximum: 1
               default: 0.3
+              format: float
         language_confidence_threshold:
           x-label: Language confidence threshold
           description: |
@@ -2225,10 +2226,11 @@ components:
               x-label: Code switching confidence threshold
               description: |
                 The confidence threshold for code switching detection. If the code switching confidence is below this threshold, the transcript will be processed in the language with the highest `language_detection_confidence` score.
-              type: float
+              type: number
               minimum: 0
               maximum: 1
               default: 0.3
+              format: float
         language_confidence_threshold:
           x-label: Language confidence threshold
           description: |
