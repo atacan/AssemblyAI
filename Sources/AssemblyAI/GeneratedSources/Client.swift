@@ -10,7 +10,7 @@ import struct Foundation.Data
 import struct Foundation.Date
 #endif
 import HTTPTypes
-import AssemblyaiTypes
+import AssemblyAITypes
 /// AssemblyAI API
 public struct Client: APIProtocol {
     /// The underlying HTTP client.

@@ -1,4 +1,4 @@
-# OpenAPI Overlay for Assemblyai
+# OpenAPI Overlay for AssemblyAI
 # This file allows you to make manual corrections to the OpenAPI specification
 # without modifying the original file. The bootstrapper will apply this overlay
 # on top of the cleaned openapi.yaml file.
@@ -7,7 +7,7 @@
 
 overlay: 1.0.0
 info:
-  title: Assemblyai API Overlay
+  title: AssemblyAI API Overlay
   version: 1.0.0
 
 # Example actions (uncomment and modify as needed):

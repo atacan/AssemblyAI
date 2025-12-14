@@ -7,7 +7,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "Assemblyai",
+    name: "AssemblyAI",
     platforms: [
         .macOS(.v13),
         .iOS(.v16),
@@ -16,12 +16,12 @@ let package = Package(
     ],
     products: [
         .library(
-            name: "AssemblyaiTypes",
-            targets: ["AssemblyaiTypes"]
+            name: "AssemblyAITypes",
+            targets: ["AssemblyAITypes"]
         ),
         .library(
-            name: "Assemblyai",
-            targets: ["Assemblyai"]
+            name: "AssemblyAI",
+            targets: ["AssemblyAI"]
         ),
     ],
     dependencies: [
@@ -33,25 +33,25 @@ let package = Package(
     targets: [
         // Types target: Contains generated types from OpenAPI spec
         .target(
-            name: "AssemblyaiTypes",
+            name: "AssemblyAITypes",
             dependencies: [
                 .product(name: "OpenAPIRuntime", package: "swift-openapi-runtime")
             ]
         ),
         // Client target: Contains generated client and custom code
         .target(
-            name: "Assemblyai",
+            name: "AssemblyAI",
             dependencies: [
                 .product(name: "OpenAPIRuntime", package: "swift-openapi-runtime"),
                 .product(name: "OpenAPIAsyncHTTPClient", package: "swift-openapi-async-http-client"),
-                .target(name: "AssemblyaiTypes"),
+                .target(name: "AssemblyAITypes"),
             ]
         ),
         // Tests
         .testTarget(
-            name: "AssemblyaiTests",
+            name: "AssemblyAITests",
             dependencies: [
-                .target(name: "Assemblyai"),
+                .target(name: "AssemblyAI"),
                 .product(name: "UsefulThings", package: "UsefulThings"),
             ]
         ),

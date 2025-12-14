@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Skill(openapi-overlay)"
+      "Skill(openapi-overlay)",
+      "Bash(git mv:*)",
+      "Bash(swift:*)"
     ]
   }
 }

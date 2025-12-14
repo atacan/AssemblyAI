@@ -1,5 +1,5 @@
-import Assemblyai
-import AssemblyaiTypes
+import AssemblyAI
+import AssemblyAITypes
 import OpenAPIAsyncHTTPClient
 import OpenAPIRuntime
 import Testing
@@ -15,14 +15,14 @@ import struct Foundation.Date
 #endif
 
 
-struct AssemblyaiTests {
+struct AssemblyAITests {
     let client = {
         let envFileUrl = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().appendingPathComponent(".env")
         let apiKey = getEnvironmentVariable("API_KEY", from: envFileUrl)!
         let baseURL = if let BASE_URL = getEnvironmentVariable("BASE_URL", from: envFileUrl) {
             URL(string: BASE_URL)
         } else {
-            try? AssemblyaiTypes.Servers.Server1.url()
+            try? AssemblyAITypes.Servers.Server1.url()
         }
 
         return Client(
