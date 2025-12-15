@@ -6419,6 +6419,312 @@ public enum Components {
                 case details
             }
         }
+        /// Client sends audio data as a base64-encoded string within a JSON object.
+        ///
+        /// - Remark: Generated from `#/components/schemas/AudioChunk`.
+        public typealias AudioChunk = Swift.String
+        /// - Remark: Generated from `#/components/schemas/UpdateConfigurationPayload`.
+        public struct UpdateConfigurationPayload: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/UpdateConfigurationPayload/type`.
+            public var _type: Swift.String
+            /// Confidence threshold (0-1) for detecting end of turn.
+            ///
+            /// - Remark: Generated from `#/components/schemas/UpdateConfigurationPayload/end_of_turn_confidence_threshold`.
+            public var end_of_turn_confidence_threshold: Swift.Float?
+            /// Minimum silence duration in ms when confident about end of turn.
+            ///
+            /// - Remark: Generated from `#/components/schemas/UpdateConfigurationPayload/min_end_of_turn_silence_when_confident`.
+            public var min_end_of_turn_silence_when_confident: Swift.Int?
+            /// The maximum amount of silence allowed in a turn before end of turn is triggered.
+            ///
+            /// - Remark: Generated from `#/components/schemas/UpdateConfigurationPayload/max_turn_silence`.
+            public var max_turn_silence: Swift.Int?
+            /// Creates a new `UpdateConfigurationPayload`.
+            ///
+            /// - Parameters:
+            ///   - _type:
+            ///   - end_of_turn_confidence_threshold: Confidence threshold (0-1) for detecting end of turn.
+            ///   - min_end_of_turn_silence_when_confident: Minimum silence duration in ms when confident about end of turn.
+            ///   - max_turn_silence: The maximum amount of silence allowed in a turn before end of turn is triggered.
+            public init(
+                _type: Swift.String,
+                end_of_turn_confidence_threshold: Swift.Float? = nil,
+                min_end_of_turn_silence_when_confident: Swift.Int? = nil,
+                max_turn_silence: Swift.Int? = nil
+            ) {
+                self._type = _type
+                self.end_of_turn_confidence_threshold = end_of_turn_confidence_threshold
+                self.min_end_of_turn_silence_when_confident = min_end_of_turn_silence_when_confident
+                self.max_turn_silence = max_turn_silence
+            }
+            public enum CodingKeys: String, CodingKey {
+                case _type = "type"
+                case end_of_turn_confidence_threshold
+                case min_end_of_turn_silence_when_confident
+                case max_turn_silence
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/ForceEndpointPayload`.
+        public struct ForceEndpointPayload: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/ForceEndpointPayload/type`.
+            public var _type: Swift.String
+            /// Creates a new `ForceEndpointPayload`.
+            ///
+            /// - Parameters:
+            ///   - _type:
+            public init(_type: Swift.String) {
+                self._type = _type
+            }
+            public enum CodingKeys: String, CodingKey {
+                case _type = "type"
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/SessionTerminationPayload`.
+        public struct SessionTerminationPayload: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/SessionTerminationPayload/type`.
+            public var _type: Swift.String
+            /// Creates a new `SessionTerminationPayload`.
+            ///
+            /// - Parameters:
+            ///   - _type:
+            public init(_type: Swift.String) {
+                self._type = _type
+            }
+            public enum CodingKeys: String, CodingKey {
+                case _type = "type"
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/SessionBeginsPayload`.
+        public struct SessionBeginsPayload: Codable, Hashable, Sendable {
+            /// Identifies the type of the message.
+            ///
+            /// - Remark: Generated from `#/components/schemas/SessionBeginsPayload/type`.
+            public var _type: Swift.String
+            /// Unique identifier for the streaming session.
+            ///
+            /// - Remark: Generated from `#/components/schemas/SessionBeginsPayload/id`.
+            public var id: Swift.String
+            /// ISO 8601 timestamp indicating when the session will expire.
+            ///
+            /// - Remark: Generated from `#/components/schemas/SessionBeginsPayload/expires_at`.
+            public var expires_at: Foundation.Date
+            /// Creates a new `SessionBeginsPayload`.
+            ///
+            /// - Parameters:
+            ///   - _type: Identifies the type of the message.
+            ///   - id: Unique identifier for the streaming session.
+            ///   - expires_at: ISO 8601 timestamp indicating when the session will expire.
+            public init(
+                _type: Swift.String,
+                id: Swift.String,
+                expires_at: Foundation.Date
+            ) {
+                self._type = _type
+                self.id = id
+                self.expires_at = expires_at
+            }
+            public enum CodingKeys: String, CodingKey {
+                case _type = "type"
+                case id
+                case expires_at
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/Word`.
+        public struct Word: Codable, Hashable, Sendable {
+            /// The transcribed word.
+            ///
+            /// - Remark: Generated from `#/components/schemas/Word/text`.
+            public var text: Swift.String
+            /// Start time in milliseconds relative to the beginning of the audio stream.
+            ///
+            /// - Remark: Generated from `#/components/schemas/Word/start`.
+            public var start: Swift.Int
+            /// End time in milliseconds relative to the beginning of the audio stream.
+            ///
+            /// - Remark: Generated from `#/components/schemas/Word/end`.
+            public var end: Swift.Int
+            /// Confidence score for the word (0.0 to 1.0).
+            ///
+            /// - Remark: Generated from `#/components/schemas/Word/confidence`.
+            public var confidence: Swift.Float
+            /// Whether the word is final.
+            ///
+            /// - Remark: Generated from `#/components/schemas/Word/word_is_final`.
+            public var word_is_final: Swift.Bool
+            /// Creates a new `Word`.
+            ///
+            /// - Parameters:
+            ///   - text: The transcribed word.
+            ///   - start: Start time in milliseconds relative to the beginning of the audio stream.
+            ///   - end: End time in milliseconds relative to the beginning of the audio stream.
+            ///   - confidence: Confidence score for the word (0.0 to 1.0).
+            ///   - word_is_final: Whether the word is final.
+            public init(
+                text: Swift.String,
+                start: Swift.Int,
+                end: Swift.Int,
+                confidence: Swift.Float,
+                word_is_final: Swift.Bool
+            ) {
+                self.text = text
+                self.start = start
+                self.end = end
+                self.confidence = confidence
+                self.word_is_final = word_is_final
+            }
+            public enum CodingKeys: String, CodingKey {
+                case text
+                case start
+                case end
+                case confidence
+                case word_is_final
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/TurnPayload`.
+        public struct TurnPayload: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/TurnPayload/type`.
+            public var _type: Swift.String
+            /// Order of this turn in the conversation.
+            ///
+            /// - Remark: Generated from `#/components/schemas/TurnPayload/turn_order`.
+            public var turn_order: Swift.Int
+            /// Whether this turn has been formatted.
+            ///
+            /// - Remark: Generated from `#/components/schemas/TurnPayload/turn_is_formatted`.
+            public var turn_is_formatted: Swift.Bool
+            /// Whether this marks the end of a turn.
+            ///
+            /// - Remark: Generated from `#/components/schemas/TurnPayload/end_of_turn`.
+            public var end_of_turn: Swift.Bool
+            /// Transcript of all finalized words in the turn.
+            ///
+            /// - Remark: Generated from `#/components/schemas/TurnPayload/transcript`.
+            public var transcript: Swift.String
+            /// The confidence score that this is the end of a turn, between 0.0 (low confidence) and 1.0 (high confidence).
+            ///
+            /// - Remark: Generated from `#/components/schemas/TurnPayload/end_of_turn_confidence`.
+            public var end_of_turn_confidence: Swift.Float
+            /// Array of word-level details for this turn.
+            ///
+            /// - Remark: Generated from `#/components/schemas/TurnPayload/words`.
+            public var words: [Components.Schemas.Word]
+            /// Creates a new `TurnPayload`.
+            ///
+            /// - Parameters:
+            ///   - _type:
+            ///   - turn_order: Order of this turn in the conversation.
+            ///   - turn_is_formatted: Whether this turn has been formatted.
+            ///   - end_of_turn: Whether this marks the end of a turn.
+            ///   - transcript: Transcript of all finalized words in the turn.
+            ///   - end_of_turn_confidence: The confidence score that this is the end of a turn, between 0.0 (low confidence) and 1.0 (high confidence).
+            ///   - words: Array of word-level details for this turn.
+            public init(
+                _type: Swift.String,
+                turn_order: Swift.Int,
+                turn_is_formatted: Swift.Bool,
+                end_of_turn: Swift.Bool,
+                transcript: Swift.String,
+                end_of_turn_confidence: Swift.Float,
+                words: [Components.Schemas.Word]
+            ) {
+                self._type = _type
+                self.turn_order = turn_order
+                self.turn_is_formatted = turn_is_formatted
+                self.end_of_turn = end_of_turn
+                self.transcript = transcript
+                self.end_of_turn_confidence = end_of_turn_confidence
+                self.words = words
+            }
+            public enum CodingKeys: String, CodingKey {
+                case _type = "type"
+                case turn_order
+                case turn_is_formatted
+                case end_of_turn
+                case transcript
+                case end_of_turn_confidence
+                case words
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/TerminationPayload`.
+        public struct TerminationPayload: Codable, Hashable, Sendable {
+            /// Indicates the session has been terminated.
+            ///
+            /// - Remark: Generated from `#/components/schemas/TerminationPayload/type`.
+            public var _type: Swift.String
+            /// Duration of the audio in seconds.
+            ///
+            /// - Remark: Generated from `#/components/schemas/TerminationPayload/audio_duration_seconds`.
+            public var audio_duration_seconds: Swift.Int
+            /// Duration of the session in seconds.
+            ///
+            /// - Remark: Generated from `#/components/schemas/TerminationPayload/session_duration_seconds`.
+            public var session_duration_seconds: Swift.Int
+            /// Creates a new `TerminationPayload`.
+            ///
+            /// - Parameters:
+            ///   - _type: Indicates the session has been terminated.
+            ///   - audio_duration_seconds: Duration of the audio in seconds.
+            ///   - session_duration_seconds: Duration of the session in seconds.
+            public init(
+                _type: Swift.String,
+                audio_duration_seconds: Swift.Int,
+                session_duration_seconds: Swift.Int
+            ) {
+                self._type = _type
+                self.audio_duration_seconds = audio_duration_seconds
+                self.session_duration_seconds = session_duration_seconds
+            }
+            public enum CodingKeys: String, CodingKey {
+                case _type = "type"
+                case audio_duration_seconds
+                case session_duration_seconds
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/ReceivePayload`.
+        @frozen public enum ReceivePayload: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/ReceivePayload/case1`.
+            case SessionBeginsPayload(Components.Schemas.SessionBeginsPayload)
+            /// - Remark: Generated from `#/components/schemas/ReceivePayload/case2`.
+            case TurnPayload(Components.Schemas.TurnPayload)
+            /// - Remark: Generated from `#/components/schemas/ReceivePayload/case3`.
+            case TerminationPayload(Components.Schemas.TerminationPayload)
+            public init(from decoder: any Decoder) throws {
+                var errors: [any Error] = []
+                do {
+                    self = .SessionBeginsPayload(try .init(from: decoder))
+                    return
+                } catch {
+                    errors.append(error)
+                }
+                do {
+                    self = .TurnPayload(try .init(from: decoder))
+                    return
+                } catch {
+                    errors.append(error)
+                }
+                do {
+                    self = .TerminationPayload(try .init(from: decoder))
+                    return
+                } catch {
+                    errors.append(error)
+                }
+                throw Swift.DecodingError.failedToDecodeOneOfSchema(
+                    type: Self.self,
+                    codingPath: decoder.codingPath,
+                    errors: errors
+                )
+            }
+            public func encode(to encoder: any Encoder) throws {
+                switch self {
+                case let .SessionBeginsPayload(value):
+                    try value.encode(to: encoder)
+                case let .TurnPayload(value):
+                    try value.encode(to: encoder)
+                case let .TerminationPayload(value):
+                    try value.encode(to: encoder)
+                }
+            }
+        }
     }
     /// Types generated from the `#/components/parameters` section of the OpenAPI document.
     public enum Parameters {}
