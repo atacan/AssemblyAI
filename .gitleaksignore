@@ -1,0 +1,6 @@
+# Example token in OpenAPI specification (not a real secret)
+# Format: commit:file:rule:line
+f2cc36b6f4323a996db9909d1f6bec4205422ef8:openapi.yaml:generic-api-key:4955
+985026480fe886a3517f601c801ae3d19ab75145:original_openapi.yaml:generic-api-key:5462
+65171bffb1b6add48cb743fbbca85e851a290aeb:Sources/AssemblyAI_AHC/original.yaml:generic-api-key:5215
+31517bb3a94478af4460bb35ce9479befaa0ebbb:Sources/AssemblyAI_AHC/openapi.yaml:generic-api-key:5215
