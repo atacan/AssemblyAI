@@ -3,7 +3,10 @@
     "allow": [
       "Skill(openapi-overlay)",
       "Bash(git mv:*)",
-      "Bash(swift:*)"
+      "Bash(swift:*)",
+      "Bash(gitleaks detect:*)",
+      "Bash(git branch:*)",
+      "Bash(chmod:*)"
     ]
   }
 }
