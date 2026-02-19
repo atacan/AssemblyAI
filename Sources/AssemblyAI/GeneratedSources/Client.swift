@@ -1191,6 +1191,7 @@ public struct Client: APIProtocol {
     ///
     /// <Note>To delete your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
     /// Remove the data from the transcript and mark it as deleted.
+    /// <Warning>Files uploaded via the `/upload` endpoint are immediately deleted alongside the transcript when you make a DELETE request, ensuring your data is removed from our systems right away.</Warning>
     ///
     ///
     /// - Remark: HTTP `DELETE /v2/transcript/{transcript_id}`.
@@ -2534,6 +2535,7 @@ public struct Client: APIProtocol {
     /// Get redacted audio
     ///
     /// <Note>To retrieve the redacted audio on the EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com` in the `GET` request above.</Note>
+    /// <Note>Redacted audio files are only available for 24 hours. Make sure to download the file within this time frame.</Note>
     /// Retrieve the redacted audio object containing the status and URL to the redacted audio.
     ///
     ///

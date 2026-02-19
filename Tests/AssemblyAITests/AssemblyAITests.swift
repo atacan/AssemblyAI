@@ -4,6 +4,7 @@ import OpenAPIAsyncHTTPClient
 import OpenAPIRuntime
 import Testing
 import UsefulThings
+
 #if os(Linux)
 @preconcurrency import struct Foundation.URL
 @preconcurrency import struct Foundation.Data
@@ -14,16 +15,16 @@ import struct Foundation.Data
 import struct Foundation.Date
 #endif
 
-
 struct AssemblyAITests {
     let client = {
         let envFileUrl = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().appendingPathComponent(".env")
         let apiKey = getEnvironmentVariable("API_KEY", from: envFileUrl)!
-        let baseURL = if let BASE_URL = getEnvironmentVariable("BASE_URL", from: envFileUrl) {
-            URL(string: BASE_URL)
-        } else {
-            try? AssemblyAITypes.Servers.Server1.url()
-        }
+        let baseURL =
+            if let BASE_URL = getEnvironmentVariable("BASE_URL", from: envFileUrl) {
+                URL(string: BASE_URL)
+            } else {
+                try? AssemblyAITypes.Servers.Server1.url()
+            }
 
         return Client(
             serverURL: baseURL!,
@@ -36,14 +37,27 @@ struct AssemblyAITests {
 
     @Test func testUploadFile_and_PollToTranscribe() async throws {
         // Upload the audio file to AssemblyAI
-        let audioFileUrl = URL(fileURLWithPath: "/Users/atacan/Downloads/FF0981D5-AF30-4F35-A10C-BD907650DFD2.wav")
+        let audioFileUrl = URL(fileURLWithPath: "/Users/atacan/Developer/Repositories/AssemblyAI/60s_speech.wav")
         let audioData = try Data(contentsOf: audioFileUrl)
 
         let uploadFileResponse = try await client.uploadFile(.init(body: .binary(.init(audioData))))
         let upload_url = try uploadFileResponse.ok.body.json.upload_url
 
         // Make a request to the transcription endpoint with the upload URL
-        let transcriptionResponse = try await client.createTranscript(.init(body: .json(.init(value1: .init(audio_url: upload_url), value2: .init()))))
+        let transcriptionResponse = try await client.createTranscript(
+            .init(
+                body: .json(
+                    .init(
+                        value1: .init(
+                            audio_url: upload_url
+                        ),
+                        value2: .init(
+                            speech_models: ["universal-2"]
+                        )
+                    )
+                )
+            )
+        )
         var transcript = try transcriptionResponse.ok.body.json
 
         while transcript.status != .completed {

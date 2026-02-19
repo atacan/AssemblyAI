@@ -56,6 +56,7 @@ public protocol APIProtocol: Sendable {
     ///
     /// <Note>To delete your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
     /// Remove the data from the transcript and mark it as deleted.
+    /// <Warning>Files uploaded via the `/upload` endpoint are immediately deleted alongside the transcript when you make a DELETE request, ensuring your data is removed from our systems right away.</Warning>
     ///
     ///
     /// - Remark: HTTP `DELETE /v2/transcript/{transcript_id}`.
@@ -100,6 +101,7 @@ public protocol APIProtocol: Sendable {
     /// Get redacted audio
     ///
     /// <Note>To retrieve the redacted audio on the EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com` in the `GET` request above.</Note>
+    /// <Note>Redacted audio files are only available for 24 hours. Make sure to download the file within this time frame.</Note>
     /// Retrieve the redacted audio object containing the status and URL to the redacted audio.
     ///
     ///
@@ -195,6 +197,7 @@ extension APIProtocol {
     ///
     /// <Note>To delete your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
     /// Remove the data from the transcript and mark it as deleted.
+    /// <Warning>Files uploaded via the `/upload` endpoint are immediately deleted alongside the transcript when you make a DELETE request, ensuring your data is removed from our systems right away.</Warning>
     ///
     ///
     /// - Remark: HTTP `DELETE /v2/transcript/{transcript_id}`.
@@ -283,6 +286,7 @@ extension APIProtocol {
     /// Get redacted audio
     ///
     /// <Note>To retrieve the redacted audio on the EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com` in the `GET` request above.</Note>
+    /// <Note>Redacted audio files are only available for 24 hours. Make sure to download the file within this time frame.</Note>
     /// Retrieve the redacted audio object containing the status and URL to the redacted audio.
     ///
     ///
@@ -672,6 +676,59 @@ public enum Components {
         ///
         /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams`.
         public struct TranscriptOptionalParams: Codable, Hashable, Sendable {
+            /// The point in time, in milliseconds, to stop transcribing in your media file
+            ///
+            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/audio_end_at`.
+            public var audio_end_at: Swift.Int?
+            /// The point in time, in milliseconds, to begin transcribing in your media file
+            ///
+            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/audio_start_from`.
+            public var audio_start_from: Swift.Int?
+            /// Enable [Auto Chapters](https://www.assemblyai.com/docs/models/auto-chapters), can be true or false
+            ///
+            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/auto_chapters`.
+            public var auto_chapters: Swift.Bool?
+            /// Enable Key Phrases, either true or false
+            ///
+            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/auto_highlights`.
+            public var auto_highlights: Swift.Bool?
+            /// Enable [Content Moderation](https://www.assemblyai.com/docs/models/content-moderation), can be true or false
+            ///
+            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/content_safety`.
+            public var content_safety: Swift.Bool?
+            /// The confidence threshold for the Content Moderation model. Values must be between 25 and 100.
+            ///
+            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/content_safety_confidence`.
+            public var content_safety_confidence: Swift.Int?
+            /// Customize how words are spelled and formatted using to and from values
+            ///
+            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/custom_spelling`.
+            public var custom_spelling: [Components.Schemas.TranscriptCustomSpelling]?
+            /// Transcribe Filler Words, like "umm", in your media file; can be true or false
+            ///
+            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/disfluencies`.
+            public var disfluencies: Swift.Bool?
+            /// Enable [Entity Detection](https://www.assemblyai.com/docs/models/entity-detection), can be true or false
+            ///
+            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/entity_detection`.
+            public var entity_detection: Swift.Bool?
+            /// Filter profanity from the transcribed text, can be true or false
+            ///
+            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/filter_profanity`.
+            public var filter_profanity: Swift.Bool?
+            /// Enable Text Formatting, can be true or false
+            ///
+            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/format_text`.
+            public var format_text: Swift.Bool?
+            /// Enable [Topic Detection](https://www.assemblyai.com/docs/models/topic-detection), can be true or false
+            ///
+            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/iab_categories`.
+            public var iab_categories: Swift.Bool?
+            /// Improve accuracy with up to 200 (for Universal-2) or 1000 (for Universal-3-Pro) domain-specific words or phrases (maximum 6 words per phrase).
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/keyterms_prompt`.
+            public var keyterms_prompt: [Swift.String]?
             /// The language of your audio file. Possible values are found in [Supported Languages](https://www.assemblyai.com/docs/concepts/supported-languages).
             /// The default value is 'en_us'.
             ///
@@ -735,6 +792,13 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/language_codes`.
             public var language_codes: [Components.Schemas.TranscriptLanguageCode]?
+            /// The confidence threshold for the automatically detected language.
+            /// An error will be returned if the language confidence is below this threshold.
+            /// Defaults to 0.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/language_confidence_threshold`.
+            public var language_confidence_threshold: Swift.Float?
             /// Enable [Automatic language detection](https://www.assemblyai.com/docs/models/speech-recognition#automatic-language-detection), either true or false.
             ///
             /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/language_detection`.
@@ -761,7 +825,7 @@ public enum Components {
                 ///
                 ///
                 /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/language_detection_options/code_switching_confidence_threshold`.
-                public var code_switching_confidence_threshold: Swift.Float?
+                public var code_switching_confidence_threshold: Swift.Double?
                 /// Creates a new `language_detection_optionsPayload`.
                 ///
                 /// - Parameters:
@@ -773,7 +837,7 @@ public enum Components {
                     expected_languages: [Swift.String]? = nil,
                     fallback_language: Swift.String? = nil,
                     code_switching: Swift.Bool? = nil,
-                    code_switching_confidence_threshold: Swift.Float? = nil
+                    code_switching_confidence_threshold: Swift.Double? = nil
                 ) {
                     self.expected_languages = expected_languages
                     self.fallback_language = fallback_language
@@ -801,7 +865,7 @@ public enum Components {
                         forKey: .code_switching
                     )
                     self.code_switching_confidence_threshold = try container.decodeIfPresent(
-                        Swift.Float.self,
+                        Swift.Double.self,
                         forKey: .code_switching_confidence_threshold
                     )
                     try decoder.ensureNoAdditionalProperties(knownKeys: [
@@ -816,70 +880,21 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/language_detection_options`.
             public var language_detection_options: Components.Schemas.TranscriptOptionalParams.language_detection_optionsPayload?
-            /// The confidence threshold for the automatically detected language.
-            /// An error will be returned if the language confidence is below this threshold.
-            /// Defaults to 0.
-            ///
-            ///
-            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/language_confidence_threshold`.
-            public var language_confidence_threshold: Swift.Float?
-            /// The speech model to use for the transcription. When `null`, the `universal` model is used.
-            ///
-            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/speech_model`.
-            @available(*, deprecated)
-            public var speech_model: Components.Schemas.SpeechModel?
-            /// List multiple speech models in priority order, allowing our system to automatically route your audio to the best available option.
-            ///
-            ///
-            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/speech_models`.
-            public var speech_models: [Components.Schemas.SpeechModel]?
-            /// Enable Automatic Punctuation, can be true or false
-            ///
-            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/punctuate`.
-            public var punctuate: Swift.Bool?
-            /// Enable Text Formatting, can be true or false
-            ///
-            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/format_text`.
-            public var format_text: Swift.Bool?
-            /// Transcribe Filler Words, like "umm", in your media file; can be true or false
-            ///
-            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/disfluencies`.
-            public var disfluencies: Swift.Bool?
             /// Enable [Multichannel](https://www.assemblyai.com/docs/models/speech-recognition#multichannel-transcription) transcription, can be true or false.
             ///
             /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/multichannel`.
             public var multichannel: Swift.Bool?
-            /// The URL to which we send webhook requests.
-            /// We sends two different types of webhook requests.
-            /// One request when a transcript is completed or failed, and one request when the redacted audio is ready if redact_pii_audio is enabled.
+            /// Provide natural language prompting of up to 1,500 words of contextual information to the model.
+            ///
+            /// Note: This parameter is only supported for the Universal-3-Pro model.
             ///
             ///
-            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/webhook_url`.
-            public var webhook_url: Swift.String?
-            /// The header name to be sent with the transcript completed or failed webhook requests
+            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/prompt`.
+            public var prompt: Swift.String?
+            /// Enable Automatic Punctuation, can be true or false
             ///
-            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/webhook_auth_header_name`.
-            public var webhook_auth_header_name: Swift.String?
-            /// The header value to send back with the transcript completed or failed webhook requests for added security
-            ///
-            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/webhook_auth_header_value`.
-            public var webhook_auth_header_value: Swift.String?
-            /// Enable Key Phrases, either true or false
-            ///
-            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/auto_highlights`.
-            public var auto_highlights: Swift.Bool?
-            /// The point in time, in milliseconds, to begin transcribing in your media file
-            ///
-            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/audio_start_from`.
-            public var audio_start_from: Swift.Int?
-            /// The point in time, in milliseconds, to stop transcribing in your media file
-            ///
-            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/audio_end_at`.
-            public var audio_end_at: Swift.Int?
-            /// Filter profanity from the transcribed text, can be true or false
-            ///
-            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/filter_profanity`.
-            public var filter_profanity: Swift.Bool?
+            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/punctuate`.
+            public var punctuate: Swift.Bool?
             /// Redact PII from the transcribed text using the Redact PII model, can be true or false
             ///
             /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/redact_pii`.
@@ -888,18 +903,6 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/redact_pii_audio`.
             public var redact_pii_audio: Swift.Bool?
-            /// Controls the filetype of the audio created by redact_pii_audio. Currently supports mp3 (default) and wav. See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more details.
-            ///
-            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/redact_pii_audio_quality`.
-            public var redact_pii_audio_quality: Components.Schemas.RedactPiiAudioQuality?
-            /// The list of PII Redaction policies to enable. See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more details.
-            ///
-            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/redact_pii_policies`.
-            public var redact_pii_policies: [Components.Schemas.PiiPolicy]?
-            /// The replacement logic for detected PII, can be `entity_type` or `hash`. See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more details.
-            ///
-            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/redact_pii_sub`.
-            public var redact_pii_sub: Components.Schemas.SubstitutionPolicy?
             /// Specify options for PII redacted audio files.
             ///
             /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/redact_pii_audio_options`.
@@ -933,14 +936,26 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/redact_pii_audio_options`.
             public var redact_pii_audio_options: Components.Schemas.TranscriptOptionalParams.redact_pii_audio_optionsPayload?
+            /// Controls the filetype of the audio created by redact_pii_audio. Currently supports mp3 (default) and wav. See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more details.
+            ///
+            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/redact_pii_audio_quality`.
+            public var redact_pii_audio_quality: Components.Schemas.RedactPiiAudioQuality?
+            /// The list of PII Redaction policies to enable. See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more details.
+            ///
+            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/redact_pii_policies`.
+            public var redact_pii_policies: [Components.Schemas.PiiPolicy]?
+            /// The replacement logic for detected PII, can be `entity_type` or `hash`. See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more details.
+            ///
+            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/redact_pii_sub`.
+            public var redact_pii_sub: Components.Schemas.SubstitutionPolicy?
+            /// Enable [Sentiment Analysis](https://www.assemblyai.com/docs/models/sentiment-analysis), can be true or false
+            ///
+            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/sentiment_analysis`.
+            public var sentiment_analysis: Swift.Bool?
             /// Enable [Speaker diarization](https://www.assemblyai.com/docs/models/speaker-diarization), can be true or false
             ///
             /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/speaker_labels`.
             public var speaker_labels: Swift.Bool?
-            /// Tells the speaker label model how many speakers it should attempt to identify. See [Speaker diarization](https://www.assemblyai.com/docs/models/speaker-diarization) for more details.
-            ///
-            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/speakers_expected`.
-            public var speakers_expected: Swift.Int?
             /// Specify options for speaker diarization.
             ///
             /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/speaker_options`.
@@ -991,72 +1006,21 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/speaker_options`.
             public var speaker_options: Components.Schemas.TranscriptOptionalParams.speaker_optionsPayload?
-            /// Enable [Content Moderation](https://www.assemblyai.com/docs/models/content-moderation), can be true or false
+            /// Tells the speaker label model how many speakers it should attempt to identify. See [Speaker diarization](https://www.assemblyai.com/docs/models/speaker-diarization) for more details.
             ///
-            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/content_safety`.
-            public var content_safety: Swift.Bool?
-            /// The confidence threshold for the Content Moderation model. Values must be between 25 and 100.
-            ///
-            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/content_safety_confidence`.
-            public var content_safety_confidence: Swift.Int?
-            /// Enable [Topic Detection](https://www.assemblyai.com/docs/models/topic-detection), can be true or false
-            ///
-            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/iab_categories`.
-            public var iab_categories: Swift.Bool?
-            /// Customize how words are spelled and formatted using to and from values
-            ///
-            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/custom_spelling`.
-            public var custom_spelling: [Components.Schemas.TranscriptCustomSpelling]?
-            /// Improve accuracy with up to 200 (for Universal) or 1000 (for Slam-1) domain-specific words or phrases (maximum 6 words per phrase).
+            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/speakers_expected`.
+            public var speakers_expected: Swift.Int?
+            /// List multiple speech models in priority order, allowing our system to automatically route your audio to the best available option.
             ///
             ///
-            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/keyterms_prompt`.
-            public var keyterms_prompt: [Swift.String]?
-            /// This parameter does not currently have any functionality attached to it.
-            ///
-            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/prompt`.
-            @available(*, deprecated)
-            public var prompt: Swift.String?
-            /// Enable [Sentiment Analysis](https://www.assemblyai.com/docs/models/sentiment-analysis), can be true or false
-            ///
-            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/sentiment_analysis`.
-            public var sentiment_analysis: Swift.Bool?
-            /// Enable [Auto Chapters](https://www.assemblyai.com/docs/models/auto-chapters), can be true or false
-            ///
-            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/auto_chapters`.
-            public var auto_chapters: Swift.Bool?
-            /// Enable [Entity Detection](https://www.assemblyai.com/docs/models/entity-detection), can be true or false
-            ///
-            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/entity_detection`.
-            public var entity_detection: Swift.Bool?
+            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/speech_models`.
+            public var speech_models: [Components.Schemas.SpeechModel]
             /// Reject audio files that contain less than this fraction of speech.
             /// Valid values are in the range [0, 1] inclusive.
             ///
             ///
             /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/speech_threshold`.
             public var speech_threshold: Swift.Float?
-            /// Enable [Summarization](https://www.assemblyai.com/docs/models/summarization), can be true or false
-            ///
-            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/summarization`.
-            public var summarization: Swift.Bool?
-            /// The model to summarize the transcript
-            ///
-            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/summary_model`.
-            public var summary_model: Components.Schemas.SummaryModel?
-            /// The type of summary
-            ///
-            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/summary_type`.
-            public var summary_type: Components.Schemas.SummaryType?
-            /// Enable custom topics, either true or false
-            ///
-            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/custom_topics`.
-            @available(*, deprecated)
-            public var custom_topics: Swift.Bool?
-            /// The list of custom topics
-            ///
-            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/topics`.
-            @available(*, deprecated)
-            public var topics: [Swift.String]?
             /// Enable speech understanding tasks like translation, speaker identification, and custom formatting
             ///
             /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/speech_understanding`.
@@ -1123,188 +1087,294 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/speech_understanding`.
             public var speech_understanding: Components.Schemas.TranscriptOptionalParams.speech_understandingPayload?
+            /// Enable [Summarization](https://www.assemblyai.com/docs/models/summarization), can be true or false
+            ///
+            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/summarization`.
+            public var summarization: Swift.Bool?
+            /// The model to summarize the transcript
+            ///
+            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/summary_model`.
+            public var summary_model: Components.Schemas.SummaryModel?
+            /// The type of summary
+            ///
+            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/summary_type`.
+            public var summary_type: Components.Schemas.SummaryType?
+            /// Control the amount of randomness injected into the model's response.
+            ///
+            /// Note: This parameter can only be used with the Universal-3-Pro model.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/temperature`.
+            public var temperature: Swift.Double?
+            /// The header name to be sent with the transcript completed or failed webhook requests
+            ///
+            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/webhook_auth_header_name`.
+            public var webhook_auth_header_name: Swift.String?
+            /// The header value to send back with the transcript completed or failed webhook requests for added security
+            ///
+            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/webhook_auth_header_value`.
+            public var webhook_auth_header_value: Swift.String?
+            /// The URL to which we send webhook requests.
+            /// We sends two different types of webhook requests.
+            /// One request when a transcript is completed or failed, and one request when the redacted audio is ready if redact_pii_audio is enabled.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/webhook_url`.
+            public var webhook_url: Swift.String?
+            /// This parameter does not currently have any functionality attached to it.
+            ///
+            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/custom_topics`.
+            @available(*, deprecated)
+            public var custom_topics: Swift.Bool?
+            /// This parameter has been replaced with the `speech_models` parameter, learn more about the `speech_models` parameter [here](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model).
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/speech_model`.
+            @available(*, deprecated)
+            public var speech_model: Components.Schemas.SpeechModel?
+            /// This parameter does not currently have any functionality attached to it.
+            ///
+            /// - Remark: Generated from `#/components/schemas/TranscriptOptionalParams/topics`.
+            @available(*, deprecated)
+            public var topics: [Swift.String]?
             /// Creates a new `TranscriptOptionalParams`.
             ///
             /// - Parameters:
+            ///   - audio_end_at: The point in time, in milliseconds, to stop transcribing in your media file
+            ///   - audio_start_from: The point in time, in milliseconds, to begin transcribing in your media file
+            ///   - auto_chapters: Enable [Auto Chapters](https://www.assemblyai.com/docs/models/auto-chapters), can be true or false
+            ///   - auto_highlights: Enable Key Phrases, either true or false
+            ///   - content_safety: Enable [Content Moderation](https://www.assemblyai.com/docs/models/content-moderation), can be true or false
+            ///   - content_safety_confidence: The confidence threshold for the Content Moderation model. Values must be between 25 and 100.
+            ///   - custom_spelling: Customize how words are spelled and formatted using to and from values
+            ///   - disfluencies: Transcribe Filler Words, like "umm", in your media file; can be true or false
+            ///   - entity_detection: Enable [Entity Detection](https://www.assemblyai.com/docs/models/entity-detection), can be true or false
+            ///   - filter_profanity: Filter profanity from the transcribed text, can be true or false
+            ///   - format_text: Enable Text Formatting, can be true or false
+            ///   - iab_categories: Enable [Topic Detection](https://www.assemblyai.com/docs/models/topic-detection), can be true or false
+            ///   - keyterms_prompt: Improve accuracy with up to 200 (for Universal-2) or 1000 (for Universal-3-Pro) domain-specific words or phrases (maximum 6 words per phrase).
             ///   - language_code: The language of your audio file. Possible values are found in [Supported Languages](https://www.assemblyai.com/docs/concepts/supported-languages).
             ///   - language_codes: The language codes of your audio file. Used for [Code switching](/docs/speech-to-text/pre-recorded-audio/code-switching)
+            ///   - language_confidence_threshold: The confidence threshold for the automatically detected language.
             ///   - language_detection: Enable [Automatic language detection](https://www.assemblyai.com/docs/models/speech-recognition#automatic-language-detection), either true or false.
             ///   - language_detection_options: Specify options for Automatic Language Detection.
-            ///   - language_confidence_threshold: The confidence threshold for the automatically detected language.
-            ///   - speech_model: The speech model to use for the transcription. When `null`, the `universal` model is used.
-            ///   - speech_models: List multiple speech models in priority order, allowing our system to automatically route your audio to the best available option.
-            ///   - punctuate: Enable Automatic Punctuation, can be true or false
-            ///   - format_text: Enable Text Formatting, can be true or false
-            ///   - disfluencies: Transcribe Filler Words, like "umm", in your media file; can be true or false
             ///   - multichannel: Enable [Multichannel](https://www.assemblyai.com/docs/models/speech-recognition#multichannel-transcription) transcription, can be true or false.
-            ///   - webhook_url: The URL to which we send webhook requests.
-            ///   - webhook_auth_header_name: The header name to be sent with the transcript completed or failed webhook requests
-            ///   - webhook_auth_header_value: The header value to send back with the transcript completed or failed webhook requests for added security
-            ///   - auto_highlights: Enable Key Phrases, either true or false
-            ///   - audio_start_from: The point in time, in milliseconds, to begin transcribing in your media file
-            ///   - audio_end_at: The point in time, in milliseconds, to stop transcribing in your media file
-            ///   - filter_profanity: Filter profanity from the transcribed text, can be true or false
+            ///   - prompt: Provide natural language prompting of up to 1,500 words of contextual information to the model.
+            ///   - punctuate: Enable Automatic Punctuation, can be true or false
             ///   - redact_pii: Redact PII from the transcribed text using the Redact PII model, can be true or false
             ///   - redact_pii_audio: Generate a copy of the original media file with spoken PII "beeped" out, can be true or false. See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more details.
+            ///   - redact_pii_audio_options: Specify options for PII redacted audio files.
             ///   - redact_pii_audio_quality: Controls the filetype of the audio created by redact_pii_audio. Currently supports mp3 (default) and wav. See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more details.
             ///   - redact_pii_policies: The list of PII Redaction policies to enable. See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more details.
             ///   - redact_pii_sub: The replacement logic for detected PII, can be `entity_type` or `hash`. See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more details.
-            ///   - redact_pii_audio_options: Specify options for PII redacted audio files.
-            ///   - speaker_labels: Enable [Speaker diarization](https://www.assemblyai.com/docs/models/speaker-diarization), can be true or false
-            ///   - speakers_expected: Tells the speaker label model how many speakers it should attempt to identify. See [Speaker diarization](https://www.assemblyai.com/docs/models/speaker-diarization) for more details.
-            ///   - speaker_options: Specify options for speaker diarization.
-            ///   - content_safety: Enable [Content Moderation](https://www.assemblyai.com/docs/models/content-moderation), can be true or false
-            ///   - content_safety_confidence: The confidence threshold for the Content Moderation model. Values must be between 25 and 100.
-            ///   - iab_categories: Enable [Topic Detection](https://www.assemblyai.com/docs/models/topic-detection), can be true or false
-            ///   - custom_spelling: Customize how words are spelled and formatted using to and from values
-            ///   - keyterms_prompt: Improve accuracy with up to 200 (for Universal) or 1000 (for Slam-1) domain-specific words or phrases (maximum 6 words per phrase).
-            ///   - prompt: This parameter does not currently have any functionality attached to it.
             ///   - sentiment_analysis: Enable [Sentiment Analysis](https://www.assemblyai.com/docs/models/sentiment-analysis), can be true or false
-            ///   - auto_chapters: Enable [Auto Chapters](https://www.assemblyai.com/docs/models/auto-chapters), can be true or false
-            ///   - entity_detection: Enable [Entity Detection](https://www.assemblyai.com/docs/models/entity-detection), can be true or false
+            ///   - speaker_labels: Enable [Speaker diarization](https://www.assemblyai.com/docs/models/speaker-diarization), can be true or false
+            ///   - speaker_options: Specify options for speaker diarization.
+            ///   - speakers_expected: Tells the speaker label model how many speakers it should attempt to identify. See [Speaker diarization](https://www.assemblyai.com/docs/models/speaker-diarization) for more details.
+            ///   - speech_models: List multiple speech models in priority order, allowing our system to automatically route your audio to the best available option.
             ///   - speech_threshold: Reject audio files that contain less than this fraction of speech.
+            ///   - speech_understanding: Enable speech understanding tasks like translation, speaker identification, and custom formatting
             ///   - summarization: Enable [Summarization](https://www.assemblyai.com/docs/models/summarization), can be true or false
             ///   - summary_model: The model to summarize the transcript
             ///   - summary_type: The type of summary
-            ///   - custom_topics: Enable custom topics, either true or false
-            ///   - topics: The list of custom topics
-            ///   - speech_understanding: Enable speech understanding tasks like translation, speaker identification, and custom formatting
+            ///   - temperature: Control the amount of randomness injected into the model's response.
+            ///   - webhook_auth_header_name: The header name to be sent with the transcript completed or failed webhook requests
+            ///   - webhook_auth_header_value: The header value to send back with the transcript completed or failed webhook requests for added security
+            ///   - webhook_url: The URL to which we send webhook requests.
+            ///   - custom_topics: This parameter does not currently have any functionality attached to it.
+            ///   - speech_model: This parameter has been replaced with the `speech_models` parameter, learn more about the `speech_models` parameter [here](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model).
+            ///   - topics: This parameter does not currently have any functionality attached to it.
             public init(
+                audio_end_at: Swift.Int? = nil,
+                audio_start_from: Swift.Int? = nil,
+                auto_chapters: Swift.Bool? = nil,
+                auto_highlights: Swift.Bool? = nil,
+                content_safety: Swift.Bool? = nil,
+                content_safety_confidence: Swift.Int? = nil,
+                custom_spelling: [Components.Schemas.TranscriptCustomSpelling]? = nil,
+                disfluencies: Swift.Bool? = nil,
+                entity_detection: Swift.Bool? = nil,
+                filter_profanity: Swift.Bool? = nil,
+                format_text: Swift.Bool? = nil,
+                iab_categories: Swift.Bool? = nil,
+                keyterms_prompt: [Swift.String]? = nil,
                 language_code: Components.Schemas.TranscriptOptionalParams.language_codePayload? = nil,
                 language_codes: [Components.Schemas.TranscriptLanguageCode]? = nil,
+                language_confidence_threshold: Swift.Float? = nil,
                 language_detection: Swift.Bool? = nil,
                 language_detection_options: Components.Schemas.TranscriptOptionalParams.language_detection_optionsPayload? = nil,
-                language_confidence_threshold: Swift.Float? = nil,
-                speech_model: Components.Schemas.SpeechModel? = nil,
-                speech_models: [Components.Schemas.SpeechModel]? = nil,
-                punctuate: Swift.Bool? = nil,
-                format_text: Swift.Bool? = nil,
-                disfluencies: Swift.Bool? = nil,
                 multichannel: Swift.Bool? = nil,
-                webhook_url: Swift.String? = nil,
-                webhook_auth_header_name: Swift.String? = nil,
-                webhook_auth_header_value: Swift.String? = nil,
-                auto_highlights: Swift.Bool? = nil,
-                audio_start_from: Swift.Int? = nil,
-                audio_end_at: Swift.Int? = nil,
-                filter_profanity: Swift.Bool? = nil,
+                prompt: Swift.String? = nil,
+                punctuate: Swift.Bool? = nil,
                 redact_pii: Swift.Bool? = nil,
                 redact_pii_audio: Swift.Bool? = nil,
+                redact_pii_audio_options: Components.Schemas.TranscriptOptionalParams.redact_pii_audio_optionsPayload? = nil,
                 redact_pii_audio_quality: Components.Schemas.RedactPiiAudioQuality? = nil,
                 redact_pii_policies: [Components.Schemas.PiiPolicy]? = nil,
                 redact_pii_sub: Components.Schemas.SubstitutionPolicy? = nil,
-                redact_pii_audio_options: Components.Schemas.TranscriptOptionalParams.redact_pii_audio_optionsPayload? = nil,
-                speaker_labels: Swift.Bool? = nil,
-                speakers_expected: Swift.Int? = nil,
-                speaker_options: Components.Schemas.TranscriptOptionalParams.speaker_optionsPayload? = nil,
-                content_safety: Swift.Bool? = nil,
-                content_safety_confidence: Swift.Int? = nil,
-                iab_categories: Swift.Bool? = nil,
-                custom_spelling: [Components.Schemas.TranscriptCustomSpelling]? = nil,
-                keyterms_prompt: [Swift.String]? = nil,
-                prompt: Swift.String? = nil,
                 sentiment_analysis: Swift.Bool? = nil,
-                auto_chapters: Swift.Bool? = nil,
-                entity_detection: Swift.Bool? = nil,
+                speaker_labels: Swift.Bool? = nil,
+                speaker_options: Components.Schemas.TranscriptOptionalParams.speaker_optionsPayload? = nil,
+                speakers_expected: Swift.Int? = nil,
+                speech_models: [Components.Schemas.SpeechModel],
                 speech_threshold: Swift.Float? = nil,
+                speech_understanding: Components.Schemas.TranscriptOptionalParams.speech_understandingPayload? = nil,
                 summarization: Swift.Bool? = nil,
                 summary_model: Components.Schemas.SummaryModel? = nil,
                 summary_type: Components.Schemas.SummaryType? = nil,
+                temperature: Swift.Double? = nil,
+                webhook_auth_header_name: Swift.String? = nil,
+                webhook_auth_header_value: Swift.String? = nil,
+                webhook_url: Swift.String? = nil,
                 custom_topics: Swift.Bool? = nil,
-                topics: [Swift.String]? = nil,
-                speech_understanding: Components.Schemas.TranscriptOptionalParams.speech_understandingPayload? = nil
+                speech_model: Components.Schemas.SpeechModel? = nil,
+                topics: [Swift.String]? = nil
             ) {
+                self.audio_end_at = audio_end_at
+                self.audio_start_from = audio_start_from
+                self.auto_chapters = auto_chapters
+                self.auto_highlights = auto_highlights
+                self.content_safety = content_safety
+                self.content_safety_confidence = content_safety_confidence
+                self.custom_spelling = custom_spelling
+                self.disfluencies = disfluencies
+                self.entity_detection = entity_detection
+                self.filter_profanity = filter_profanity
+                self.format_text = format_text
+                self.iab_categories = iab_categories
+                self.keyterms_prompt = keyterms_prompt
                 self.language_code = language_code
                 self.language_codes = language_codes
+                self.language_confidence_threshold = language_confidence_threshold
                 self.language_detection = language_detection
                 self.language_detection_options = language_detection_options
-                self.language_confidence_threshold = language_confidence_threshold
-                self.speech_model = speech_model
-                self.speech_models = speech_models
-                self.punctuate = punctuate
-                self.format_text = format_text
-                self.disfluencies = disfluencies
                 self.multichannel = multichannel
-                self.webhook_url = webhook_url
-                self.webhook_auth_header_name = webhook_auth_header_name
-                self.webhook_auth_header_value = webhook_auth_header_value
-                self.auto_highlights = auto_highlights
-                self.audio_start_from = audio_start_from
-                self.audio_end_at = audio_end_at
-                self.filter_profanity = filter_profanity
+                self.prompt = prompt
+                self.punctuate = punctuate
                 self.redact_pii = redact_pii
                 self.redact_pii_audio = redact_pii_audio
+                self.redact_pii_audio_options = redact_pii_audio_options
                 self.redact_pii_audio_quality = redact_pii_audio_quality
                 self.redact_pii_policies = redact_pii_policies
                 self.redact_pii_sub = redact_pii_sub
-                self.redact_pii_audio_options = redact_pii_audio_options
-                self.speaker_labels = speaker_labels
-                self.speakers_expected = speakers_expected
-                self.speaker_options = speaker_options
-                self.content_safety = content_safety
-                self.content_safety_confidence = content_safety_confidence
-                self.iab_categories = iab_categories
-                self.custom_spelling = custom_spelling
-                self.keyterms_prompt = keyterms_prompt
-                self.prompt = prompt
                 self.sentiment_analysis = sentiment_analysis
-                self.auto_chapters = auto_chapters
-                self.entity_detection = entity_detection
+                self.speaker_labels = speaker_labels
+                self.speaker_options = speaker_options
+                self.speakers_expected = speakers_expected
+                self.speech_models = speech_models
                 self.speech_threshold = speech_threshold
+                self.speech_understanding = speech_understanding
                 self.summarization = summarization
                 self.summary_model = summary_model
                 self.summary_type = summary_type
+                self.temperature = temperature
+                self.webhook_auth_header_name = webhook_auth_header_name
+                self.webhook_auth_header_value = webhook_auth_header_value
+                self.webhook_url = webhook_url
                 self.custom_topics = custom_topics
+                self.speech_model = speech_model
                 self.topics = topics
-                self.speech_understanding = speech_understanding
             }
             public enum CodingKeys: String, CodingKey {
+                case audio_end_at
+                case audio_start_from
+                case auto_chapters
+                case auto_highlights
+                case content_safety
+                case content_safety_confidence
+                case custom_spelling
+                case disfluencies
+                case entity_detection
+                case filter_profanity
+                case format_text
+                case iab_categories
+                case keyterms_prompt
                 case language_code
                 case language_codes
+                case language_confidence_threshold
                 case language_detection
                 case language_detection_options
-                case language_confidence_threshold
-                case speech_model
-                case speech_models
-                case punctuate
-                case format_text
-                case disfluencies
                 case multichannel
-                case webhook_url
-                case webhook_auth_header_name
-                case webhook_auth_header_value
-                case auto_highlights
-                case audio_start_from
-                case audio_end_at
-                case filter_profanity
+                case prompt
+                case punctuate
                 case redact_pii
                 case redact_pii_audio
+                case redact_pii_audio_options
                 case redact_pii_audio_quality
                 case redact_pii_policies
                 case redact_pii_sub
-                case redact_pii_audio_options
-                case speaker_labels
-                case speakers_expected
-                case speaker_options
-                case content_safety
-                case content_safety_confidence
-                case iab_categories
-                case custom_spelling
-                case keyterms_prompt
-                case prompt
                 case sentiment_analysis
-                case auto_chapters
-                case entity_detection
+                case speaker_labels
+                case speaker_options
+                case speakers_expected
+                case speech_models
                 case speech_threshold
+                case speech_understanding
                 case summarization
                 case summary_model
                 case summary_type
+                case temperature
+                case webhook_auth_header_name
+                case webhook_auth_header_value
+                case webhook_url
                 case custom_topics
+                case speech_model
                 case topics
-                case speech_understanding
             }
             public init(from decoder: any Decoder) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
+                self.audio_end_at = try container.decodeIfPresent(
+                    Swift.Int.self,
+                    forKey: .audio_end_at
+                )
+                self.audio_start_from = try container.decodeIfPresent(
+                    Swift.Int.self,
+                    forKey: .audio_start_from
+                )
+                self.auto_chapters = try container.decodeIfPresent(
+                    Swift.Bool.self,
+                    forKey: .auto_chapters
+                )
+                self.auto_highlights = try container.decodeIfPresent(
+                    Swift.Bool.self,
+                    forKey: .auto_highlights
+                )
+                self.content_safety = try container.decodeIfPresent(
+                    Swift.Bool.self,
+                    forKey: .content_safety
+                )
+                self.content_safety_confidence = try container.decodeIfPresent(
+                    Swift.Int.self,
+                    forKey: .content_safety_confidence
+                )
+                self.custom_spelling = try container.decodeIfPresent(
+                    [Components.Schemas.TranscriptCustomSpelling].self,
+                    forKey: .custom_spelling
+                )
+                self.disfluencies = try container.decodeIfPresent(
+                    Swift.Bool.self,
+                    forKey: .disfluencies
+                )
+                self.entity_detection = try container.decodeIfPresent(
+                    Swift.Bool.self,
+                    forKey: .entity_detection
+                )
+                self.filter_profanity = try container.decodeIfPresent(
+                    Swift.Bool.self,
+                    forKey: .filter_profanity
+                )
+                self.format_text = try container.decodeIfPresent(
+                    Swift.Bool.self,
+                    forKey: .format_text
+                )
+                self.iab_categories = try container.decodeIfPresent(
+                    Swift.Bool.self,
+                    forKey: .iab_categories
+                )
+                self.keyterms_prompt = try container.decodeIfPresent(
+                    [Swift.String].self,
+                    forKey: .keyterms_prompt
+                )
                 self.language_code = try container.decodeIfPresent(
                     Components.Schemas.TranscriptOptionalParams.language_codePayload.self,
                     forKey: .language_code
@@ -1312,6 +1382,10 @@ public enum Components {
                 self.language_codes = try container.decodeIfPresent(
                     [Components.Schemas.TranscriptLanguageCode].self,
                     forKey: .language_codes
+                )
+                self.language_confidence_threshold = try container.decodeIfPresent(
+                    Swift.Float.self,
+                    forKey: .language_confidence_threshold
                 )
                 self.language_detection = try container.decodeIfPresent(
                     Swift.Bool.self,
@@ -1321,61 +1395,17 @@ public enum Components {
                     Components.Schemas.TranscriptOptionalParams.language_detection_optionsPayload.self,
                     forKey: .language_detection_options
                 )
-                self.language_confidence_threshold = try container.decodeIfPresent(
-                    Swift.Float.self,
-                    forKey: .language_confidence_threshold
-                )
-                self.speech_model = try container.decodeIfPresent(
-                    Components.Schemas.SpeechModel.self,
-                    forKey: .speech_model
-                )
-                self.speech_models = try container.decodeIfPresent(
-                    [Components.Schemas.SpeechModel].self,
-                    forKey: .speech_models
-                )
-                self.punctuate = try container.decodeIfPresent(
-                    Swift.Bool.self,
-                    forKey: .punctuate
-                )
-                self.format_text = try container.decodeIfPresent(
-                    Swift.Bool.self,
-                    forKey: .format_text
-                )
-                self.disfluencies = try container.decodeIfPresent(
-                    Swift.Bool.self,
-                    forKey: .disfluencies
-                )
                 self.multichannel = try container.decodeIfPresent(
                     Swift.Bool.self,
                     forKey: .multichannel
                 )
-                self.webhook_url = try container.decodeIfPresent(
+                self.prompt = try container.decodeIfPresent(
                     Swift.String.self,
-                    forKey: .webhook_url
+                    forKey: .prompt
                 )
-                self.webhook_auth_header_name = try container.decodeIfPresent(
-                    Swift.String.self,
-                    forKey: .webhook_auth_header_name
-                )
-                self.webhook_auth_header_value = try container.decodeIfPresent(
-                    Swift.String.self,
-                    forKey: .webhook_auth_header_value
-                )
-                self.auto_highlights = try container.decodeIfPresent(
+                self.punctuate = try container.decodeIfPresent(
                     Swift.Bool.self,
-                    forKey: .auto_highlights
-                )
-                self.audio_start_from = try container.decodeIfPresent(
-                    Swift.Int.self,
-                    forKey: .audio_start_from
-                )
-                self.audio_end_at = try container.decodeIfPresent(
-                    Swift.Int.self,
-                    forKey: .audio_end_at
-                )
-                self.filter_profanity = try container.decodeIfPresent(
-                    Swift.Bool.self,
-                    forKey: .filter_profanity
+                    forKey: .punctuate
                 )
                 self.redact_pii = try container.decodeIfPresent(
                     Swift.Bool.self,
@@ -1384,6 +1414,10 @@ public enum Components {
                 self.redact_pii_audio = try container.decodeIfPresent(
                     Swift.Bool.self,
                     forKey: .redact_pii_audio
+                )
+                self.redact_pii_audio_options = try container.decodeIfPresent(
+                    Components.Schemas.TranscriptOptionalParams.redact_pii_audio_optionsPayload.self,
+                    forKey: .redact_pii_audio_options
                 )
                 self.redact_pii_audio_quality = try container.decodeIfPresent(
                     Components.Schemas.RedactPiiAudioQuality.self,
@@ -1397,61 +1431,33 @@ public enum Components {
                     Components.Schemas.SubstitutionPolicy.self,
                     forKey: .redact_pii_sub
                 )
-                self.redact_pii_audio_options = try container.decodeIfPresent(
-                    Components.Schemas.TranscriptOptionalParams.redact_pii_audio_optionsPayload.self,
-                    forKey: .redact_pii_audio_options
+                self.sentiment_analysis = try container.decodeIfPresent(
+                    Swift.Bool.self,
+                    forKey: .sentiment_analysis
                 )
                 self.speaker_labels = try container.decodeIfPresent(
                     Swift.Bool.self,
                     forKey: .speaker_labels
                 )
-                self.speakers_expected = try container.decodeIfPresent(
-                    Swift.Int.self,
-                    forKey: .speakers_expected
-                )
                 self.speaker_options = try container.decodeIfPresent(
                     Components.Schemas.TranscriptOptionalParams.speaker_optionsPayload.self,
                     forKey: .speaker_options
                 )
-                self.content_safety = try container.decodeIfPresent(
-                    Swift.Bool.self,
-                    forKey: .content_safety
-                )
-                self.content_safety_confidence = try container.decodeIfPresent(
+                self.speakers_expected = try container.decodeIfPresent(
                     Swift.Int.self,
-                    forKey: .content_safety_confidence
+                    forKey: .speakers_expected
                 )
-                self.iab_categories = try container.decodeIfPresent(
-                    Swift.Bool.self,
-                    forKey: .iab_categories
-                )
-                self.custom_spelling = try container.decodeIfPresent(
-                    [Components.Schemas.TranscriptCustomSpelling].self,
-                    forKey: .custom_spelling
-                )
-                self.keyterms_prompt = try container.decodeIfPresent(
-                    [Swift.String].self,
-                    forKey: .keyterms_prompt
-                )
-                self.prompt = try container.decodeIfPresent(
-                    Swift.String.self,
-                    forKey: .prompt
-                )
-                self.sentiment_analysis = try container.decodeIfPresent(
-                    Swift.Bool.self,
-                    forKey: .sentiment_analysis
-                )
-                self.auto_chapters = try container.decodeIfPresent(
-                    Swift.Bool.self,
-                    forKey: .auto_chapters
-                )
-                self.entity_detection = try container.decodeIfPresent(
-                    Swift.Bool.self,
-                    forKey: .entity_detection
+                self.speech_models = try container.decode(
+                    [Components.Schemas.SpeechModel].self,
+                    forKey: .speech_models
                 )
                 self.speech_threshold = try container.decodeIfPresent(
                     Swift.Float.self,
                     forKey: .speech_threshold
+                )
+                self.speech_understanding = try container.decodeIfPresent(
+                    Components.Schemas.TranscriptOptionalParams.speech_understandingPayload.self,
+                    forKey: .speech_understanding
                 )
                 self.summarization = try container.decodeIfPresent(
                     Swift.Bool.self,
@@ -1465,62 +1471,79 @@ public enum Components {
                     Components.Schemas.SummaryType.self,
                     forKey: .summary_type
                 )
+                self.temperature = try container.decodeIfPresent(
+                    Swift.Double.self,
+                    forKey: .temperature
+                )
+                self.webhook_auth_header_name = try container.decodeIfPresent(
+                    Swift.String.self,
+                    forKey: .webhook_auth_header_name
+                )
+                self.webhook_auth_header_value = try container.decodeIfPresent(
+                    Swift.String.self,
+                    forKey: .webhook_auth_header_value
+                )
+                self.webhook_url = try container.decodeIfPresent(
+                    Swift.String.self,
+                    forKey: .webhook_url
+                )
                 self.custom_topics = try container.decodeIfPresent(
                     Swift.Bool.self,
                     forKey: .custom_topics
+                )
+                self.speech_model = try container.decodeIfPresent(
+                    Components.Schemas.SpeechModel.self,
+                    forKey: .speech_model
                 )
                 self.topics = try container.decodeIfPresent(
                     [Swift.String].self,
                     forKey: .topics
                 )
-                self.speech_understanding = try container.decodeIfPresent(
-                    Components.Schemas.TranscriptOptionalParams.speech_understandingPayload.self,
-                    forKey: .speech_understanding
-                )
                 try decoder.ensureNoAdditionalProperties(knownKeys: [
+                    "audio_end_at",
+                    "audio_start_from",
+                    "auto_chapters",
+                    "auto_highlights",
+                    "content_safety",
+                    "content_safety_confidence",
+                    "custom_spelling",
+                    "disfluencies",
+                    "entity_detection",
+                    "filter_profanity",
+                    "format_text",
+                    "iab_categories",
+                    "keyterms_prompt",
                     "language_code",
                     "language_codes",
+                    "language_confidence_threshold",
                     "language_detection",
                     "language_detection_options",
-                    "language_confidence_threshold",
-                    "speech_model",
-                    "speech_models",
-                    "punctuate",
-                    "format_text",
-                    "disfluencies",
                     "multichannel",
-                    "webhook_url",
-                    "webhook_auth_header_name",
-                    "webhook_auth_header_value",
-                    "auto_highlights",
-                    "audio_start_from",
-                    "audio_end_at",
-                    "filter_profanity",
+                    "prompt",
+                    "punctuate",
                     "redact_pii",
                     "redact_pii_audio",
+                    "redact_pii_audio_options",
                     "redact_pii_audio_quality",
                     "redact_pii_policies",
                     "redact_pii_sub",
-                    "redact_pii_audio_options",
-                    "speaker_labels",
-                    "speakers_expected",
-                    "speaker_options",
-                    "content_safety",
-                    "content_safety_confidence",
-                    "iab_categories",
-                    "custom_spelling",
-                    "keyterms_prompt",
-                    "prompt",
                     "sentiment_analysis",
-                    "auto_chapters",
-                    "entity_detection",
+                    "speaker_labels",
+                    "speaker_options",
+                    "speakers_expected",
+                    "speech_models",
                     "speech_threshold",
+                    "speech_understanding",
                     "summarization",
                     "summary_model",
                     "summary_type",
+                    "temperature",
+                    "webhook_auth_header_name",
+                    "webhook_auth_header_value",
+                    "webhook_url",
                     "custom_topics",
-                    "topics",
-                    "speech_understanding"
+                    "speech_model",
+                    "topics"
                 ])
             }
         }
@@ -1680,6 +1703,30 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/TranscriptUtterance/speaker`.
             public var speaker: Swift.String
+            /// Translations keyed by language code (e.g., `{"es": "Texto traducido", "de": "Übersetzter Text"}`). Only present when `match_original_utterance` is enabled with translation.
+            ///
+            /// - Remark: Generated from `#/components/schemas/TranscriptUtterance/translated_texts`.
+            public struct translated_textsPayload: Codable, Hashable, Sendable {
+                /// A container of undocumented properties.
+                public var additionalProperties: [String: Swift.String]
+                /// Creates a new `translated_textsPayload`.
+                ///
+                /// - Parameters:
+                ///   - additionalProperties: A container of undocumented properties.
+                public init(additionalProperties: [String: Swift.String] = .init()) {
+                    self.additionalProperties = additionalProperties
+                }
+                public init(from decoder: any Decoder) throws {
+                    additionalProperties = try decoder.decodeAdditionalProperties(knownKeys: [])
+                }
+                public func encode(to encoder: any Encoder) throws {
+                    try encoder.encodeAdditionalProperties(additionalProperties)
+                }
+            }
+            /// Translations keyed by language code (e.g., `{"es": "Texto traducido", "de": "Übersetzter Text"}`). Only present when `match_original_utterance` is enabled with translation.
+            ///
+            /// - Remark: Generated from `#/components/schemas/TranscriptUtterance/translated_texts`.
+            public var translated_texts: Components.Schemas.TranscriptUtterance.translated_textsPayload?
             /// Creates a new `TranscriptUtterance`.
             ///
             /// - Parameters:
@@ -1690,6 +1737,7 @@ public enum Components {
             ///   - words: The words in the utterance.
             ///   - channel: The channel of this utterance. The left and right channels are channels 1 and 2. Additional channels increment the channel number sequentially.
             ///   - speaker: The speaker of this utterance, where each speaker is assigned a sequential capital letter - e.g. "A" for Speaker A, "B" for Speaker B, etc.
+            ///   - translated_texts: Translations keyed by language code (e.g., `{"es": "Texto traducido", "de": "Übersetzter Text"}`). Only present when `match_original_utterance` is enabled with translation.
             public init(
                 confidence: Swift.Double,
                 start: Swift.Int,
@@ -1697,7 +1745,8 @@ public enum Components {
                 text: Swift.String,
                 words: [Components.Schemas.TranscriptWord],
                 channel: Swift.String? = nil,
-                speaker: Swift.String
+                speaker: Swift.String,
+                translated_texts: Components.Schemas.TranscriptUtterance.translated_textsPayload? = nil
             ) {
                 self.confidence = confidence
                 self.start = start
@@ -1706,6 +1755,7 @@ public enum Components {
                 self.words = words
                 self.channel = channel
                 self.speaker = speaker
+                self.translated_texts = translated_texts
             }
             public enum CodingKeys: String, CodingKey {
                 case confidence
@@ -1715,6 +1765,7 @@ public enum Components {
                 case words
                 case channel
                 case speaker
+                case translated_texts
             }
             public init(from decoder: any Decoder) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -1746,6 +1797,10 @@ public enum Components {
                     Swift.String.self,
                     forKey: .speaker
                 )
+                self.translated_texts = try container.decodeIfPresent(
+                    Components.Schemas.TranscriptUtterance.translated_textsPayload.self,
+                    forKey: .translated_texts
+                )
                 try decoder.ensureNoAdditionalProperties(knownKeys: [
                     "confidence",
                     "start",
@@ -1753,7 +1808,8 @@ public enum Components {
                     "text",
                     "words",
                     "channel",
-                    "speaker"
+                    "speaker",
+                    "translated_texts"
                 ])
             }
         }
@@ -1823,11 +1879,7 @@ public enum Components {
         /// The speech model to use for the transcription.
         ///
         /// - Remark: Generated from `#/components/schemas/SpeechModel`.
-        @frozen public enum SpeechModel: String, Codable, Hashable, Sendable, CaseIterable {
-            case best = "best"
-            case slam_hyphen_1 = "slam-1"
-            case universal = "universal"
-        }
+        public typealias SpeechModel = Swift.String
         /// The language of your audio file. Possible values are found in [Supported Languages](https://www.assemblyai.com/docs/concepts/supported-languages).
         /// The default value is 'en_us'.
         ///
@@ -1957,18 +2009,107 @@ public enum Components {
         ///
         /// - Remark: Generated from `#/components/schemas/Transcript`.
         public struct Transcript: Codable, Hashable, Sendable {
-            /// The unique identifier of your transcript
+            /// The number of audio channels in the audio file. This is only present when multichannel is enabled.
             ///
-            /// - Remark: Generated from `#/components/schemas/Transcript/id`.
-            public var id: Swift.String
+            /// - Remark: Generated from `#/components/schemas/Transcript/audio_channels`.
+            public var audio_channels: Swift.Int?
+            /// The duration of this transcript object's media file, in seconds
+            ///
+            /// - Remark: Generated from `#/components/schemas/Transcript/audio_duration`.
+            public var audio_duration: Swift.Int?
+            /// The point in time, in milliseconds, in the file at which the transcription was terminated
+            ///
+            /// - Remark: Generated from `#/components/schemas/Transcript/audio_end_at`.
+            public var audio_end_at: Swift.Int?
+            /// The point in time, in milliseconds, in the file at which the transcription was started
+            ///
+            /// - Remark: Generated from `#/components/schemas/Transcript/audio_start_from`.
+            public var audio_start_from: Swift.Int?
             /// The URL of the media that was transcribed
             ///
             /// - Remark: Generated from `#/components/schemas/Transcript/audio_url`.
             public var audio_url: Swift.String
-            /// The status of your transcript. Possible values are queued, processing, completed, or error.
+            /// Whether [Auto Chapters](https://www.assemblyai.com/docs/models/auto-chapters) is enabled, can be true or false
             ///
-            /// - Remark: Generated from `#/components/schemas/Transcript/status`.
-            public var status: Components.Schemas.TranscriptStatus
+            /// - Remark: Generated from `#/components/schemas/Transcript/auto_chapters`.
+            public var auto_chapters: Swift.Bool?
+            /// Whether Key Phrases is enabled, either true or false
+            ///
+            /// - Remark: Generated from `#/components/schemas/Transcript/auto_highlights`.
+            public var auto_highlights: Swift.Bool
+            /// An array of results for the Key Phrases model, if it is enabled.
+            /// See [Key Phrases](https://www.assemblyai.com/docs/models/key-phrases) for more information.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/Transcript/auto_highlights_result`.
+            public var auto_highlights_result: Components.Schemas.AutoHighlightsResult?
+            /// An array of temporally sequential chapters for the audio file
+            ///
+            /// - Remark: Generated from `#/components/schemas/Transcript/chapters`.
+            public var chapters: [Components.Schemas.Chapter]?
+            /// The confidence score for the transcript, between 0.0 (low confidence) and 1.0 (high confidence)
+            ///
+            /// - Remark: Generated from `#/components/schemas/Transcript/confidence`.
+            public var confidence: Swift.Double?
+            /// Whether [Content Moderation](https://www.assemblyai.com/docs/models/content-moderation) is enabled, can be true or false
+            ///
+            /// - Remark: Generated from `#/components/schemas/Transcript/content_safety`.
+            public var content_safety: Swift.Bool?
+            /// An array of results for the Content Moderation model, if it is enabled.
+            /// See [Content moderation](https://www.assemblyai.com/docs/models/content-moderation) for more information.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/Transcript/content_safety_labels`.
+            public var content_safety_labels: Components.Schemas.ContentSafetyLabelsResult?
+            /// Customize how words are spelled and formatted using to and from values
+            ///
+            /// - Remark: Generated from `#/components/schemas/Transcript/custom_spelling`.
+            public var custom_spelling: [Components.Schemas.TranscriptCustomSpelling]?
+            /// Transcribe Filler Words, like "umm", in your media file; can be true or false
+            ///
+            /// - Remark: Generated from `#/components/schemas/Transcript/disfluencies`.
+            public var disfluencies: Swift.Bool?
+            /// An array of results for the Entity Detection model, if it is enabled.
+            /// See [Entity detection](https://www.assemblyai.com/docs/models/entity-detection) for more information.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/Transcript/entities`.
+            public var entities: [Components.Schemas.Entity]?
+            /// Whether [Entity Detection](https://www.assemblyai.com/docs/models/entity-detection) is enabled, can be true or false
+            ///
+            /// - Remark: Generated from `#/components/schemas/Transcript/entity_detection`.
+            public var entity_detection: Swift.Bool?
+            /// Error message of why the transcript failed
+            ///
+            /// - Remark: Generated from `#/components/schemas/Transcript/error`.
+            public var error: Swift.String?
+            /// Whether [Profanity Filtering](https://www.assemblyai.com/docs/models/speech-recognition#profanity-filtering) is enabled, either true or false
+            ///
+            /// - Remark: Generated from `#/components/schemas/Transcript/filter_profanity`.
+            public var filter_profanity: Swift.Bool?
+            /// Whether Text Formatting is enabled, either true or false
+            ///
+            /// - Remark: Generated from `#/components/schemas/Transcript/format_text`.
+            public var format_text: Swift.Bool?
+            /// Whether [Topic Detection](https://www.assemblyai.com/docs/models/topic-detection) is enabled, can be true or false
+            ///
+            /// - Remark: Generated from `#/components/schemas/Transcript/iab_categories`.
+            public var iab_categories: Swift.Bool?
+            /// The result of the Topic Detection model, if it is enabled.
+            /// See [Topic Detection](https://www.assemblyai.com/docs/models/topic-detection) for more information.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/Transcript/iab_categories_result`.
+            public var iab_categories_result: Components.Schemas.TopicDetectionModelResult?
+            /// The unique identifier of your transcript
+            ///
+            /// - Remark: Generated from `#/components/schemas/Transcript/id`.
+            public var id: Swift.String
+            /// Improve accuracy with up to 200 (for Universal-2) or 1000 (for Universal-3-Pro) domain-specific words or phrases (maximum 6 words per phrase).
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/Transcript/keyterms_prompt`.
+            public var keyterms_prompt: [Swift.String]?
             /// The language of your audio file.
             /// Possible values are found in [Supported Languages](https://www.assemblyai.com/docs/concepts/supported-languages).
             /// The default value is 'en_us'.
@@ -2034,6 +2175,16 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/Transcript/language_codes`.
             public var language_codes: [Components.Schemas.TranscriptLanguageCode]?
+            /// The confidence score for the detected language, between 0.0 (low confidence) and 1.0 (high confidence)
+            ///
+            /// - Remark: Generated from `#/components/schemas/Transcript/language_confidence`.
+            public var language_confidence: Swift.Double?
+            /// The confidence threshold for the automatically detected language.
+            /// An error will be returned if the language confidence is below this threshold.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/Transcript/language_confidence_threshold`.
+            public var language_confidence_threshold: Swift.Float?
             /// Whether [Automatic language detection](/docs/pre-recorded-audio/automatic-language-detection) is enabled, either true or false
             ///
             /// - Remark: Generated from `#/components/schemas/Transcript/language_detection`.
@@ -2060,7 +2211,7 @@ public enum Components {
                 ///
                 ///
                 /// - Remark: Generated from `#/components/schemas/Transcript/language_detection_options/code_switching_confidence_threshold`.
-                public var code_switching_confidence_threshold: Swift.Float?
+                public var code_switching_confidence_threshold: Swift.Double?
                 /// Creates a new `language_detection_optionsPayload`.
                 ///
                 /// - Parameters:
@@ -2072,7 +2223,7 @@ public enum Components {
                     expected_languages: [Swift.String]? = nil,
                     fallback_language: Swift.String? = nil,
                     code_switching: Swift.Bool? = nil,
-                    code_switching_confidence_threshold: Swift.Float? = nil
+                    code_switching_confidence_threshold: Swift.Double? = nil
                 ) {
                     self.expected_languages = expected_languages
                     self.fallback_language = fallback_language
@@ -2100,7 +2251,7 @@ public enum Components {
                         forKey: .code_switching
                     )
                     self.code_switching_confidence_threshold = try container.decodeIfPresent(
-                        Swift.Float.self,
+                        Swift.Double.self,
                         forKey: .code_switching_confidence_threshold
                     )
                     try decoder.ensureNoAdditionalProperties(knownKeys: [
@@ -2115,120 +2266,21 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/Transcript/language_detection_options`.
             public var language_detection_options: Components.Schemas.Transcript.language_detection_optionsPayload?
-            /// The confidence threshold for the automatically detected language.
-            /// An error will be returned if the language confidence is below this threshold.
-            ///
-            ///
-            /// - Remark: Generated from `#/components/schemas/Transcript/language_confidence_threshold`.
-            public var language_confidence_threshold: Swift.Float?
-            /// The confidence score for the detected language, between 0.0 (low confidence) and 1.0 (high confidence)
-            ///
-            /// - Remark: Generated from `#/components/schemas/Transcript/language_confidence`.
-            public var language_confidence: Swift.Double?
-            /// The speech model used for the transcription. When `null`, the `universal` model is used.
-            ///
-            /// - Remark: Generated from `#/components/schemas/Transcript/speech_model`.
-            @available(*, deprecated)
-            public var speech_model: Components.Schemas.SpeechModel?
-            /// List multiple speech models in priority order, allowing our system to automatically route your audio to the best available option.
-            ///
-            ///
-            /// - Remark: Generated from `#/components/schemas/Transcript/speech_models`.
-            public var speech_models: [Components.Schemas.SpeechModel]?
-            /// The speech model that was actually used for the transcription.
-            ///
-            /// - Remark: Generated from `#/components/schemas/Transcript/speech_model_used`.
-            public var speech_model_used: Components.Schemas.SpeechModel?
-            /// The textual transcript of your media file
-            ///
-            /// - Remark: Generated from `#/components/schemas/Transcript/text`.
-            public var text: Swift.String?
-            /// An array of temporally-sequential word objects, one for each word in the transcript.
-            /// See [Speech recognition](https://www.assemblyai.com/docs/models/speech-recognition) for more information.
-            ///
-            ///
-            /// - Remark: Generated from `#/components/schemas/Transcript/words`.
-            public var words: [Components.Schemas.TranscriptWord]?
-            /// When multichannel or speaker_labels is enabled, a list of turn-by-turn utterance objects.
-            /// See [Speaker diarization](https://www.assemblyai.com/docs/speech-to-text/speaker-diarization) and [Multichannel transcription](https://www.assemblyai.com/docs/speech-to-text/speech-recognition#multichannel-transcription) for more information.
-            ///
-            ///
-            /// - Remark: Generated from `#/components/schemas/Transcript/utterances`.
-            public var utterances: [Components.Schemas.TranscriptUtterance]?
-            /// The confidence score for the transcript, between 0.0 (low confidence) and 1.0 (high confidence)
-            ///
-            /// - Remark: Generated from `#/components/schemas/Transcript/confidence`.
-            public var confidence: Swift.Double?
-            /// The duration of this transcript object's media file, in seconds
-            ///
-            /// - Remark: Generated from `#/components/schemas/Transcript/audio_duration`.
-            public var audio_duration: Swift.Int?
-            /// Whether Automatic Punctuation is enabled, either true or false
-            ///
-            /// - Remark: Generated from `#/components/schemas/Transcript/punctuate`.
-            public var punctuate: Swift.Bool?
-            /// Whether Text Formatting is enabled, either true or false
-            ///
-            /// - Remark: Generated from `#/components/schemas/Transcript/format_text`.
-            public var format_text: Swift.Bool?
-            /// Transcribe Filler Words, like "umm", in your media file; can be true or false
-            ///
-            /// - Remark: Generated from `#/components/schemas/Transcript/disfluencies`.
-            public var disfluencies: Swift.Bool?
             /// Whether [Multichannel transcription](https://www.assemblyai.com/docs/models/speech-recognition#multichannel-transcription) was enabled in the transcription request, either true or false
             ///
             /// - Remark: Generated from `#/components/schemas/Transcript/multichannel`.
             public var multichannel: Swift.Bool?
-            /// The number of audio channels in the audio file. This is only present when multichannel is enabled.
+            /// Provide natural language prompting of up to 1,500 words of contextual information to the model.
             ///
-            /// - Remark: Generated from `#/components/schemas/Transcript/audio_channels`.
-            public var audio_channels: Swift.Int?
-            /// The URL to which we send webhook requests.
-            /// We sends two different types of webhook requests.
-            /// One request when a transcript is completed or failed, and one request when the redacted audio is ready if redact_pii_audio is enabled.
+            /// Note: This parameter is only supported for the Universal-3-Pro model.
             ///
             ///
-            /// - Remark: Generated from `#/components/schemas/Transcript/webhook_url`.
-            public var webhook_url: Swift.String?
-            /// The status code we received from your server when delivering the transcript completed or failed webhook request, if a webhook URL was provided
+            /// - Remark: Generated from `#/components/schemas/Transcript/prompt`.
+            public var prompt: Swift.String?
+            /// Whether Automatic Punctuation is enabled, either true or false
             ///
-            /// - Remark: Generated from `#/components/schemas/Transcript/webhook_status_code`.
-            public var webhook_status_code: Swift.Int?
-            /// Whether webhook authentication details were provided
-            ///
-            /// - Remark: Generated from `#/components/schemas/Transcript/webhook_auth`.
-            public var webhook_auth: Swift.Bool
-            /// The header name to be sent with the transcript completed or failed webhook requests
-            ///
-            /// - Remark: Generated from `#/components/schemas/Transcript/webhook_auth_header_name`.
-            public var webhook_auth_header_name: Swift.String?
-            /// Whether speed boost is enabled
-            ///
-            /// - Remark: Generated from `#/components/schemas/Transcript/speed_boost`.
-            @available(*, deprecated)
-            public var speed_boost: Swift.Bool?
-            /// Whether Key Phrases is enabled, either true or false
-            ///
-            /// - Remark: Generated from `#/components/schemas/Transcript/auto_highlights`.
-            public var auto_highlights: Swift.Bool
-            /// An array of results for the Key Phrases model, if it is enabled.
-            /// See [Key Phrases](https://www.assemblyai.com/docs/models/key-phrases) for more information.
-            ///
-            ///
-            /// - Remark: Generated from `#/components/schemas/Transcript/auto_highlights_result`.
-            public var auto_highlights_result: Components.Schemas.AutoHighlightsResult?
-            /// The point in time, in milliseconds, in the file at which the transcription was started
-            ///
-            /// - Remark: Generated from `#/components/schemas/Transcript/audio_start_from`.
-            public var audio_start_from: Swift.Int?
-            /// The point in time, in milliseconds, in the file at which the transcription was terminated
-            ///
-            /// - Remark: Generated from `#/components/schemas/Transcript/audio_end_at`.
-            public var audio_end_at: Swift.Int?
-            /// Whether [Profanity Filtering](https://www.assemblyai.com/docs/models/speech-recognition#profanity-filtering) is enabled, either true or false
-            ///
-            /// - Remark: Generated from `#/components/schemas/Transcript/filter_profanity`.
-            public var filter_profanity: Swift.Bool?
+            /// - Remark: Generated from `#/components/schemas/Transcript/punctuate`.
+            public var punctuate: Swift.Bool?
             /// Whether [PII Redaction](https://www.assemblyai.com/docs/models/pii-redaction) is enabled, either true or false
             ///
             /// - Remark: Generated from `#/components/schemas/Transcript/redact_pii`.
@@ -2255,84 +2307,6 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/Transcript/redact_pii_sub`.
             public var redact_pii_sub: Components.Schemas.SubstitutionPolicy?
-            /// Whether [Speaker diarization](https://www.assemblyai.com/docs/models/speaker-diarization) is enabled, can be true or false
-            ///
-            /// - Remark: Generated from `#/components/schemas/Transcript/speaker_labels`.
-            public var speaker_labels: Swift.Bool?
-            /// Tell the speaker label model how many speakers it should attempt to identify. See [Speaker diarization](https://www.assemblyai.com/docs/models/speaker-diarization) for more details.
-            ///
-            /// - Remark: Generated from `#/components/schemas/Transcript/speakers_expected`.
-            public var speakers_expected: Swift.Int?
-            /// Whether [Content Moderation](https://www.assemblyai.com/docs/models/content-moderation) is enabled, can be true or false
-            ///
-            /// - Remark: Generated from `#/components/schemas/Transcript/content_safety`.
-            public var content_safety: Swift.Bool?
-            /// An array of results for the Content Moderation model, if it is enabled.
-            /// See [Content moderation](https://www.assemblyai.com/docs/models/content-moderation) for more information.
-            ///
-            ///
-            /// - Remark: Generated from `#/components/schemas/Transcript/content_safety_labels`.
-            public var content_safety_labels: Components.Schemas.ContentSafetyLabelsResult?
-            /// Whether [Topic Detection](https://www.assemblyai.com/docs/models/topic-detection) is enabled, can be true or false
-            ///
-            /// - Remark: Generated from `#/components/schemas/Transcript/iab_categories`.
-            public var iab_categories: Swift.Bool?
-            /// The result of the Topic Detection model, if it is enabled.
-            /// See [Topic Detection](https://www.assemblyai.com/docs/models/topic-detection) for more information.
-            ///
-            ///
-            /// - Remark: Generated from `#/components/schemas/Transcript/iab_categories_result`.
-            public var iab_categories_result: Components.Schemas.TopicDetectionModelResult?
-            /// Customize how words are spelled and formatted using to and from values
-            ///
-            /// - Remark: Generated from `#/components/schemas/Transcript/custom_spelling`.
-            public var custom_spelling: [Components.Schemas.TranscriptCustomSpelling]?
-            /// Improve accuracy with up to 200 (for Universal) or 1000 (for Slam-1) domain-specific words or phrases (maximum 6 words per phrase).
-            ///
-            ///
-            /// - Remark: Generated from `#/components/schemas/Transcript/keyterms_prompt`.
-            public var keyterms_prompt: [Swift.String]?
-            /// This parameter does not currently have any functionality attached to it.
-            ///
-            /// - Remark: Generated from `#/components/schemas/Transcript/prompt`.
-            @available(*, deprecated)
-            public var prompt: Swift.String?
-            /// Whether [Auto Chapters](https://www.assemblyai.com/docs/models/auto-chapters) is enabled, can be true or false
-            ///
-            /// - Remark: Generated from `#/components/schemas/Transcript/auto_chapters`.
-            public var auto_chapters: Swift.Bool?
-            /// An array of temporally sequential chapters for the audio file
-            ///
-            /// - Remark: Generated from `#/components/schemas/Transcript/chapters`.
-            public var chapters: [Components.Schemas.Chapter]?
-            /// Whether [Summarization](https://www.assemblyai.com/docs/models/summarization) is enabled, either true or false
-            ///
-            /// - Remark: Generated from `#/components/schemas/Transcript/summarization`.
-            public var summarization: Swift.Bool
-            /// The type of summary generated, if [Summarization](https://www.assemblyai.com/docs/models/summarization) is enabled
-            ///
-            /// - Remark: Generated from `#/components/schemas/Transcript/summary_type`.
-            public var summary_type: Swift.String?
-            /// The Summarization model used to generate the summary,
-            /// if [Summarization](https://www.assemblyai.com/docs/models/summarization) is enabled
-            ///
-            ///
-            /// - Remark: Generated from `#/components/schemas/Transcript/summary_model`.
-            public var summary_model: Swift.String?
-            /// The generated summary of the media file, if [Summarization](https://www.assemblyai.com/docs/models/summarization) is enabled
-            ///
-            /// - Remark: Generated from `#/components/schemas/Transcript/summary`.
-            public var summary: Swift.String?
-            /// Whether custom topics is enabled, either true or false
-            ///
-            /// - Remark: Generated from `#/components/schemas/Transcript/custom_topics`.
-            @available(*, deprecated)
-            public var custom_topics: Swift.Bool?
-            /// The list of custom topics provided if custom topics is enabled
-            ///
-            /// - Remark: Generated from `#/components/schemas/Transcript/topics`.
-            @available(*, deprecated)
-            public var topics: [Swift.String]?
             /// Whether [Sentiment Analysis](https://www.assemblyai.com/docs/models/sentiment-analysis) is enabled, can be true or false
             ///
             /// - Remark: Generated from `#/components/schemas/Transcript/sentiment_analysis`.
@@ -2343,40 +2317,29 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/Transcript/sentiment_analysis_results`.
             public var sentiment_analysis_results: [Components.Schemas.SentimentAnalysisResult]?
-            /// Whether [Entity Detection](https://www.assemblyai.com/docs/models/entity-detection) is enabled, can be true or false
+            /// Whether [Speaker diarization](https://www.assemblyai.com/docs/models/speaker-diarization) is enabled, can be true or false
             ///
-            /// - Remark: Generated from `#/components/schemas/Transcript/entity_detection`.
-            public var entity_detection: Swift.Bool?
-            /// An array of results for the Entity Detection model, if it is enabled.
-            /// See [Entity detection](https://www.assemblyai.com/docs/models/entity-detection) for more information.
+            /// - Remark: Generated from `#/components/schemas/Transcript/speaker_labels`.
+            public var speaker_labels: Swift.Bool?
+            /// Tell the speaker label model how many speakers it should attempt to identify. See [Speaker diarization](https://www.assemblyai.com/docs/models/speaker-diarization) for more details.
+            ///
+            /// - Remark: Generated from `#/components/schemas/Transcript/speakers_expected`.
+            public var speakers_expected: Swift.Int?
+            /// The speech model that was actually used for the transcription.
+            ///
+            /// - Remark: Generated from `#/components/schemas/Transcript/speech_model_used`.
+            public var speech_model_used: Components.Schemas.SpeechModel?
+            /// List multiple speech models in priority order, allowing our system to automatically route your audio to the best available option.
             ///
             ///
-            /// - Remark: Generated from `#/components/schemas/Transcript/entities`.
-            public var entities: [Components.Schemas.Entity]?
+            /// - Remark: Generated from `#/components/schemas/Transcript/speech_models`.
+            public var speech_models: [Components.Schemas.SpeechModel]?
             /// Defaults to null. Reject audio files that contain less than this fraction of speech.
             /// Valid values are in the range [0, 1] inclusive.
             ///
             ///
             /// - Remark: Generated from `#/components/schemas/Transcript/speech_threshold`.
             public var speech_threshold: Swift.Float?
-            /// True while a request is throttled and false when a request is no longer throttled
-            ///
-            /// - Remark: Generated from `#/components/schemas/Transcript/throttled`.
-            public var throttled: Swift.Bool?
-            /// Error message of why the transcript failed
-            ///
-            /// - Remark: Generated from `#/components/schemas/Transcript/error`.
-            public var error: Swift.String?
-            /// The language model that was used for the transcript
-            ///
-            /// - Remark: Generated from `#/components/schemas/Transcript/language_model`.
-            @available(*, deprecated)
-            public var language_model: Swift.String?
-            /// The acoustic model that was used for the transcript
-            ///
-            /// - Remark: Generated from `#/components/schemas/Transcript/acoustic_model`.
-            @available(*, deprecated)
-            public var acoustic_model: Swift.String?
             /// Enable speech understanding tasks like translation, speaker identification, and custom formatting
             ///
             /// - Remark: Generated from `#/components/schemas/Transcript/speech_understanding`.
@@ -2427,7 +2390,7 @@ public enum Components {
                     }
                 }
                 /// - Remark: Generated from `#/components/schemas/Transcript/speech_understanding/request`.
-                public var request: Components.Schemas.Transcript.speech_understandingPayload.requestPayload
+                public var request: Components.Schemas.Transcript.speech_understandingPayload.requestPayload?
                 /// - Remark: Generated from `#/components/schemas/Transcript/speech_understanding/response`.
                 @frozen public enum responsePayload: Codable, Hashable, Sendable {
                     /// - Remark: Generated from `#/components/schemas/Transcript/speech_understanding/response/case1`.
@@ -2481,7 +2444,7 @@ public enum Components {
                 ///   - request:
                 ///   - response:
                 public init(
-                    request: Components.Schemas.Transcript.speech_understandingPayload.requestPayload,
+                    request: Components.Schemas.Transcript.speech_understandingPayload.requestPayload? = nil,
                     response: Components.Schemas.Transcript.speech_understandingPayload.responsePayload? = nil
                 ) {
                     self.request = request
@@ -2496,6 +2459,105 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/Transcript/speech_understanding`.
             public var speech_understanding: Components.Schemas.Transcript.speech_understandingPayload?
+            /// The status of your transcript. Possible values are queued, processing, completed, or error.
+            ///
+            /// - Remark: Generated from `#/components/schemas/Transcript/status`.
+            public var status: Components.Schemas.TranscriptStatus
+            /// Whether [Summarization](https://www.assemblyai.com/docs/models/summarization) is enabled, either true or false
+            ///
+            /// - Remark: Generated from `#/components/schemas/Transcript/summarization`.
+            public var summarization: Swift.Bool
+            /// The generated summary of the media file, if [Summarization](https://www.assemblyai.com/docs/models/summarization) is enabled
+            ///
+            /// - Remark: Generated from `#/components/schemas/Transcript/summary`.
+            public var summary: Swift.String?
+            /// The Summarization model used to generate the summary,
+            /// if [Summarization](https://www.assemblyai.com/docs/models/summarization) is enabled
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/Transcript/summary_model`.
+            public var summary_model: Swift.String?
+            /// The type of summary generated, if [Summarization](https://www.assemblyai.com/docs/models/summarization) is enabled
+            ///
+            /// - Remark: Generated from `#/components/schemas/Transcript/summary_type`.
+            public var summary_type: Swift.String?
+            /// The temperature that was used for the model's response.
+            ///
+            /// Note: This parameter can only be used with the Universal-3-Pro model.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/Transcript/temperature`.
+            public var temperature: Swift.Double?
+            /// The textual transcript of your media file
+            ///
+            /// - Remark: Generated from `#/components/schemas/Transcript/text`.
+            public var text: Swift.String?
+            /// True while a request is throttled and false when a request is no longer throttled
+            ///
+            /// - Remark: Generated from `#/components/schemas/Transcript/throttled`.
+            public var throttled: Swift.Bool?
+            /// When multichannel or speaker_labels is enabled, a list of turn-by-turn utterance objects.
+            /// See [Speaker diarization](https://www.assemblyai.com/docs/speech-to-text/speaker-diarization) and [Multichannel transcription](https://www.assemblyai.com/docs/speech-to-text/speech-recognition#multichannel-transcription) for more information.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/Transcript/utterances`.
+            public var utterances: [Components.Schemas.TranscriptUtterance]?
+            /// Whether webhook authentication details were provided
+            ///
+            /// - Remark: Generated from `#/components/schemas/Transcript/webhook_auth`.
+            public var webhook_auth: Swift.Bool
+            /// The header name to be sent with the transcript completed or failed webhook requests
+            ///
+            /// - Remark: Generated from `#/components/schemas/Transcript/webhook_auth_header_name`.
+            public var webhook_auth_header_name: Swift.String?
+            /// The status code we received from your server when delivering the transcript completed or failed webhook request, if a webhook URL was provided
+            ///
+            /// - Remark: Generated from `#/components/schemas/Transcript/webhook_status_code`.
+            public var webhook_status_code: Swift.Int?
+            /// The URL to which we send webhook requests.
+            /// We sends two different types of webhook requests.
+            /// One request when a transcript is completed or failed, and one request when the redacted audio is ready if redact_pii_audio is enabled.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/Transcript/webhook_url`.
+            public var webhook_url: Swift.String?
+            /// An array of temporally-sequential word objects, one for each word in the transcript.
+            /// See [Speech recognition](https://www.assemblyai.com/docs/models/speech-recognition) for more information.
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/Transcript/words`.
+            public var words: [Components.Schemas.TranscriptWord]?
+            /// This parameter does not currently have any functionality attached to it.
+            ///
+            /// - Remark: Generated from `#/components/schemas/Transcript/acoustic_model`.
+            @available(*, deprecated)
+            public var acoustic_model: Swift.String?
+            /// This parameter does not currently have any functionality attached to it.
+            ///
+            /// - Remark: Generated from `#/components/schemas/Transcript/custom_topics`.
+            @available(*, deprecated)
+            public var custom_topics: Swift.Bool?
+            /// This parameter does not currently have any functionality attached to it.
+            ///
+            /// - Remark: Generated from `#/components/schemas/Transcript/language_model`.
+            @available(*, deprecated)
+            public var language_model: Swift.String?
+            /// This parameter has been replaced with the `speech_models` parameter, learn more about the `speech_models` parameter [here](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model).
+            ///
+            ///
+            /// - Remark: Generated from `#/components/schemas/Transcript/speech_model`.
+            @available(*, deprecated)
+            public var speech_model: Components.Schemas.SpeechModel?
+            /// This parameter does not currently have any functionality attached to it.
+            ///
+            /// - Remark: Generated from `#/components/schemas/Transcript/speed_boost`.
+            @available(*, deprecated)
+            public var speed_boost: Swift.Bool?
+            /// This parameter does not currently have any functionality attached to it.
+            ///
+            /// - Remark: Generated from `#/components/schemas/Transcript/topics`.
+            @available(*, deprecated)
+            public var topics: [Swift.String]?
             /// Translated text keyed by language code
             ///
             /// - Remark: Generated from `#/components/schemas/Transcript/translated_texts`.
@@ -2524,383 +2586,303 @@ public enum Components {
             /// Creates a new `Transcript`.
             ///
             /// - Parameters:
-            ///   - id: The unique identifier of your transcript
-            ///   - audio_url: The URL of the media that was transcribed
-            ///   - status: The status of your transcript. Possible values are queued, processing, completed, or error.
-            ///   - language_code: The language of your audio file.
-            ///   - language_codes: The language codes of your audio file. Used for [Code switching](/docs/speech-to-text/pre-recorded-audio/code-switching)
-            ///   - language_detection: Whether [Automatic language detection](/docs/pre-recorded-audio/automatic-language-detection) is enabled, either true or false
-            ///   - language_detection_options: Specify options for Automatic Language Detection.
-            ///   - language_confidence_threshold: The confidence threshold for the automatically detected language.
-            ///   - language_confidence: The confidence score for the detected language, between 0.0 (low confidence) and 1.0 (high confidence)
-            ///   - speech_model: The speech model used for the transcription. When `null`, the `universal` model is used.
-            ///   - speech_models: List multiple speech models in priority order, allowing our system to automatically route your audio to the best available option.
-            ///   - speech_model_used: The speech model that was actually used for the transcription.
-            ///   - text: The textual transcript of your media file
-            ///   - words: An array of temporally-sequential word objects, one for each word in the transcript.
-            ///   - utterances: When multichannel or speaker_labels is enabled, a list of turn-by-turn utterance objects.
-            ///   - confidence: The confidence score for the transcript, between 0.0 (low confidence) and 1.0 (high confidence)
-            ///   - audio_duration: The duration of this transcript object's media file, in seconds
-            ///   - punctuate: Whether Automatic Punctuation is enabled, either true or false
-            ///   - format_text: Whether Text Formatting is enabled, either true or false
-            ///   - disfluencies: Transcribe Filler Words, like "umm", in your media file; can be true or false
-            ///   - multichannel: Whether [Multichannel transcription](https://www.assemblyai.com/docs/models/speech-recognition#multichannel-transcription) was enabled in the transcription request, either true or false
             ///   - audio_channels: The number of audio channels in the audio file. This is only present when multichannel is enabled.
-            ///   - webhook_url: The URL to which we send webhook requests.
-            ///   - webhook_status_code: The status code we received from your server when delivering the transcript completed or failed webhook request, if a webhook URL was provided
-            ///   - webhook_auth: Whether webhook authentication details were provided
-            ///   - webhook_auth_header_name: The header name to be sent with the transcript completed or failed webhook requests
-            ///   - speed_boost: Whether speed boost is enabled
+            ///   - audio_duration: The duration of this transcript object's media file, in seconds
+            ///   - audio_end_at: The point in time, in milliseconds, in the file at which the transcription was terminated
+            ///   - audio_start_from: The point in time, in milliseconds, in the file at which the transcription was started
+            ///   - audio_url: The URL of the media that was transcribed
+            ///   - auto_chapters: Whether [Auto Chapters](https://www.assemblyai.com/docs/models/auto-chapters) is enabled, can be true or false
             ///   - auto_highlights: Whether Key Phrases is enabled, either true or false
             ///   - auto_highlights_result: An array of results for the Key Phrases model, if it is enabled.
-            ///   - audio_start_from: The point in time, in milliseconds, in the file at which the transcription was started
-            ///   - audio_end_at: The point in time, in milliseconds, in the file at which the transcription was terminated
+            ///   - chapters: An array of temporally sequential chapters for the audio file
+            ///   - confidence: The confidence score for the transcript, between 0.0 (low confidence) and 1.0 (high confidence)
+            ///   - content_safety: Whether [Content Moderation](https://www.assemblyai.com/docs/models/content-moderation) is enabled, can be true or false
+            ///   - content_safety_labels: An array of results for the Content Moderation model, if it is enabled.
+            ///   - custom_spelling: Customize how words are spelled and formatted using to and from values
+            ///   - disfluencies: Transcribe Filler Words, like "umm", in your media file; can be true or false
+            ///   - entities: An array of results for the Entity Detection model, if it is enabled.
+            ///   - entity_detection: Whether [Entity Detection](https://www.assemblyai.com/docs/models/entity-detection) is enabled, can be true or false
+            ///   - error: Error message of why the transcript failed
             ///   - filter_profanity: Whether [Profanity Filtering](https://www.assemblyai.com/docs/models/speech-recognition#profanity-filtering) is enabled, either true or false
+            ///   - format_text: Whether Text Formatting is enabled, either true or false
+            ///   - iab_categories: Whether [Topic Detection](https://www.assemblyai.com/docs/models/topic-detection) is enabled, can be true or false
+            ///   - iab_categories_result: The result of the Topic Detection model, if it is enabled.
+            ///   - id: The unique identifier of your transcript
+            ///   - keyterms_prompt: Improve accuracy with up to 200 (for Universal-2) or 1000 (for Universal-3-Pro) domain-specific words or phrases (maximum 6 words per phrase).
+            ///   - language_code: The language of your audio file.
+            ///   - language_codes: The language codes of your audio file. Used for [Code switching](/docs/speech-to-text/pre-recorded-audio/code-switching)
+            ///   - language_confidence: The confidence score for the detected language, between 0.0 (low confidence) and 1.0 (high confidence)
+            ///   - language_confidence_threshold: The confidence threshold for the automatically detected language.
+            ///   - language_detection: Whether [Automatic language detection](/docs/pre-recorded-audio/automatic-language-detection) is enabled, either true or false
+            ///   - language_detection_options: Specify options for Automatic Language Detection.
+            ///   - multichannel: Whether [Multichannel transcription](https://www.assemblyai.com/docs/models/speech-recognition#multichannel-transcription) was enabled in the transcription request, either true or false
+            ///   - prompt: Provide natural language prompting of up to 1,500 words of contextual information to the model.
+            ///   - punctuate: Whether Automatic Punctuation is enabled, either true or false
             ///   - redact_pii: Whether [PII Redaction](https://www.assemblyai.com/docs/models/pii-redaction) is enabled, either true or false
             ///   - redact_pii_audio: Whether a redacted version of the audio file was generated,
             ///   - redact_pii_audio_quality: The audio quality of the PII-redacted audio file, if redact_pii_audio is enabled.
             ///   - redact_pii_policies: The list of PII Redaction policies that were enabled, if PII Redaction is enabled.
             ///   - redact_pii_sub: The replacement logic for detected PII, can be `entity_type` or `hash`. See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more details.
-            ///   - speaker_labels: Whether [Speaker diarization](https://www.assemblyai.com/docs/models/speaker-diarization) is enabled, can be true or false
-            ///   - speakers_expected: Tell the speaker label model how many speakers it should attempt to identify. See [Speaker diarization](https://www.assemblyai.com/docs/models/speaker-diarization) for more details.
-            ///   - content_safety: Whether [Content Moderation](https://www.assemblyai.com/docs/models/content-moderation) is enabled, can be true or false
-            ///   - content_safety_labels: An array of results for the Content Moderation model, if it is enabled.
-            ///   - iab_categories: Whether [Topic Detection](https://www.assemblyai.com/docs/models/topic-detection) is enabled, can be true or false
-            ///   - iab_categories_result: The result of the Topic Detection model, if it is enabled.
-            ///   - custom_spelling: Customize how words are spelled and formatted using to and from values
-            ///   - keyterms_prompt: Improve accuracy with up to 200 (for Universal) or 1000 (for Slam-1) domain-specific words or phrases (maximum 6 words per phrase).
-            ///   - prompt: This parameter does not currently have any functionality attached to it.
-            ///   - auto_chapters: Whether [Auto Chapters](https://www.assemblyai.com/docs/models/auto-chapters) is enabled, can be true or false
-            ///   - chapters: An array of temporally sequential chapters for the audio file
-            ///   - summarization: Whether [Summarization](https://www.assemblyai.com/docs/models/summarization) is enabled, either true or false
-            ///   - summary_type: The type of summary generated, if [Summarization](https://www.assemblyai.com/docs/models/summarization) is enabled
-            ///   - summary_model: The Summarization model used to generate the summary,
-            ///   - summary: The generated summary of the media file, if [Summarization](https://www.assemblyai.com/docs/models/summarization) is enabled
-            ///   - custom_topics: Whether custom topics is enabled, either true or false
-            ///   - topics: The list of custom topics provided if custom topics is enabled
             ///   - sentiment_analysis: Whether [Sentiment Analysis](https://www.assemblyai.com/docs/models/sentiment-analysis) is enabled, can be true or false
             ///   - sentiment_analysis_results: An array of results for the Sentiment Analysis model, if it is enabled.
-            ///   - entity_detection: Whether [Entity Detection](https://www.assemblyai.com/docs/models/entity-detection) is enabled, can be true or false
-            ///   - entities: An array of results for the Entity Detection model, if it is enabled.
+            ///   - speaker_labels: Whether [Speaker diarization](https://www.assemblyai.com/docs/models/speaker-diarization) is enabled, can be true or false
+            ///   - speakers_expected: Tell the speaker label model how many speakers it should attempt to identify. See [Speaker diarization](https://www.assemblyai.com/docs/models/speaker-diarization) for more details.
+            ///   - speech_model_used: The speech model that was actually used for the transcription.
+            ///   - speech_models: List multiple speech models in priority order, allowing our system to automatically route your audio to the best available option.
             ///   - speech_threshold: Defaults to null. Reject audio files that contain less than this fraction of speech.
-            ///   - throttled: True while a request is throttled and false when a request is no longer throttled
-            ///   - error: Error message of why the transcript failed
-            ///   - language_model: The language model that was used for the transcript
-            ///   - acoustic_model: The acoustic model that was used for the transcript
             ///   - speech_understanding: Enable speech understanding tasks like translation, speaker identification, and custom formatting
+            ///   - status: The status of your transcript. Possible values are queued, processing, completed, or error.
+            ///   - summarization: Whether [Summarization](https://www.assemblyai.com/docs/models/summarization) is enabled, either true or false
+            ///   - summary: The generated summary of the media file, if [Summarization](https://www.assemblyai.com/docs/models/summarization) is enabled
+            ///   - summary_model: The Summarization model used to generate the summary,
+            ///   - summary_type: The type of summary generated, if [Summarization](https://www.assemblyai.com/docs/models/summarization) is enabled
+            ///   - temperature: The temperature that was used for the model's response.
+            ///   - text: The textual transcript of your media file
+            ///   - throttled: True while a request is throttled and false when a request is no longer throttled
+            ///   - utterances: When multichannel or speaker_labels is enabled, a list of turn-by-turn utterance objects.
+            ///   - webhook_auth: Whether webhook authentication details were provided
+            ///   - webhook_auth_header_name: The header name to be sent with the transcript completed or failed webhook requests
+            ///   - webhook_status_code: The status code we received from your server when delivering the transcript completed or failed webhook request, if a webhook URL was provided
+            ///   - webhook_url: The URL to which we send webhook requests.
+            ///   - words: An array of temporally-sequential word objects, one for each word in the transcript.
+            ///   - acoustic_model: This parameter does not currently have any functionality attached to it.
+            ///   - custom_topics: This parameter does not currently have any functionality attached to it.
+            ///   - language_model: This parameter does not currently have any functionality attached to it.
+            ///   - speech_model: This parameter has been replaced with the `speech_models` parameter, learn more about the `speech_models` parameter [here](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model).
+            ///   - speed_boost: This parameter does not currently have any functionality attached to it.
+            ///   - topics: This parameter does not currently have any functionality attached to it.
             ///   - translated_texts: Translated text keyed by language code
             ///   - additionalProperties: A container of undocumented properties.
             public init(
-                id: Swift.String,
-                audio_url: Swift.String,
-                status: Components.Schemas.TranscriptStatus,
-                language_code: Components.Schemas.Transcript.language_codePayload? = nil,
-                language_codes: [Components.Schemas.TranscriptLanguageCode]? = nil,
-                language_detection: Swift.Bool? = nil,
-                language_detection_options: Components.Schemas.Transcript.language_detection_optionsPayload? = nil,
-                language_confidence_threshold: Swift.Float? = nil,
-                language_confidence: Swift.Double? = nil,
-                speech_model: Components.Schemas.SpeechModel? = nil,
-                speech_models: [Components.Schemas.SpeechModel]? = nil,
-                speech_model_used: Components.Schemas.SpeechModel? = nil,
-                text: Swift.String? = nil,
-                words: [Components.Schemas.TranscriptWord]? = nil,
-                utterances: [Components.Schemas.TranscriptUtterance]? = nil,
-                confidence: Swift.Double? = nil,
-                audio_duration: Swift.Int? = nil,
-                punctuate: Swift.Bool? = nil,
-                format_text: Swift.Bool? = nil,
-                disfluencies: Swift.Bool? = nil,
-                multichannel: Swift.Bool? = nil,
                 audio_channels: Swift.Int? = nil,
-                webhook_url: Swift.String? = nil,
-                webhook_status_code: Swift.Int? = nil,
-                webhook_auth: Swift.Bool,
-                webhook_auth_header_name: Swift.String? = nil,
-                speed_boost: Swift.Bool? = nil,
+                audio_duration: Swift.Int? = nil,
+                audio_end_at: Swift.Int? = nil,
+                audio_start_from: Swift.Int? = nil,
+                audio_url: Swift.String,
+                auto_chapters: Swift.Bool? = nil,
                 auto_highlights: Swift.Bool,
                 auto_highlights_result: Components.Schemas.AutoHighlightsResult? = nil,
-                audio_start_from: Swift.Int? = nil,
-                audio_end_at: Swift.Int? = nil,
+                chapters: [Components.Schemas.Chapter]? = nil,
+                confidence: Swift.Double? = nil,
+                content_safety: Swift.Bool? = nil,
+                content_safety_labels: Components.Schemas.ContentSafetyLabelsResult? = nil,
+                custom_spelling: [Components.Schemas.TranscriptCustomSpelling]? = nil,
+                disfluencies: Swift.Bool? = nil,
+                entities: [Components.Schemas.Entity]? = nil,
+                entity_detection: Swift.Bool? = nil,
+                error: Swift.String? = nil,
                 filter_profanity: Swift.Bool? = nil,
+                format_text: Swift.Bool? = nil,
+                iab_categories: Swift.Bool? = nil,
+                iab_categories_result: Components.Schemas.TopicDetectionModelResult? = nil,
+                id: Swift.String,
+                keyterms_prompt: [Swift.String]? = nil,
+                language_code: Components.Schemas.Transcript.language_codePayload? = nil,
+                language_codes: [Components.Schemas.TranscriptLanguageCode]? = nil,
+                language_confidence: Swift.Double? = nil,
+                language_confidence_threshold: Swift.Float? = nil,
+                language_detection: Swift.Bool? = nil,
+                language_detection_options: Components.Schemas.Transcript.language_detection_optionsPayload? = nil,
+                multichannel: Swift.Bool? = nil,
+                prompt: Swift.String? = nil,
+                punctuate: Swift.Bool? = nil,
                 redact_pii: Swift.Bool,
                 redact_pii_audio: Swift.Bool? = nil,
                 redact_pii_audio_quality: Components.Schemas.RedactPiiAudioQuality? = nil,
                 redact_pii_policies: [Components.Schemas.PiiPolicy]? = nil,
                 redact_pii_sub: Components.Schemas.SubstitutionPolicy? = nil,
-                speaker_labels: Swift.Bool? = nil,
-                speakers_expected: Swift.Int? = nil,
-                content_safety: Swift.Bool? = nil,
-                content_safety_labels: Components.Schemas.ContentSafetyLabelsResult? = nil,
-                iab_categories: Swift.Bool? = nil,
-                iab_categories_result: Components.Schemas.TopicDetectionModelResult? = nil,
-                custom_spelling: [Components.Schemas.TranscriptCustomSpelling]? = nil,
-                keyterms_prompt: [Swift.String]? = nil,
-                prompt: Swift.String? = nil,
-                auto_chapters: Swift.Bool? = nil,
-                chapters: [Components.Schemas.Chapter]? = nil,
-                summarization: Swift.Bool,
-                summary_type: Swift.String? = nil,
-                summary_model: Swift.String? = nil,
-                summary: Swift.String? = nil,
-                custom_topics: Swift.Bool? = nil,
-                topics: [Swift.String]? = nil,
                 sentiment_analysis: Swift.Bool? = nil,
                 sentiment_analysis_results: [Components.Schemas.SentimentAnalysisResult]? = nil,
-                entity_detection: Swift.Bool? = nil,
-                entities: [Components.Schemas.Entity]? = nil,
+                speaker_labels: Swift.Bool? = nil,
+                speakers_expected: Swift.Int? = nil,
+                speech_model_used: Components.Schemas.SpeechModel? = nil,
+                speech_models: [Components.Schemas.SpeechModel]? = nil,
                 speech_threshold: Swift.Float? = nil,
-                throttled: Swift.Bool? = nil,
-                error: Swift.String? = nil,
-                language_model: Swift.String? = nil,
-                acoustic_model: Swift.String? = nil,
                 speech_understanding: Components.Schemas.Transcript.speech_understandingPayload? = nil,
+                status: Components.Schemas.TranscriptStatus,
+                summarization: Swift.Bool,
+                summary: Swift.String? = nil,
+                summary_model: Swift.String? = nil,
+                summary_type: Swift.String? = nil,
+                temperature: Swift.Double? = nil,
+                text: Swift.String? = nil,
+                throttled: Swift.Bool? = nil,
+                utterances: [Components.Schemas.TranscriptUtterance]? = nil,
+                webhook_auth: Swift.Bool,
+                webhook_auth_header_name: Swift.String? = nil,
+                webhook_status_code: Swift.Int? = nil,
+                webhook_url: Swift.String? = nil,
+                words: [Components.Schemas.TranscriptWord]? = nil,
+                acoustic_model: Swift.String? = nil,
+                custom_topics: Swift.Bool? = nil,
+                language_model: Swift.String? = nil,
+                speech_model: Components.Schemas.SpeechModel? = nil,
+                speed_boost: Swift.Bool? = nil,
+                topics: [Swift.String]? = nil,
                 translated_texts: Components.Schemas.Transcript.translated_textsPayload? = nil,
                 additionalProperties: OpenAPIRuntime.OpenAPIObjectContainer = .init()
             ) {
-                self.id = id
-                self.audio_url = audio_url
-                self.status = status
-                self.language_code = language_code
-                self.language_codes = language_codes
-                self.language_detection = language_detection
-                self.language_detection_options = language_detection_options
-                self.language_confidence_threshold = language_confidence_threshold
-                self.language_confidence = language_confidence
-                self.speech_model = speech_model
-                self.speech_models = speech_models
-                self.speech_model_used = speech_model_used
-                self.text = text
-                self.words = words
-                self.utterances = utterances
-                self.confidence = confidence
-                self.audio_duration = audio_duration
-                self.punctuate = punctuate
-                self.format_text = format_text
-                self.disfluencies = disfluencies
-                self.multichannel = multichannel
                 self.audio_channels = audio_channels
-                self.webhook_url = webhook_url
-                self.webhook_status_code = webhook_status_code
-                self.webhook_auth = webhook_auth
-                self.webhook_auth_header_name = webhook_auth_header_name
-                self.speed_boost = speed_boost
+                self.audio_duration = audio_duration
+                self.audio_end_at = audio_end_at
+                self.audio_start_from = audio_start_from
+                self.audio_url = audio_url
+                self.auto_chapters = auto_chapters
                 self.auto_highlights = auto_highlights
                 self.auto_highlights_result = auto_highlights_result
-                self.audio_start_from = audio_start_from
-                self.audio_end_at = audio_end_at
+                self.chapters = chapters
+                self.confidence = confidence
+                self.content_safety = content_safety
+                self.content_safety_labels = content_safety_labels
+                self.custom_spelling = custom_spelling
+                self.disfluencies = disfluencies
+                self.entities = entities
+                self.entity_detection = entity_detection
+                self.error = error
                 self.filter_profanity = filter_profanity
+                self.format_text = format_text
+                self.iab_categories = iab_categories
+                self.iab_categories_result = iab_categories_result
+                self.id = id
+                self.keyterms_prompt = keyterms_prompt
+                self.language_code = language_code
+                self.language_codes = language_codes
+                self.language_confidence = language_confidence
+                self.language_confidence_threshold = language_confidence_threshold
+                self.language_detection = language_detection
+                self.language_detection_options = language_detection_options
+                self.multichannel = multichannel
+                self.prompt = prompt
+                self.punctuate = punctuate
                 self.redact_pii = redact_pii
                 self.redact_pii_audio = redact_pii_audio
                 self.redact_pii_audio_quality = redact_pii_audio_quality
                 self.redact_pii_policies = redact_pii_policies
                 self.redact_pii_sub = redact_pii_sub
-                self.speaker_labels = speaker_labels
-                self.speakers_expected = speakers_expected
-                self.content_safety = content_safety
-                self.content_safety_labels = content_safety_labels
-                self.iab_categories = iab_categories
-                self.iab_categories_result = iab_categories_result
-                self.custom_spelling = custom_spelling
-                self.keyterms_prompt = keyterms_prompt
-                self.prompt = prompt
-                self.auto_chapters = auto_chapters
-                self.chapters = chapters
-                self.summarization = summarization
-                self.summary_type = summary_type
-                self.summary_model = summary_model
-                self.summary = summary
-                self.custom_topics = custom_topics
-                self.topics = topics
                 self.sentiment_analysis = sentiment_analysis
                 self.sentiment_analysis_results = sentiment_analysis_results
-                self.entity_detection = entity_detection
-                self.entities = entities
+                self.speaker_labels = speaker_labels
+                self.speakers_expected = speakers_expected
+                self.speech_model_used = speech_model_used
+                self.speech_models = speech_models
                 self.speech_threshold = speech_threshold
-                self.throttled = throttled
-                self.error = error
-                self.language_model = language_model
-                self.acoustic_model = acoustic_model
                 self.speech_understanding = speech_understanding
+                self.status = status
+                self.summarization = summarization
+                self.summary = summary
+                self.summary_model = summary_model
+                self.summary_type = summary_type
+                self.temperature = temperature
+                self.text = text
+                self.throttled = throttled
+                self.utterances = utterances
+                self.webhook_auth = webhook_auth
+                self.webhook_auth_header_name = webhook_auth_header_name
+                self.webhook_status_code = webhook_status_code
+                self.webhook_url = webhook_url
+                self.words = words
+                self.acoustic_model = acoustic_model
+                self.custom_topics = custom_topics
+                self.language_model = language_model
+                self.speech_model = speech_model
+                self.speed_boost = speed_boost
+                self.topics = topics
                 self.translated_texts = translated_texts
                 self.additionalProperties = additionalProperties
             }
             public enum CodingKeys: String, CodingKey {
-                case id
-                case audio_url
-                case status
-                case language_code
-                case language_codes
-                case language_detection
-                case language_detection_options
-                case language_confidence_threshold
-                case language_confidence
-                case speech_model
-                case speech_models
-                case speech_model_used
-                case text
-                case words
-                case utterances
-                case confidence
-                case audio_duration
-                case punctuate
-                case format_text
-                case disfluencies
-                case multichannel
                 case audio_channels
-                case webhook_url
-                case webhook_status_code
-                case webhook_auth
-                case webhook_auth_header_name
-                case speed_boost
+                case audio_duration
+                case audio_end_at
+                case audio_start_from
+                case audio_url
+                case auto_chapters
                 case auto_highlights
                 case auto_highlights_result
-                case audio_start_from
-                case audio_end_at
+                case chapters
+                case confidence
+                case content_safety
+                case content_safety_labels
+                case custom_spelling
+                case disfluencies
+                case entities
+                case entity_detection
+                case error
                 case filter_profanity
+                case format_text
+                case iab_categories
+                case iab_categories_result
+                case id
+                case keyterms_prompt
+                case language_code
+                case language_codes
+                case language_confidence
+                case language_confidence_threshold
+                case language_detection
+                case language_detection_options
+                case multichannel
+                case prompt
+                case punctuate
                 case redact_pii
                 case redact_pii_audio
                 case redact_pii_audio_quality
                 case redact_pii_policies
                 case redact_pii_sub
-                case speaker_labels
-                case speakers_expected
-                case content_safety
-                case content_safety_labels
-                case iab_categories
-                case iab_categories_result
-                case custom_spelling
-                case keyterms_prompt
-                case prompt
-                case auto_chapters
-                case chapters
-                case summarization
-                case summary_type
-                case summary_model
-                case summary
-                case custom_topics
-                case topics
                 case sentiment_analysis
                 case sentiment_analysis_results
-                case entity_detection
-                case entities
+                case speaker_labels
+                case speakers_expected
+                case speech_model_used
+                case speech_models
                 case speech_threshold
-                case throttled
-                case error
-                case language_model
-                case acoustic_model
                 case speech_understanding
+                case status
+                case summarization
+                case summary
+                case summary_model
+                case summary_type
+                case temperature
+                case text
+                case throttled
+                case utterances
+                case webhook_auth
+                case webhook_auth_header_name
+                case webhook_status_code
+                case webhook_url
+                case words
+                case acoustic_model
+                case custom_topics
+                case language_model
+                case speech_model
+                case speed_boost
+                case topics
                 case translated_texts
             }
             public init(from decoder: any Decoder) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
-                self.id = try container.decode(
-                    Swift.String.self,
-                    forKey: .id
-                )
-                self.audio_url = try container.decode(
-                    Swift.String.self,
-                    forKey: .audio_url
-                )
-                self.status = try container.decode(
-                    Components.Schemas.TranscriptStatus.self,
-                    forKey: .status
-                )
-                self.language_code = try container.decodeIfPresent(
-                    Components.Schemas.Transcript.language_codePayload.self,
-                    forKey: .language_code
-                )
-                self.language_codes = try container.decodeIfPresent(
-                    [Components.Schemas.TranscriptLanguageCode].self,
-                    forKey: .language_codes
-                )
-                self.language_detection = try container.decodeIfPresent(
-                    Swift.Bool.self,
-                    forKey: .language_detection
-                )
-                self.language_detection_options = try container.decodeIfPresent(
-                    Components.Schemas.Transcript.language_detection_optionsPayload.self,
-                    forKey: .language_detection_options
-                )
-                self.language_confidence_threshold = try container.decodeIfPresent(
-                    Swift.Float.self,
-                    forKey: .language_confidence_threshold
-                )
-                self.language_confidence = try container.decodeIfPresent(
-                    Swift.Double.self,
-                    forKey: .language_confidence
-                )
-                self.speech_model = try container.decodeIfPresent(
-                    Components.Schemas.SpeechModel.self,
-                    forKey: .speech_model
-                )
-                self.speech_models = try container.decodeIfPresent(
-                    [Components.Schemas.SpeechModel].self,
-                    forKey: .speech_models
-                )
-                self.speech_model_used = try container.decodeIfPresent(
-                    Components.Schemas.SpeechModel.self,
-                    forKey: .speech_model_used
-                )
-                self.text = try container.decodeIfPresent(
-                    Swift.String.self,
-                    forKey: .text
-                )
-                self.words = try container.decodeIfPresent(
-                    [Components.Schemas.TranscriptWord].self,
-                    forKey: .words
-                )
-                self.utterances = try container.decodeIfPresent(
-                    [Components.Schemas.TranscriptUtterance].self,
-                    forKey: .utterances
-                )
-                self.confidence = try container.decodeIfPresent(
-                    Swift.Double.self,
-                    forKey: .confidence
+                self.audio_channels = try container.decodeIfPresent(
+                    Swift.Int.self,
+                    forKey: .audio_channels
                 )
                 self.audio_duration = try container.decodeIfPresent(
                     Swift.Int.self,
                     forKey: .audio_duration
                 )
-                self.punctuate = try container.decodeIfPresent(
-                    Swift.Bool.self,
-                    forKey: .punctuate
-                )
-                self.format_text = try container.decodeIfPresent(
-                    Swift.Bool.self,
-                    forKey: .format_text
-                )
-                self.disfluencies = try container.decodeIfPresent(
-                    Swift.Bool.self,
-                    forKey: .disfluencies
-                )
-                self.multichannel = try container.decodeIfPresent(
-                    Swift.Bool.self,
-                    forKey: .multichannel
-                )
-                self.audio_channels = try container.decodeIfPresent(
+                self.audio_end_at = try container.decodeIfPresent(
                     Swift.Int.self,
-                    forKey: .audio_channels
+                    forKey: .audio_end_at
                 )
-                self.webhook_url = try container.decodeIfPresent(
-                    Swift.String.self,
-                    forKey: .webhook_url
-                )
-                self.webhook_status_code = try container.decodeIfPresent(
+                self.audio_start_from = try container.decodeIfPresent(
                     Swift.Int.self,
-                    forKey: .webhook_status_code
+                    forKey: .audio_start_from
                 )
-                self.webhook_auth = try container.decode(
-                    Swift.Bool.self,
-                    forKey: .webhook_auth
-                )
-                self.webhook_auth_header_name = try container.decodeIfPresent(
+                self.audio_url = try container.decode(
                     Swift.String.self,
-                    forKey: .webhook_auth_header_name
+                    forKey: .audio_url
                 )
-                self.speed_boost = try container.decodeIfPresent(
+                self.auto_chapters = try container.decodeIfPresent(
                     Swift.Bool.self,
-                    forKey: .speed_boost
+                    forKey: .auto_chapters
                 )
                 self.auto_highlights = try container.decode(
                     Swift.Bool.self,
@@ -2910,17 +2892,101 @@ public enum Components {
                     Components.Schemas.AutoHighlightsResult.self,
                     forKey: .auto_highlights_result
                 )
-                self.audio_start_from = try container.decodeIfPresent(
-                    Swift.Int.self,
-                    forKey: .audio_start_from
+                self.chapters = try container.decodeIfPresent(
+                    [Components.Schemas.Chapter].self,
+                    forKey: .chapters
                 )
-                self.audio_end_at = try container.decodeIfPresent(
-                    Swift.Int.self,
-                    forKey: .audio_end_at
+                self.confidence = try container.decodeIfPresent(
+                    Swift.Double.self,
+                    forKey: .confidence
+                )
+                self.content_safety = try container.decodeIfPresent(
+                    Swift.Bool.self,
+                    forKey: .content_safety
+                )
+                self.content_safety_labels = try container.decodeIfPresent(
+                    Components.Schemas.ContentSafetyLabelsResult.self,
+                    forKey: .content_safety_labels
+                )
+                self.custom_spelling = try container.decodeIfPresent(
+                    [Components.Schemas.TranscriptCustomSpelling].self,
+                    forKey: .custom_spelling
+                )
+                self.disfluencies = try container.decodeIfPresent(
+                    Swift.Bool.self,
+                    forKey: .disfluencies
+                )
+                self.entities = try container.decodeIfPresent(
+                    [Components.Schemas.Entity].self,
+                    forKey: .entities
+                )
+                self.entity_detection = try container.decodeIfPresent(
+                    Swift.Bool.self,
+                    forKey: .entity_detection
+                )
+                self.error = try container.decodeIfPresent(
+                    Swift.String.self,
+                    forKey: .error
                 )
                 self.filter_profanity = try container.decodeIfPresent(
                     Swift.Bool.self,
                     forKey: .filter_profanity
+                )
+                self.format_text = try container.decodeIfPresent(
+                    Swift.Bool.self,
+                    forKey: .format_text
+                )
+                self.iab_categories = try container.decodeIfPresent(
+                    Swift.Bool.self,
+                    forKey: .iab_categories
+                )
+                self.iab_categories_result = try container.decodeIfPresent(
+                    Components.Schemas.TopicDetectionModelResult.self,
+                    forKey: .iab_categories_result
+                )
+                self.id = try container.decode(
+                    Swift.String.self,
+                    forKey: .id
+                )
+                self.keyterms_prompt = try container.decodeIfPresent(
+                    [Swift.String].self,
+                    forKey: .keyterms_prompt
+                )
+                self.language_code = try container.decodeIfPresent(
+                    Components.Schemas.Transcript.language_codePayload.self,
+                    forKey: .language_code
+                )
+                self.language_codes = try container.decodeIfPresent(
+                    [Components.Schemas.TranscriptLanguageCode].self,
+                    forKey: .language_codes
+                )
+                self.language_confidence = try container.decodeIfPresent(
+                    Swift.Double.self,
+                    forKey: .language_confidence
+                )
+                self.language_confidence_threshold = try container.decodeIfPresent(
+                    Swift.Float.self,
+                    forKey: .language_confidence_threshold
+                )
+                self.language_detection = try container.decodeIfPresent(
+                    Swift.Bool.self,
+                    forKey: .language_detection
+                )
+                self.language_detection_options = try container.decodeIfPresent(
+                    Components.Schemas.Transcript.language_detection_optionsPayload.self,
+                    forKey: .language_detection_options
+                )
+                self.multichannel = try container.decodeIfPresent(
+                    Swift.Bool.self,
+                    forKey: .multichannel
+                )
+                self.prompt = try container.decodeIfPresent(
+                    Swift.String.self,
+                    forKey: .prompt
+                )
+                self.punctuate = try container.decodeIfPresent(
+                    Swift.Bool.self,
+                    forKey: .punctuate
                 )
                 self.redact_pii = try container.decode(
                     Swift.Bool.self,
@@ -2942,74 +3008,6 @@ public enum Components {
                     Components.Schemas.SubstitutionPolicy.self,
                     forKey: .redact_pii_sub
                 )
-                self.speaker_labels = try container.decodeIfPresent(
-                    Swift.Bool.self,
-                    forKey: .speaker_labels
-                )
-                self.speakers_expected = try container.decodeIfPresent(
-                    Swift.Int.self,
-                    forKey: .speakers_expected
-                )
-                self.content_safety = try container.decodeIfPresent(
-                    Swift.Bool.self,
-                    forKey: .content_safety
-                )
-                self.content_safety_labels = try container.decodeIfPresent(
-                    Components.Schemas.ContentSafetyLabelsResult.self,
-                    forKey: .content_safety_labels
-                )
-                self.iab_categories = try container.decodeIfPresent(
-                    Swift.Bool.self,
-                    forKey: .iab_categories
-                )
-                self.iab_categories_result = try container.decodeIfPresent(
-                    Components.Schemas.TopicDetectionModelResult.self,
-                    forKey: .iab_categories_result
-                )
-                self.custom_spelling = try container.decodeIfPresent(
-                    [Components.Schemas.TranscriptCustomSpelling].self,
-                    forKey: .custom_spelling
-                )
-                self.keyterms_prompt = try container.decodeIfPresent(
-                    [Swift.String].self,
-                    forKey: .keyterms_prompt
-                )
-                self.prompt = try container.decodeIfPresent(
-                    Swift.String.self,
-                    forKey: .prompt
-                )
-                self.auto_chapters = try container.decodeIfPresent(
-                    Swift.Bool.self,
-                    forKey: .auto_chapters
-                )
-                self.chapters = try container.decodeIfPresent(
-                    [Components.Schemas.Chapter].self,
-                    forKey: .chapters
-                )
-                self.summarization = try container.decode(
-                    Swift.Bool.self,
-                    forKey: .summarization
-                )
-                self.summary_type = try container.decodeIfPresent(
-                    Swift.String.self,
-                    forKey: .summary_type
-                )
-                self.summary_model = try container.decodeIfPresent(
-                    Swift.String.self,
-                    forKey: .summary_model
-                )
-                self.summary = try container.decodeIfPresent(
-                    Swift.String.self,
-                    forKey: .summary
-                )
-                self.custom_topics = try container.decodeIfPresent(
-                    Swift.Bool.self,
-                    forKey: .custom_topics
-                )
-                self.topics = try container.decodeIfPresent(
-                    [Swift.String].self,
-                    forKey: .topics
-                )
                 self.sentiment_analysis = try container.decodeIfPresent(
                     Swift.Bool.self,
                     forKey: .sentiment_analysis
@@ -3018,219 +3016,208 @@ public enum Components {
                     [Components.Schemas.SentimentAnalysisResult].self,
                     forKey: .sentiment_analysis_results
                 )
-                self.entity_detection = try container.decodeIfPresent(
+                self.speaker_labels = try container.decodeIfPresent(
                     Swift.Bool.self,
-                    forKey: .entity_detection
+                    forKey: .speaker_labels
                 )
-                self.entities = try container.decodeIfPresent(
-                    [Components.Schemas.Entity].self,
-                    forKey: .entities
+                self.speakers_expected = try container.decodeIfPresent(
+                    Swift.Int.self,
+                    forKey: .speakers_expected
+                )
+                self.speech_model_used = try container.decodeIfPresent(
+                    Components.Schemas.SpeechModel.self,
+                    forKey: .speech_model_used
+                )
+                self.speech_models = try container.decodeIfPresent(
+                    [Components.Schemas.SpeechModel].self,
+                    forKey: .speech_models
                 )
                 self.speech_threshold = try container.decodeIfPresent(
                     Swift.Float.self,
                     forKey: .speech_threshold
                 )
+                self.speech_understanding = try container.decodeIfPresent(
+                    Components.Schemas.Transcript.speech_understandingPayload.self,
+                    forKey: .speech_understanding
+                )
+                self.status = try container.decode(
+                    Components.Schemas.TranscriptStatus.self,
+                    forKey: .status
+                )
+                self.summarization = try container.decode(
+                    Swift.Bool.self,
+                    forKey: .summarization
+                )
+                self.summary = try container.decodeIfPresent(
+                    Swift.String.self,
+                    forKey: .summary
+                )
+                self.summary_model = try container.decodeIfPresent(
+                    Swift.String.self,
+                    forKey: .summary_model
+                )
+                self.summary_type = try container.decodeIfPresent(
+                    Swift.String.self,
+                    forKey: .summary_type
+                )
+                self.temperature = try container.decodeIfPresent(
+                    Swift.Double.self,
+                    forKey: .temperature
+                )
+                self.text = try container.decodeIfPresent(
+                    Swift.String.self,
+                    forKey: .text
+                )
                 self.throttled = try container.decodeIfPresent(
                     Swift.Bool.self,
                     forKey: .throttled
                 )
-                self.error = try container.decodeIfPresent(
-                    Swift.String.self,
-                    forKey: .error
+                self.utterances = try container.decodeIfPresent(
+                    [Components.Schemas.TranscriptUtterance].self,
+                    forKey: .utterances
                 )
-                self.language_model = try container.decodeIfPresent(
+                self.webhook_auth = try container.decode(
+                    Swift.Bool.self,
+                    forKey: .webhook_auth
+                )
+                self.webhook_auth_header_name = try container.decodeIfPresent(
                     Swift.String.self,
-                    forKey: .language_model
+                    forKey: .webhook_auth_header_name
+                )
+                self.webhook_status_code = try container.decodeIfPresent(
+                    Swift.Int.self,
+                    forKey: .webhook_status_code
+                )
+                self.webhook_url = try container.decodeIfPresent(
+                    Swift.String.self,
+                    forKey: .webhook_url
+                )
+                self.words = try container.decodeIfPresent(
+                    [Components.Schemas.TranscriptWord].self,
+                    forKey: .words
                 )
                 self.acoustic_model = try container.decodeIfPresent(
                     Swift.String.self,
                     forKey: .acoustic_model
                 )
-                self.speech_understanding = try container.decodeIfPresent(
-                    Components.Schemas.Transcript.speech_understandingPayload.self,
-                    forKey: .speech_understanding
+                self.custom_topics = try container.decodeIfPresent(
+                    Swift.Bool.self,
+                    forKey: .custom_topics
+                )
+                self.language_model = try container.decodeIfPresent(
+                    Swift.String.self,
+                    forKey: .language_model
+                )
+                self.speech_model = try container.decodeIfPresent(
+                    Components.Schemas.SpeechModel.self,
+                    forKey: .speech_model
+                )
+                self.speed_boost = try container.decodeIfPresent(
+                    Swift.Bool.self,
+                    forKey: .speed_boost
+                )
+                self.topics = try container.decodeIfPresent(
+                    [Swift.String].self,
+                    forKey: .topics
                 )
                 self.translated_texts = try container.decodeIfPresent(
                     Components.Schemas.Transcript.translated_textsPayload.self,
                     forKey: .translated_texts
                 )
                 additionalProperties = try decoder.decodeAdditionalProperties(knownKeys: [
-                    "id",
-                    "audio_url",
-                    "status",
-                    "language_code",
-                    "language_codes",
-                    "language_detection",
-                    "language_detection_options",
-                    "language_confidence_threshold",
-                    "language_confidence",
-                    "speech_model",
-                    "speech_models",
-                    "speech_model_used",
-                    "text",
-                    "words",
-                    "utterances",
-                    "confidence",
-                    "audio_duration",
-                    "punctuate",
-                    "format_text",
-                    "disfluencies",
-                    "multichannel",
                     "audio_channels",
-                    "webhook_url",
-                    "webhook_status_code",
-                    "webhook_auth",
-                    "webhook_auth_header_name",
-                    "speed_boost",
+                    "audio_duration",
+                    "audio_end_at",
+                    "audio_start_from",
+                    "audio_url",
+                    "auto_chapters",
                     "auto_highlights",
                     "auto_highlights_result",
-                    "audio_start_from",
-                    "audio_end_at",
+                    "chapters",
+                    "confidence",
+                    "content_safety",
+                    "content_safety_labels",
+                    "custom_spelling",
+                    "disfluencies",
+                    "entities",
+                    "entity_detection",
+                    "error",
                     "filter_profanity",
+                    "format_text",
+                    "iab_categories",
+                    "iab_categories_result",
+                    "id",
+                    "keyterms_prompt",
+                    "language_code",
+                    "language_codes",
+                    "language_confidence",
+                    "language_confidence_threshold",
+                    "language_detection",
+                    "language_detection_options",
+                    "multichannel",
+                    "prompt",
+                    "punctuate",
                     "redact_pii",
                     "redact_pii_audio",
                     "redact_pii_audio_quality",
                     "redact_pii_policies",
                     "redact_pii_sub",
-                    "speaker_labels",
-                    "speakers_expected",
-                    "content_safety",
-                    "content_safety_labels",
-                    "iab_categories",
-                    "iab_categories_result",
-                    "custom_spelling",
-                    "keyterms_prompt",
-                    "prompt",
-                    "auto_chapters",
-                    "chapters",
-                    "summarization",
-                    "summary_type",
-                    "summary_model",
-                    "summary",
-                    "custom_topics",
-                    "topics",
                     "sentiment_analysis",
                     "sentiment_analysis_results",
-                    "entity_detection",
-                    "entities",
+                    "speaker_labels",
+                    "speakers_expected",
+                    "speech_model_used",
+                    "speech_models",
                     "speech_threshold",
-                    "throttled",
-                    "error",
-                    "language_model",
-                    "acoustic_model",
                     "speech_understanding",
+                    "status",
+                    "summarization",
+                    "summary",
+                    "summary_model",
+                    "summary_type",
+                    "temperature",
+                    "text",
+                    "throttled",
+                    "utterances",
+                    "webhook_auth",
+                    "webhook_auth_header_name",
+                    "webhook_status_code",
+                    "webhook_url",
+                    "words",
+                    "acoustic_model",
+                    "custom_topics",
+                    "language_model",
+                    "speech_model",
+                    "speed_boost",
+                    "topics",
                     "translated_texts"
                 ])
             }
             public func encode(to encoder: any Encoder) throws {
                 var container = encoder.container(keyedBy: CodingKeys.self)
-                try container.encode(
-                    self.id,
-                    forKey: .id
-                )
-                try container.encode(
-                    self.audio_url,
-                    forKey: .audio_url
-                )
-                try container.encode(
-                    self.status,
-                    forKey: .status
-                )
                 try container.encodeIfPresent(
-                    self.language_code,
-                    forKey: .language_code
-                )
-                try container.encodeIfPresent(
-                    self.language_codes,
-                    forKey: .language_codes
-                )
-                try container.encodeIfPresent(
-                    self.language_detection,
-                    forKey: .language_detection
-                )
-                try container.encodeIfPresent(
-                    self.language_detection_options,
-                    forKey: .language_detection_options
-                )
-                try container.encodeIfPresent(
-                    self.language_confidence_threshold,
-                    forKey: .language_confidence_threshold
-                )
-                try container.encodeIfPresent(
-                    self.language_confidence,
-                    forKey: .language_confidence
-                )
-                try container.encodeIfPresent(
-                    self.speech_model,
-                    forKey: .speech_model
-                )
-                try container.encodeIfPresent(
-                    self.speech_models,
-                    forKey: .speech_models
-                )
-                try container.encodeIfPresent(
-                    self.speech_model_used,
-                    forKey: .speech_model_used
-                )
-                try container.encodeIfPresent(
-                    self.text,
-                    forKey: .text
-                )
-                try container.encodeIfPresent(
-                    self.words,
-                    forKey: .words
-                )
-                try container.encodeIfPresent(
-                    self.utterances,
-                    forKey: .utterances
-                )
-                try container.encodeIfPresent(
-                    self.confidence,
-                    forKey: .confidence
+                    self.audio_channels,
+                    forKey: .audio_channels
                 )
                 try container.encodeIfPresent(
                     self.audio_duration,
                     forKey: .audio_duration
                 )
                 try container.encodeIfPresent(
-                    self.punctuate,
-                    forKey: .punctuate
+                    self.audio_end_at,
+                    forKey: .audio_end_at
                 )
                 try container.encodeIfPresent(
-                    self.format_text,
-                    forKey: .format_text
-                )
-                try container.encodeIfPresent(
-                    self.disfluencies,
-                    forKey: .disfluencies
-                )
-                try container.encodeIfPresent(
-                    self.multichannel,
-                    forKey: .multichannel
-                )
-                try container.encodeIfPresent(
-                    self.audio_channels,
-                    forKey: .audio_channels
-                )
-                try container.encodeIfPresent(
-                    self.webhook_url,
-                    forKey: .webhook_url
-                )
-                try container.encodeIfPresent(
-                    self.webhook_status_code,
-                    forKey: .webhook_status_code
+                    self.audio_start_from,
+                    forKey: .audio_start_from
                 )
                 try container.encode(
-                    self.webhook_auth,
-                    forKey: .webhook_auth
+                    self.audio_url,
+                    forKey: .audio_url
                 )
                 try container.encodeIfPresent(
-                    self.webhook_auth_header_name,
-                    forKey: .webhook_auth_header_name
-                )
-                try container.encodeIfPresent(
-                    self.speed_boost,
-                    forKey: .speed_boost
+                    self.auto_chapters,
+                    forKey: .auto_chapters
                 )
                 try container.encode(
                     self.auto_highlights,
@@ -3241,16 +3228,100 @@ public enum Components {
                     forKey: .auto_highlights_result
                 )
                 try container.encodeIfPresent(
-                    self.audio_start_from,
-                    forKey: .audio_start_from
+                    self.chapters,
+                    forKey: .chapters
                 )
                 try container.encodeIfPresent(
-                    self.audio_end_at,
-                    forKey: .audio_end_at
+                    self.confidence,
+                    forKey: .confidence
+                )
+                try container.encodeIfPresent(
+                    self.content_safety,
+                    forKey: .content_safety
+                )
+                try container.encodeIfPresent(
+                    self.content_safety_labels,
+                    forKey: .content_safety_labels
+                )
+                try container.encodeIfPresent(
+                    self.custom_spelling,
+                    forKey: .custom_spelling
+                )
+                try container.encodeIfPresent(
+                    self.disfluencies,
+                    forKey: .disfluencies
+                )
+                try container.encodeIfPresent(
+                    self.entities,
+                    forKey: .entities
+                )
+                try container.encodeIfPresent(
+                    self.entity_detection,
+                    forKey: .entity_detection
+                )
+                try container.encodeIfPresent(
+                    self.error,
+                    forKey: .error
                 )
                 try container.encodeIfPresent(
                     self.filter_profanity,
                     forKey: .filter_profanity
+                )
+                try container.encodeIfPresent(
+                    self.format_text,
+                    forKey: .format_text
+                )
+                try container.encodeIfPresent(
+                    self.iab_categories,
+                    forKey: .iab_categories
+                )
+                try container.encodeIfPresent(
+                    self.iab_categories_result,
+                    forKey: .iab_categories_result
+                )
+                try container.encode(
+                    self.id,
+                    forKey: .id
+                )
+                try container.encodeIfPresent(
+                    self.keyterms_prompt,
+                    forKey: .keyterms_prompt
+                )
+                try container.encodeIfPresent(
+                    self.language_code,
+                    forKey: .language_code
+                )
+                try container.encodeIfPresent(
+                    self.language_codes,
+                    forKey: .language_codes
+                )
+                try container.encodeIfPresent(
+                    self.language_confidence,
+                    forKey: .language_confidence
+                )
+                try container.encodeIfPresent(
+                    self.language_confidence_threshold,
+                    forKey: .language_confidence_threshold
+                )
+                try container.encodeIfPresent(
+                    self.language_detection,
+                    forKey: .language_detection
+                )
+                try container.encodeIfPresent(
+                    self.language_detection_options,
+                    forKey: .language_detection_options
+                )
+                try container.encodeIfPresent(
+                    self.multichannel,
+                    forKey: .multichannel
+                )
+                try container.encodeIfPresent(
+                    self.prompt,
+                    forKey: .prompt
+                )
+                try container.encodeIfPresent(
+                    self.punctuate,
+                    forKey: .punctuate
                 )
                 try container.encode(
                     self.redact_pii,
@@ -3273,74 +3344,6 @@ public enum Components {
                     forKey: .redact_pii_sub
                 )
                 try container.encodeIfPresent(
-                    self.speaker_labels,
-                    forKey: .speaker_labels
-                )
-                try container.encodeIfPresent(
-                    self.speakers_expected,
-                    forKey: .speakers_expected
-                )
-                try container.encodeIfPresent(
-                    self.content_safety,
-                    forKey: .content_safety
-                )
-                try container.encodeIfPresent(
-                    self.content_safety_labels,
-                    forKey: .content_safety_labels
-                )
-                try container.encodeIfPresent(
-                    self.iab_categories,
-                    forKey: .iab_categories
-                )
-                try container.encodeIfPresent(
-                    self.iab_categories_result,
-                    forKey: .iab_categories_result
-                )
-                try container.encodeIfPresent(
-                    self.custom_spelling,
-                    forKey: .custom_spelling
-                )
-                try container.encodeIfPresent(
-                    self.keyterms_prompt,
-                    forKey: .keyterms_prompt
-                )
-                try container.encodeIfPresent(
-                    self.prompt,
-                    forKey: .prompt
-                )
-                try container.encodeIfPresent(
-                    self.auto_chapters,
-                    forKey: .auto_chapters
-                )
-                try container.encodeIfPresent(
-                    self.chapters,
-                    forKey: .chapters
-                )
-                try container.encode(
-                    self.summarization,
-                    forKey: .summarization
-                )
-                try container.encodeIfPresent(
-                    self.summary_type,
-                    forKey: .summary_type
-                )
-                try container.encodeIfPresent(
-                    self.summary_model,
-                    forKey: .summary_model
-                )
-                try container.encodeIfPresent(
-                    self.summary,
-                    forKey: .summary
-                )
-                try container.encodeIfPresent(
-                    self.custom_topics,
-                    forKey: .custom_topics
-                )
-                try container.encodeIfPresent(
-                    self.topics,
-                    forKey: .topics
-                )
-                try container.encodeIfPresent(
                     self.sentiment_analysis,
                     forKey: .sentiment_analysis
                 )
@@ -3349,36 +3352,108 @@ public enum Components {
                     forKey: .sentiment_analysis_results
                 )
                 try container.encodeIfPresent(
-                    self.entity_detection,
-                    forKey: .entity_detection
+                    self.speaker_labels,
+                    forKey: .speaker_labels
                 )
                 try container.encodeIfPresent(
-                    self.entities,
-                    forKey: .entities
+                    self.speakers_expected,
+                    forKey: .speakers_expected
+                )
+                try container.encodeIfPresent(
+                    self.speech_model_used,
+                    forKey: .speech_model_used
+                )
+                try container.encodeIfPresent(
+                    self.speech_models,
+                    forKey: .speech_models
                 )
                 try container.encodeIfPresent(
                     self.speech_threshold,
                     forKey: .speech_threshold
                 )
                 try container.encodeIfPresent(
+                    self.speech_understanding,
+                    forKey: .speech_understanding
+                )
+                try container.encode(
+                    self.status,
+                    forKey: .status
+                )
+                try container.encode(
+                    self.summarization,
+                    forKey: .summarization
+                )
+                try container.encodeIfPresent(
+                    self.summary,
+                    forKey: .summary
+                )
+                try container.encodeIfPresent(
+                    self.summary_model,
+                    forKey: .summary_model
+                )
+                try container.encodeIfPresent(
+                    self.summary_type,
+                    forKey: .summary_type
+                )
+                try container.encodeIfPresent(
+                    self.temperature,
+                    forKey: .temperature
+                )
+                try container.encodeIfPresent(
+                    self.text,
+                    forKey: .text
+                )
+                try container.encodeIfPresent(
                     self.throttled,
                     forKey: .throttled
                 )
                 try container.encodeIfPresent(
-                    self.error,
-                    forKey: .error
+                    self.utterances,
+                    forKey: .utterances
+                )
+                try container.encode(
+                    self.webhook_auth,
+                    forKey: .webhook_auth
                 )
                 try container.encodeIfPresent(
-                    self.language_model,
-                    forKey: .language_model
+                    self.webhook_auth_header_name,
+                    forKey: .webhook_auth_header_name
+                )
+                try container.encodeIfPresent(
+                    self.webhook_status_code,
+                    forKey: .webhook_status_code
+                )
+                try container.encodeIfPresent(
+                    self.webhook_url,
+                    forKey: .webhook_url
+                )
+                try container.encodeIfPresent(
+                    self.words,
+                    forKey: .words
                 )
                 try container.encodeIfPresent(
                     self.acoustic_model,
                     forKey: .acoustic_model
                 )
                 try container.encodeIfPresent(
-                    self.speech_understanding,
-                    forKey: .speech_understanding
+                    self.custom_topics,
+                    forKey: .custom_topics
+                )
+                try container.encodeIfPresent(
+                    self.language_model,
+                    forKey: .language_model
+                )
+                try container.encodeIfPresent(
+                    self.speech_model,
+                    forKey: .speech_model
+                )
+                try container.encodeIfPresent(
+                    self.speed_boost,
+                    forKey: .speed_boost
+                )
+                try container.encodeIfPresent(
+                    self.topics,
+                    forKey: .topics
                 )
                 try container.encodeIfPresent(
                     self.translated_texts,
@@ -6131,21 +6206,29 @@ public enum Components {
                 ///
                 /// - Remark: Generated from `#/components/schemas/TranslationRequestBody/translation/formal`.
                 public var formal: Swift.Bool?
+                /// When enabled with Speaker Labels, returns translated text in the utterances array. Each utterance will include a `translated_texts` key containing translations for each target language.
+                ///
+                /// - Remark: Generated from `#/components/schemas/TranslationRequestBody/translation/match_original_utterance`.
+                public var match_original_utterance: Swift.Bool?
                 /// Creates a new `translationPayload`.
                 ///
                 /// - Parameters:
                 ///   - target_languages: List of target language codes (e.g., `["es", "de"]`)
                 ///   - formal: Use formal language style
+                ///   - match_original_utterance: When enabled with Speaker Labels, returns translated text in the utterances array. Each utterance will include a `translated_texts` key containing translations for each target language.
                 public init(
                     target_languages: [Swift.String],
-                    formal: Swift.Bool? = nil
+                    formal: Swift.Bool? = nil,
+                    match_original_utterance: Swift.Bool? = nil
                 ) {
                     self.target_languages = target_languages
                     self.formal = formal
+                    self.match_original_utterance = match_original_utterance
                 }
                 public enum CodingKeys: String, CodingKey {
                     case target_languages
                     case formal
+                    case match_original_utterance
                 }
             }
             /// - Remark: Generated from `#/components/schemas/TranslationRequestBody/translation`.
@@ -6226,33 +6309,25 @@ public enum Components {
                 ///
                 /// - Remark: Generated from `#/components/schemas/CustomFormattingRequestBody/custom_formatting/email`.
                 public var email: Swift.String?
-                /// Whether to format utterances
-                ///
-                /// - Remark: Generated from `#/components/schemas/CustomFormattingRequestBody/custom_formatting/format_utterances`.
-                public var format_utterances: Swift.Bool?
                 /// Creates a new `custom_formattingPayload`.
                 ///
                 /// - Parameters:
                 ///   - date: Date format pattern (e.g., `"mm/dd/yyyy"`)
                 ///   - phone_number: Phone number format pattern (e.g., `"(xxx)xxx-xxxx"`)
                 ///   - email: Email format pattern (e.g., `"username@domain.com"`)
-                ///   - format_utterances: Whether to format utterances
                 public init(
                     date: Swift.String? = nil,
                     phone_number: Swift.String? = nil,
-                    email: Swift.String? = nil,
-                    format_utterances: Swift.Bool? = nil
+                    email: Swift.String? = nil
                 ) {
                     self.date = date
                     self.phone_number = phone_number
                     self.email = email
-                    self.format_utterances = format_utterances
                 }
                 public enum CodingKeys: String, CodingKey {
                     case date
                     case phone_number
                     case email
-                    case format_utterances
                 }
             }
             /// - Remark: Generated from `#/components/schemas/CustomFormattingRequestBody/custom_formatting`.
@@ -8545,6 +8620,7 @@ public enum Operations {
     ///
     /// <Note>To delete your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
     /// Remove the data from the transcript and mark it as deleted.
+    /// <Warning>Files uploaded via the `/upload` endpoint are immediately deleted alongside the transcript when you make a DELETE request, ensuring your data is removed from our systems right away.</Warning>
     ///
     ///
     /// - Remark: HTTP `DELETE /v2/transcript/{transcript_id}`.
@@ -10319,6 +10395,7 @@ public enum Operations {
     /// Get redacted audio
     ///
     /// <Note>To retrieve the redacted audio on the EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com` in the `GET` request above.</Note>
+    /// <Note>Redacted audio files are only available for 24 hours. Make sure to download the file within this time frame.</Note>
     /// Retrieve the redacted audio object containing the status and URL to the redacted audio.
     ///
     ///

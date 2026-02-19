@@ -301,6 +301,7 @@ paths:
       description: |
         <Note>To delete your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
         Remove the data from the transcript and mark it as deleted.
+        <Warning>Files uploaded via the `/upload` endpoint are immediately deleted alongside the transcript when you make a DELETE request, ensuring your data is removed from our systems right away.</Warning>
       operationId: deleteTranscript
       x-fern-sdk-group-name: transcripts
       x-fern-sdk-method-name: delete
@@ -555,6 +556,7 @@ paths:
       summary: Get redacted audio
       description: |
         <Note>To retrieve the redacted audio on the EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com` in the `GET` request above.</Note>
+        <Note>Redacted audio files are only available for 24 hours. Make sure to download the file within this time frame.</Note>
         Retrieve the redacted audio object containing the status and URL to the redacted audio.
       operationId: getRedactedAudio
       x-fern-sdk-group-name: transcripts
@@ -954,7 +956,79 @@ components:
       x-fern-sdk-group-name: transcripts
       type: object
       additionalProperties: false
+      required:
+        - speech_models
       properties:
+        audio_end_at:
+          x-label: Audio end at
+          description: 'The point in time, in milliseconds, to stop transcribing in your media file'
+          type: integer
+        audio_start_from:
+          x-label: Audio start from
+          description: 'The point in time, in milliseconds, to begin transcribing in your media file'
+          type: integer
+        auto_chapters:
+          x-label: Auto chapters
+          description: 'Enable [Auto Chapters](https://www.assemblyai.com/docs/models/auto-chapters), can be true or false'
+          type: boolean
+          default: false
+        auto_highlights:
+          x-label: Key phrases
+          description: 'Enable Key Phrases, either true or false'
+          type: boolean
+          default: false
+        content_safety:
+          x-label: Content Moderation
+          description: 'Enable [Content Moderation](https://www.assemblyai.com/docs/models/content-moderation), can be true or false'
+          type: boolean
+          default: false
+        content_safety_confidence:
+          x-label: Content Moderation confidence
+          description: The confidence threshold for the Content Moderation model. Values must be between 25 and 100.
+          type: integer
+          default: 50
+          minimum: 25
+          maximum: 100
+        custom_spelling:
+          x-label: Custom spellings
+          description: Customize how words are spelled and formatted using to and from values
+          type: array
+          items:
+            $ref: '#/components/schemas/TranscriptCustomSpelling'
+            x-label: Custom spelling
+        disfluencies:
+          x-label: Disfluencies
+          description: 'Transcribe Filler Words, like "umm", in your media file; can be true or false'
+          type: boolean
+          default: false
+        entity_detection:
+          x-label: Entity Detection
+          description: 'Enable [Entity Detection](https://www.assemblyai.com/docs/models/entity-detection), can be true or false'
+          type: boolean
+          default: false
+        filter_profanity:
+          x-label: Filter profanity
+          description: 'Filter profanity from the transcribed text, can be true or false'
+          type: boolean
+          default: false
+        format_text:
+          x-label: Format text
+          description: 'Enable Text Formatting, can be true or false'
+          type: boolean
+          default: true
+        iab_categories:
+          x-label: Topic Detection
+          description: 'Enable [Topic Detection](https://www.assemblyai.com/docs/models/topic-detection), can be true or false'
+          type: boolean
+          default: false
+        keyterms_prompt:
+          x-label: Keyterms prompt
+          description: |
+            Improve accuracy with up to 200 (for Universal-2) or 1000 (for Universal-3-Pro) domain-specific words or phrases (maximum 6 words per phrase).
+          type: array
+          items:
+            x-label: Keyterm
+            type: string
         language_code:
           anyOf:
             - $ref: '#/components/schemas/TranscriptLanguageCode'
@@ -974,6 +1048,17 @@ components:
           items:
             $ref: '#/components/schemas/TranscriptLanguageCode'
             x-label: Language code
+        language_confidence_threshold:
+          x-label: Language confidence threshold
+          description: |
+            The confidence threshold for the automatically detected language.
+            An error will be returned if the language confidence is below this threshold.
+            Defaults to 0.
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+          default: 0
         language_detection:
           x-label: Language detection
           description: 'Enable [Automatic language detection](https://www.assemblyai.com/docs/models/speech-recognition#automatic-language-detection), either true or false.'
@@ -1011,88 +1096,23 @@ components:
               minimum: 0
               maximum: 1
               default: 0.3
-              format: float
-        language_confidence_threshold:
-          x-label: Language confidence threshold
-          description: |
-            The confidence threshold for the automatically detected language.
-            An error will be returned if the language confidence is below this threshold.
-            Defaults to 0.
-          type: number
-          format: float
-          minimum: 0
-          maximum: 1
-          default: 0
-        speech_model:
-          $ref: '#/components/schemas/SpeechModel'
-          x-label: Speech model
-          description: 'The speech model to use for the transcription. When `null`, the `universal` model is used.'
-          default: universal
-          deprecated: true
-        speech_models:
-          x-label: Speech models
-          description: |
-            List multiple speech models in priority order, allowing our system to automatically route your audio to the best available option.
-          type: array
-          items:
-            $ref: '#/components/schemas/SpeechModel'
-            x-label: Speech model
-        punctuate:
-          x-label: Punctuate
-          description: 'Enable Automatic Punctuation, can be true or false'
-          type: boolean
-          default: true
-        format_text:
-          x-label: Format text
-          description: 'Enable Text Formatting, can be true or false'
-          type: boolean
-          default: true
-        disfluencies:
-          x-label: Disfluencies
-          description: 'Transcribe Filler Words, like "umm", in your media file; can be true or false'
-          type: boolean
-          default: false
         multichannel:
           x-label: Multichannel
           description: 'Enable [Multichannel](https://www.assemblyai.com/docs/models/speech-recognition#multichannel-transcription) transcription, can be true or false.'
           type: boolean
           default: false
-        webhook_url:
-          x-label: Webhook URL
+        prompt:
+          x-label: Prompt
           description: |
-            The URL to which we send webhook requests.
-            We sends two different types of webhook requests.
-            One request when a transcript is completed or failed, and one request when the redacted audio is ready if redact_pii_audio is enabled.
+            Provide natural language prompting of up to 1,500 words of contextual information to the model.
+
+            Note: This parameter is only supported for the Universal-3-Pro model.
           type: string
-          format: url
-        webhook_auth_header_name:
-          x-label: Webhook auth header name
-          description: The header name to be sent with the transcript completed or failed webhook requests
-          type: string
-          default: null
-        webhook_auth_header_value:
-          x-label: Webhook auth header value
-          description: The header value to send back with the transcript completed or failed webhook requests for added security
-          type: string
-          default: null
-        auto_highlights:
-          x-label: Key phrases
-          description: 'Enable Key Phrases, either true or false'
+        punctuate:
+          x-label: Punctuate
+          description: 'Enable Automatic Punctuation, can be true or false'
           type: boolean
-          default: false
-        audio_start_from:
-          x-label: Audio start from
-          description: 'The point in time, in milliseconds, to begin transcribing in your media file'
-          type: integer
-        audio_end_at:
-          x-label: Audio end at
-          description: 'The point in time, in milliseconds, to stop transcribing in your media file'
-          type: integer
-        filter_profanity:
-          x-label: Filter profanity
-          description: 'Filter profanity from the transcribed text, can be true or false'
-          type: boolean
-          default: false
+          default: true
         redact_pii:
           x-label: Redact PII
           description: 'Redact PII from the transcribed text using the Redact PII model, can be true or false'
@@ -1103,6 +1123,17 @@ components:
           description: 'Generate a copy of the original media file with spoken PII "beeped" out, can be true or false. See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more details.'
           type: boolean
           default: false
+        redact_pii_audio_options:
+          x-label: Specify options for PII redacted audio files.
+          description: Specify options for PII redacted audio files.
+          type: object
+          additionalProperties: false
+          properties:
+            return_redacted_no_speech_audio:
+              x-label: Return redacted no speech audio
+              description: 'By default, audio redaction provides redacted audio URLs only when speech is detected. However, if your use-case specifically requires redacted audio files even for silent audio files without any dialogue, you can opt to receive these URLs by setting this parameter to `true`.'
+              type: boolean
+              default: false
         redact_pii_audio_quality:
           $ref: '#/components/schemas/RedactPiiAudioQuality'
           x-label: Redact PII audio quality
@@ -1120,27 +1151,16 @@ components:
           x-label: Redact PII substitution
           description: 'The replacement logic for detected PII, can be `entity_type` or `hash`. See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more details.'
           default: hash
-        redact_pii_audio_options:
-          x-label: Specify options for PII redacted audio files.
-          description: Specify options for PII redacted audio files.
-          type: object
-          additionalProperties: false
-          properties:
-            return_redacted_no_speech_audio:
-              x-label: Return redacted no speech audio
-              description: 'By default, audio redaction provides redacted audio URLs only when speech is detected. However, if your use-case specifically requires redacted audio files even for silent audio files without any dialogue, you can opt to receive these URLs by setting this parameter to `true`.'
-              type: boolean
-              default: false
+        sentiment_analysis:
+          x-label: Sentiment Analysis
+          description: 'Enable [Sentiment Analysis](https://www.assemblyai.com/docs/models/sentiment-analysis), can be true or false'
+          type: boolean
+          default: false
         speaker_labels:
           x-label: Speaker labels
           description: 'Enable [Speaker diarization](https://www.assemblyai.com/docs/models/speaker-diarization), can be true or false'
           type: boolean
           default: false
-        speakers_expected:
-          x-label: Speakers expected
-          description: 'Tells the speaker label model how many speakers it should attempt to identify. See [Speaker diarization](https://www.assemblyai.com/docs/models/speaker-diarization) for more details.'
-          type: integer
-          default: null
         speaker_options:
           x-label: Specify options for speaker diarization.
           description: Specify options for speaker diarization.
@@ -1159,58 +1179,19 @@ components:
                 The maximum number of speakers expected in the audio file.
               type: integer
               default: 10
-        content_safety:
-          x-label: Content Moderation
-          description: 'Enable [Content Moderation](https://www.assemblyai.com/docs/models/content-moderation), can be true or false'
-          type: boolean
-          default: false
-        content_safety_confidence:
-          x-label: Content Moderation confidence
-          description: The confidence threshold for the Content Moderation model. Values must be between 25 and 100.
+        speakers_expected:
+          x-label: Speakers expected
+          description: 'Tells the speaker label model how many speakers it should attempt to identify. See [Speaker diarization](https://www.assemblyai.com/docs/models/speaker-diarization) for more details.'
           type: integer
-          default: 50
-          minimum: 25
-          maximum: 100
-        iab_categories:
-          x-label: Topic Detection
-          description: 'Enable [Topic Detection](https://www.assemblyai.com/docs/models/topic-detection), can be true or false'
-          type: boolean
-          default: false
-        custom_spelling:
-          x-label: Custom spellings
-          description: Customize how words are spelled and formatted using to and from values
-          type: array
-          items:
-            $ref: '#/components/schemas/TranscriptCustomSpelling'
-            x-label: Custom spelling
-        keyterms_prompt:
-          x-label: Keyterms prompt
+          default: null
+        speech_models:
+          x-label: Speech models
           description: |
-            Improve accuracy with up to 200 (for Universal) or 1000 (for Slam-1) domain-specific words or phrases (maximum 6 words per phrase).
+            List multiple speech models in priority order, allowing our system to automatically route your audio to the best available option.
           type: array
           items:
-            x-label: Keyterm
-            type: string
-        prompt:
-          x-label: Prompt
-          description: This parameter does not currently have any functionality attached to it.
-          type: string
-          deprecated: true
-        sentiment_analysis:
-          x-label: Sentiment Analysis
-          description: 'Enable [Sentiment Analysis](https://www.assemblyai.com/docs/models/sentiment-analysis), can be true or false'
-          type: boolean
-          default: false
-        auto_chapters:
-          x-label: Auto chapters
-          description: 'Enable [Auto Chapters](https://www.assemblyai.com/docs/models/auto-chapters), can be true or false'
-          type: boolean
-          default: false
-        entity_detection:
-          x-label: Entity Detection
-          description: 'Enable [Entity Detection](https://www.assemblyai.com/docs/models/entity-detection), can be true or false'
-          type: boolean
-          default: false
+            $ref: '#/components/schemas/SpeechModel'
+            x-label: Speech model
         speech_threshold:
           x-label: Speech threshold
           description: |
@@ -1221,6 +1202,18 @@ components:
           minimum: 0
           maximum: 1
           default: 0
+        speech_understanding:
+          x-label: Speech Understanding
+          description: 'Enable speech understanding tasks like translation, speaker identification, and custom formatting'
+          type: object
+          properties:
+            request:
+              oneOf:
+                - $ref: '#/components/schemas/TranslationRequestBody'
+                - $ref: '#/components/schemas/SpeakerIdentificationRequestBody'
+                - $ref: '#/components/schemas/CustomFormattingRequestBody'
+          required:
+            - request
         summarization:
           x-label: Enable Summarization
           description: 'Enable [Summarization](https://www.assemblyai.com/docs/models/summarization), can be true or false'
@@ -1236,32 +1229,54 @@ components:
           x-label: Summary type
           description: The type of summary
           default: bullets
+        temperature:
+          x-label: Temperature
+          description: |
+            Control the amount of randomness injected into the model's response.
+
+            Note: This parameter can only be used with the Universal-3-Pro model.
+          type: number
+          minimum: 0
+          maximum: 1
+          default: 0
+        webhook_auth_header_name:
+          x-label: Webhook auth header name
+          description: The header name to be sent with the transcript completed or failed webhook requests
+          type: string
+          default: null
+        webhook_auth_header_value:
+          x-label: Webhook auth header value
+          description: The header value to send back with the transcript completed or failed webhook requests for added security
+          type: string
+          default: null
+        webhook_url:
+          x-label: Webhook URL
+          description: |
+            The URL to which we send webhook requests.
+            We sends two different types of webhook requests.
+            One request when a transcript is completed or failed, and one request when the redacted audio is ready if redact_pii_audio is enabled.
+          type: string
+          format: url
         custom_topics:
           x-label: Enable custom topics
-          description: 'Enable custom topics, either true or false'
+          description: This parameter does not currently have any functionality attached to it.
           type: boolean
           default: false
           deprecated: true
+        speech_model:
+          $ref: '#/components/schemas/SpeechModel'
+          x-label: Speech model
+          description: |
+            This parameter has been replaced with the `speech_models` parameter, learn more about the `speech_models` parameter [here](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model).
+          deprecated: true
         topics:
           x-label: Custom topics
-          description: The list of custom topics
+          description: This parameter does not currently have any functionality attached to it.
           type: array
           items:
             x-label: Topic
             type: string
           deprecated: true
-        speech_understanding:
-          x-label: Speech Understanding
-          description: 'Enable speech understanding tasks like translation, speaker identification, and custom formatting'
-          type: object
-          properties:
-            request:
-              oneOf:
-                - $ref: '#/components/schemas/TranslationRequestBody'
-                - $ref: '#/components/schemas/SpeakerIdentificationRequestBody'
-                - $ref: '#/components/schemas/CustomFormattingRequestBody'
-          required:
-            - request
       example:
         speech_model: null
         language_code: en_us
@@ -1306,6 +1321,7 @@ components:
                 - es
                 - de
               formal: true
+              match_original_utterance: true
     TranscriptParams:
       x-label: Transcript parameters
       description: The parameters for creating a transcript
@@ -1369,6 +1385,7 @@ components:
                 - es
                 - de
               formal: true
+              match_original_utterance: true
     SummaryModel:
       type: string
       x-label: Summary model
@@ -1489,6 +1506,12 @@ components:
           x-label: Speaker
           description: 'The speaker of this utterance, where each speaker is assigned a sequential capital letter - e.g. "A" for Speaker A, "B" for Speaker B, etc.'
           type: string
+        translated_texts:
+          x-label: Translated texts
+          description: 'Translations keyed by language code (e.g., `{"es": "Texto traducido", "de": "Übersetzter Text"}`). Only present when `match_original_utterance` is enabled with translation.'
+          type: object
+          additionalProperties:
+            type: string
       required:
         - confidence
         - start
@@ -1848,25 +1871,6 @@ components:
       type: string
       description: The speech model to use for the transcription.
       x-fern-sdk-group-name: transcripts
-      enum:
-        - best
-        - slam-1
-        - universal
-      x-fern-enum:
-        universal:
-          name: Universal
-          description: 'The model optimized for accuracy, low latency, ease of use, and mutli-language support.'
-        slam-1:
-          name: Slam-1
-          description: A contextual model optimized for customization.
-        best:
-          name: Best
-          description: 'The model optimized for accuracy, low latency, ease of use, and mutli-language support.'
-      x-aai-enum:
-        best:
-          label: Best
-        nano:
-          label: Nano
     TranscriptLanguageCode:
       x-label: Language code
       type: string
@@ -2235,20 +2239,124 @@ components:
       x-fern-sdk-group-name: transcripts
       additionalProperties: true
       properties:
-        id:
-          x-label: ID
-          description: The unique identifier of your transcript
-          type: string
-          format: uuid
+        audio_channels:
+          x-label: Audio channels
+          description: The number of audio channels in the audio file. This is only present when multichannel is enabled.
+          type: integer
+        audio_duration:
+          x-label: Audio duration
+          description: 'The duration of this transcript object''s media file, in seconds'
+          type: integer
+        audio_end_at:
+          x-label: Audio end at
+          description: 'The point in time, in milliseconds, in the file at which the transcription was terminated'
+          type: integer
+        audio_start_from:
+          x-label: Audio start from
+          description: 'The point in time, in milliseconds, in the file at which the transcription was started'
+          type: integer
         audio_url:
           x-label: Audio URL
           description: The URL of the media that was transcribed
           type: string
           format: url
-        status:
-          $ref: '#/components/schemas/TranscriptStatus'
-          x-label: Status
-          description: 'The status of your transcript. Possible values are queued, processing, completed, or error.'
+        auto_chapters:
+          x-label: Auto Chapters enabled
+          description: 'Whether [Auto Chapters](https://www.assemblyai.com/docs/models/auto-chapters) is enabled, can be true or false'
+          type: boolean
+        auto_highlights:
+          x-label: Key Phrases
+          description: 'Whether Key Phrases is enabled, either true or false'
+          type: boolean
+        auto_highlights_result:
+          $ref: '#/components/schemas/AutoHighlightsResult'
+          x-label: Key Phrases result
+          description: |
+            An array of results for the Key Phrases model, if it is enabled.
+            See [Key Phrases](https://www.assemblyai.com/docs/models/key-phrases) for more information.
+        chapters:
+          x-label: Chapters
+          description: An array of temporally sequential chapters for the audio file
+          type: array
+          items:
+            $ref: '#/components/schemas/Chapter'
+            x-label: Chapter
+        confidence:
+          x-label: Confidence
+          description: 'The confidence score for the transcript, between 0.0 (low confidence) and 1.0 (high confidence)'
+          type: number
+          format: double
+          minimum: 0
+          maximum: 1
+        content_safety:
+          x-label: Content Moderation
+          description: 'Whether [Content Moderation](https://www.assemblyai.com/docs/models/content-moderation) is enabled, can be true or false'
+          type: boolean
+        content_safety_labels:
+          $ref: '#/components/schemas/ContentSafetyLabelsResult'
+          x-label: Content Moderation labels
+          description: |
+            An array of results for the Content Moderation model, if it is enabled.
+            See [Content moderation](https://www.assemblyai.com/docs/models/content-moderation) for more information.
+        custom_spelling:
+          x-label: Custom spellings
+          description: Customize how words are spelled and formatted using to and from values
+          type: array
+          items:
+            $ref: '#/components/schemas/TranscriptCustomSpelling'
+            x-label: Custom spelling
+        disfluencies:
+          x-label: Disfluencies
+          description: 'Transcribe Filler Words, like "umm", in your media file; can be true or false'
+          type: boolean
+        entities:
+          x-label: Entities
+          description: |
+            An array of results for the Entity Detection model, if it is enabled.
+            See [Entity detection](https://www.assemblyai.com/docs/models/entity-detection) for more information.
+          type: array
+          items:
+            $ref: '#/components/schemas/Entity'
+            x-label: Entity
+        entity_detection:
+          x-label: Entity Detection
+          description: 'Whether [Entity Detection](https://www.assemblyai.com/docs/models/entity-detection) is enabled, can be true or false'
+          type: boolean
+        error:
+          x-label: Error
+          description: Error message of why the transcript failed
+          type: string
+        filter_profanity:
+          x-label: Filter profanity
+          description: 'Whether [Profanity Filtering](https://www.assemblyai.com/docs/models/speech-recognition#profanity-filtering) is enabled, either true or false'
+          type: boolean
+        format_text:
+          x-label: Format text
+          description: 'Whether Text Formatting is enabled, either true or false'
+          type: boolean
+        iab_categories:
+          x-label: Topic Detection
+          description: 'Whether [Topic Detection](https://www.assemblyai.com/docs/models/topic-detection) is enabled, can be true or false'
+          type: boolean
+        iab_categories_result:
+          $ref: '#/components/schemas/TopicDetectionModelResult'
+          x-label: Topic Detection result
+          description: |
+            The result of the Topic Detection model, if it is enabled.
+            See [Topic Detection](https://www.assemblyai.com/docs/models/topic-detection) for more information.
+        id:
+          x-label: ID
+          description: The unique identifier of your transcript
+          type: string
+          format: uuid
+        keyterms_prompt:
+          x-label: Keyterms prompt
+          description: |
+            Improve accuracy with up to 200 (for Universal-2) or 1000 (for Universal-3-Pro) domain-specific words or phrases (maximum 6 words per phrase).
+          type: array
+          items:
+            x-label: Keyterm
+            type: string
         language_code:
           x-label: Language code
           description: |
@@ -2268,6 +2376,22 @@ components:
           items:
             $ref: '#/components/schemas/TranscriptLanguageCode'
             x-label: Language code
+        language_confidence:
+          x-label: Language confidence
+          description: 'The confidence score for the detected language, between 0.0 (low confidence) and 1.0 (high confidence)'
+          type: number
+          format: double
+          minimum: 0
+          maximum: 1
+        language_confidence_threshold:
+          x-label: Language confidence threshold
+          description: |
+            The confidence threshold for the automatically detected language.
+            An error will be returned if the language confidence is below this threshold.
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
         language_detection:
           x-label: Language detection
           description: 'Whether [Automatic language detection](/docs/pre-recorded-audio/automatic-language-detection) is enabled, either true or false'
@@ -2304,140 +2428,20 @@ components:
               minimum: 0
               maximum: 1
               default: 0.3
-              format: float
-        language_confidence_threshold:
-          x-label: Language confidence threshold
-          description: |
-            The confidence threshold for the automatically detected language.
-            An error will be returned if the language confidence is below this threshold.
-          type: number
-          format: float
-          minimum: 0
-          maximum: 1
-        language_confidence:
-          x-label: Language confidence
-          description: 'The confidence score for the detected language, between 0.0 (low confidence) and 1.0 (high confidence)'
-          type: number
-          format: double
-          minimum: 0
-          maximum: 1
-        speech_model:
-          $ref: '#/components/schemas/SpeechModel'
-          x-label: Speech model
-          description: 'The speech model used for the transcription. When `null`, the `universal` model is used.'
-          deprecated: true
-        speech_models:
-          x-label: Speech models
-          description: |
-            List multiple speech models in priority order, allowing our system to automatically route your audio to the best available option.
-          type: array
-          items:
-            $ref: '#/components/schemas/SpeechModel'
-            x-label: Speech model
-        speech_model_used:
-          $ref: '#/components/schemas/SpeechModel'
-          x-label: Speech model used
-          description: The speech model that was actually used for the transcription.
-          type: string
-        text:
-          x-label: Text
-          description: The textual transcript of your media file
-          type: string
-        words:
-          x-label: Words
-          description: |
-            An array of temporally-sequential word objects, one for each word in the transcript.
-            See [Speech recognition](https://www.assemblyai.com/docs/models/speech-recognition) for more information.
-          type: array
-          items:
-            $ref: '#/components/schemas/TranscriptWord'
-            x-label: Word
-        utterances:
-          x-label: Utterances
-          description: |
-            When multichannel or speaker_labels is enabled, a list of turn-by-turn utterance objects.
-            See [Speaker diarization](https://www.assemblyai.com/docs/speech-to-text/speaker-diarization) and [Multichannel transcription](https://www.assemblyai.com/docs/speech-to-text/speech-recognition#multichannel-transcription) for more information.
-          type: array
-          items:
-            $ref: '#/components/schemas/TranscriptUtterance'
-            x-label: Utterance
-        confidence:
-          x-label: Confidence
-          description: 'The confidence score for the transcript, between 0.0 (low confidence) and 1.0 (high confidence)'
-          type: number
-          format: double
-          minimum: 0
-          maximum: 1
-        audio_duration:
-          x-label: Audio duration
-          description: 'The duration of this transcript object''s media file, in seconds'
-          type: integer
-        punctuate:
-          x-label: Punctuate
-          description: 'Whether Automatic Punctuation is enabled, either true or false'
-          type: boolean
-        format_text:
-          x-label: Format text
-          description: 'Whether Text Formatting is enabled, either true or false'
-          type: boolean
-        disfluencies:
-          x-label: Disfluencies
-          description: 'Transcribe Filler Words, like "umm", in your media file; can be true or false'
-          type: boolean
         multichannel:
           x-label: Multichannel
           description: 'Whether [Multichannel transcription](https://www.assemblyai.com/docs/models/speech-recognition#multichannel-transcription) was enabled in the transcription request, either true or false'
           type: boolean
-        audio_channels:
-          x-label: Audio channels
-          description: The number of audio channels in the audio file. This is only present when multichannel is enabled.
-          type: integer
-        webhook_url:
-          x-label: Webhook URL
+        prompt:
+          x-label: Prompt
           description: |
-            The URL to which we send webhook requests.
-            We sends two different types of webhook requests.
-            One request when a transcript is completed or failed, and one request when the redacted audio is ready if redact_pii_audio is enabled.
+            Provide natural language prompting of up to 1,500 words of contextual information to the model.
+
+            Note: This parameter is only supported for the Universal-3-Pro model.
           type: string
-          format: url
-        webhook_status_code:
-          x-label: Webhook HTTP status code
-          description: 'The status code we received from your server when delivering the transcript completed or failed webhook request, if a webhook URL was provided'
-          type: integer
-        webhook_auth:
-          x-label: Webhook auth enabled
-          description: Whether webhook authentication details were provided
-          type: boolean
-        webhook_auth_header_name:
-          x-label: Webhook auth header name
-          description: The header name to be sent with the transcript completed or failed webhook requests
-          type: string
-        speed_boost:
-          x-label: Speed boost
-          description: Whether speed boost is enabled
-          type: boolean
-          deprecated: true
-        auto_highlights:
-          x-label: Key Phrases
-          description: 'Whether Key Phrases is enabled, either true or false'
-          type: boolean
-        auto_highlights_result:
-          $ref: '#/components/schemas/AutoHighlightsResult'
-          x-label: Key Phrases result
-          description: |
-            An array of results for the Key Phrases model, if it is enabled.
-            See [Key Phrases](https://www.assemblyai.com/docs/models/key-phrases) for more information.
-        audio_start_from:
-          x-label: Audio start from
-          description: 'The point in time, in milliseconds, in the file at which the transcription was started'
-          type: integer
-        audio_end_at:
-          x-label: Audio end at
-          description: 'The point in time, in milliseconds, in the file at which the transcription was terminated'
-          type: integer
-        filter_profanity:
-          x-label: Filter profanity
-          description: 'Whether [Profanity Filtering](https://www.assemblyai.com/docs/models/speech-recognition#profanity-filtering) is enabled, either true or false'
+        punctuate:
+          x-label: Punctuate
+          description: 'Whether Automatic Punctuation is enabled, either true or false'
           type: boolean
         redact_pii:
           x-label: Redact PII
@@ -2468,96 +2472,6 @@ components:
           $ref: '#/components/schemas/SubstitutionPolicy'
           x-label: Redact PII substitution
           description: 'The replacement logic for detected PII, can be `entity_type` or `hash`. See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more details.'
-        speaker_labels:
-          x-label: Speaker labels
-          description: 'Whether [Speaker diarization](https://www.assemblyai.com/docs/models/speaker-diarization) is enabled, can be true or false'
-          type: boolean
-        speakers_expected:
-          x-label: Speakers expected
-          description: 'Tell the speaker label model how many speakers it should attempt to identify. See [Speaker diarization](https://www.assemblyai.com/docs/models/speaker-diarization) for more details.'
-          type: integer
-        content_safety:
-          x-label: Content Moderation
-          description: 'Whether [Content Moderation](https://www.assemblyai.com/docs/models/content-moderation) is enabled, can be true or false'
-          type: boolean
-        content_safety_labels:
-          $ref: '#/components/schemas/ContentSafetyLabelsResult'
-          x-label: Content Moderation labels
-          description: |
-            An array of results for the Content Moderation model, if it is enabled.
-            See [Content moderation](https://www.assemblyai.com/docs/models/content-moderation) for more information.
-        iab_categories:
-          x-label: Topic Detection
-          description: 'Whether [Topic Detection](https://www.assemblyai.com/docs/models/topic-detection) is enabled, can be true or false'
-          type: boolean
-        iab_categories_result:
-          $ref: '#/components/schemas/TopicDetectionModelResult'
-          x-label: Topic Detection result
-          description: |
-            The result of the Topic Detection model, if it is enabled.
-            See [Topic Detection](https://www.assemblyai.com/docs/models/topic-detection) for more information.
-        custom_spelling:
-          x-label: Custom spellings
-          description: Customize how words are spelled and formatted using to and from values
-          type: array
-          items:
-            $ref: '#/components/schemas/TranscriptCustomSpelling'
-            x-label: Custom spelling
-        keyterms_prompt:
-          x-label: Keyterms prompt
-          description: |
-            Improve accuracy with up to 200 (for Universal) or 1000 (for Slam-1) domain-specific words or phrases (maximum 6 words per phrase).
-          type: array
-          items:
-            x-label: Keyterm
-            type: string
-        prompt:
-          x-label: Prompt
-          description: This parameter does not currently have any functionality attached to it.
-          type: string
-          deprecated: true
-        auto_chapters:
-          x-label: Auto Chapters enabled
-          description: 'Whether [Auto Chapters](https://www.assemblyai.com/docs/models/auto-chapters) is enabled, can be true or false'
-          type: boolean
-        chapters:
-          x-label: Chapters
-          description: An array of temporally sequential chapters for the audio file
-          type: array
-          items:
-            $ref: '#/components/schemas/Chapter'
-            x-label: Chapter
-        summarization:
-          x-label: Summarization enabled
-          description: 'Whether [Summarization](https://www.assemblyai.com/docs/models/summarization) is enabled, either true or false'
-          type: boolean
-        summary_type:
-          x-label: Summary type
-          description: 'The type of summary generated, if [Summarization](https://www.assemblyai.com/docs/models/summarization) is enabled'
-          type: string
-        summary_model:
-          x-label: Summary model
-          description: |
-            The Summarization model used to generate the summary,
-            if [Summarization](https://www.assemblyai.com/docs/models/summarization) is enabled
-          type: string
-        summary:
-          x-label: Summary
-          description: 'The generated summary of the media file, if [Summarization](https://www.assemblyai.com/docs/models/summarization) is enabled'
-          type: string
-        custom_topics:
-          x-label: Custom topics enabled
-          description: 'Whether custom topics is enabled, either true or false'
-          type: boolean
-          deprecated: true
-        topics:
-          x-label: Topics
-          description: The list of custom topics provided if custom topics is enabled
-          type: array
-          items:
-            x-label: Topic
-            type: string
-          deprecated: true
         sentiment_analysis:
           x-label: Sentiment Analysis
           description: 'Whether [Sentiment Analysis](https://www.assemblyai.com/docs/models/sentiment-analysis) is enabled, can be true or false'
@@ -2571,19 +2485,27 @@ components:
           items:
             $ref: '#/components/schemas/SentimentAnalysisResult'
             x-label: Sentiment Analysis result
-        entity_detection:
-          x-label: Entity Detection
-          description: 'Whether [Entity Detection](https://www.assemblyai.com/docs/models/entity-detection) is enabled, can be true or false'
+        speaker_labels:
+          x-label: Speaker labels
+          description: 'Whether [Speaker diarization](https://www.assemblyai.com/docs/models/speaker-diarization) is enabled, can be true or false'
           type: boolean
-        entities:
-          x-label: Entities
+        speakers_expected:
+          x-label: Speakers expected
+          description: 'Tell the speaker label model how many speakers it should attempt to identify. See [Speaker diarization](https://www.assemblyai.com/docs/models/speaker-diarization) for more details.'
+          type: integer
+        speech_model_used:
+          $ref: '#/components/schemas/SpeechModel'
+          x-label: Speech model used
+          description: The speech model that was actually used for the transcription.
+          type: string
+        speech_models:
+          x-label: Speech models
           description: |
-            An array of results for the Entity Detection model, if it is enabled.
-            See [Entity detection](https://www.assemblyai.com/docs/models/entity-detection) for more information.
+            List multiple speech models in priority order, allowing our system to automatically route your audio to the best available option.
           type: array
           items:
-            $ref: '#/components/schemas/Entity'
-            x-label: Entity
+            $ref: '#/components/schemas/SpeechModel'
+            x-label: Speech model
         speech_threshold:
           x-label: Speech threshold
           description: |
@@ -2593,24 +2515,6 @@ components:
           minimum: 0
           maximum: 1
           format: float
-        throttled:
-          x-label: Throttled
-          description: True while a request is throttled and false when a request is no longer throttled
-          type: boolean
-        error:
-          x-label: Error
-          description: Error message of why the transcript failed
-          type: string
-        language_model:
-          x-label: Language model
-          description: The language model that was used for the transcript
-          type: string
-          deprecated: true
-        acoustic_model:
-          x-label: Acoustic model
-          description: The acoustic model that was used for the transcript
-          type: string
-          deprecated: true
         speech_understanding:
           x-label: Speech Understanding
           description: 'Enable speech understanding tasks like translation, speaker identification, and custom formatting'
@@ -2626,8 +2530,117 @@ components:
                 - $ref: '#/components/schemas/TranslationResponse'
                 - $ref: '#/components/schemas/SpeakerIdentificationResponse'
                 - $ref: '#/components/schemas/CustomFormattingResponse'
-          required:
-            - request
+        status:
+          $ref: '#/components/schemas/TranscriptStatus'
+          x-label: Status
+          description: 'The status of your transcript. Possible values are queued, processing, completed, or error.'
+        summarization:
+          x-label: Summarization enabled
+          description: 'Whether [Summarization](https://www.assemblyai.com/docs/models/summarization) is enabled, either true or false'
+          type: boolean
+        summary:
+          x-label: Summary
+          description: 'The generated summary of the media file, if [Summarization](https://www.assemblyai.com/docs/models/summarization) is enabled'
+          type: string
+        summary_model:
+          x-label: Summary model
+          description: |
+            The Summarization model used to generate the summary,
+            if [Summarization](https://www.assemblyai.com/docs/models/summarization) is enabled
+          type: string
+        summary_type:
+          x-label: Summary type
+          description: 'The type of summary generated, if [Summarization](https://www.assemblyai.com/docs/models/summarization) is enabled'
+          type: string
+        temperature:
+          x-label: Temperature
+          description: |
+            The temperature that was used for the model's response.
+
+            Note: This parameter can only be used with the Universal-3-Pro model.
+          type: number
+          minimum: 0
+          maximum: 1
+        text:
+          x-label: Text
+          description: The textual transcript of your media file
+          type: string
+        throttled:
+          x-label: Throttled
+          description: True while a request is throttled and false when a request is no longer throttled
+          type: boolean
+        utterances:
+          x-label: Utterances
+          description: |
+            When multichannel or speaker_labels is enabled, a list of turn-by-turn utterance objects.
+            See [Speaker diarization](https://www.assemblyai.com/docs/speech-to-text/speaker-diarization) and [Multichannel transcription](https://www.assemblyai.com/docs/speech-to-text/speech-recognition#multichannel-transcription) for more information.
+          type: array
+          items:
+            $ref: '#/components/schemas/TranscriptUtterance'
+            x-label: Utterance
+        webhook_auth:
+          x-label: Webhook auth enabled
+          description: Whether webhook authentication details were provided
+          type: boolean
+        webhook_auth_header_name:
+          x-label: Webhook auth header name
+          description: The header name to be sent with the transcript completed or failed webhook requests
+          type: string
+        webhook_status_code:
+          x-label: Webhook HTTP status code
+          description: 'The status code we received from your server when delivering the transcript completed or failed webhook request, if a webhook URL was provided'
+          type: integer
+        webhook_url:
+          x-label: Webhook URL
+          description: |
+            The URL to which we send webhook requests.
+            We sends two different types of webhook requests.
+            One request when a transcript is completed or failed, and one request when the redacted audio is ready if redact_pii_audio is enabled.
+          type: string
+          format: url
+        words:
+          x-label: Words
+          description: |
+            An array of temporally-sequential word objects, one for each word in the transcript.
+            See [Speech recognition](https://www.assemblyai.com/docs/models/speech-recognition) for more information.
+          type: array
+          items:
+            $ref: '#/components/schemas/TranscriptWord'
+            x-label: Word
+        acoustic_model:
+          x-label: Acoustic model
+          description: This parameter does not currently have any functionality attached to it.
+          type: string
+          deprecated: true
+        custom_topics:
+          x-label: Custom topics enabled
+          description: This parameter does not currently have any functionality attached to it.
+          type: boolean
+          deprecated: true
+        language_model:
+          x-label: Language model
+          description: This parameter does not currently have any functionality attached to it.
+          type: string
+          deprecated: true
+        speech_model:
+          $ref: '#/components/schemas/SpeechModel'
+          x-label: Speech model
+          description: |
+            This parameter has been replaced with the `speech_models` parameter, learn more about the `speech_models` parameter [here](https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model).
+          deprecated: true
+        speed_boost:
+          x-label: Speed boost
+          description: This parameter does not currently have any functionality attached to it.
+          type: boolean
+          deprecated: true
+        topics:
+          x-label: Topics
+          description: This parameter does not currently have any functionality attached to it.
+          type: array
+          items:
+            x-label: Topic
+            type: string
+          deprecated: true
         translated_texts:
           type: object
           description: Translated text keyed by language code
@@ -5143,6 +5156,10 @@ components:
               type: boolean
               description: Use formal language style
               default: true
+            match_original_utterance:
+              type: boolean
+              description: 'When enabled with Speaker Labels, returns translated text in the utterances array. Each utterance will include a `translated_texts` key containing translations for each target language.'
+              default: false
           required:
             - target_languages
       required:
@@ -5183,10 +5200,6 @@ components:
             email:
               type: string
               description: 'Email format pattern (e.g., `"username@domain.com"`)'
-            format_utterances:
-              type: boolean
-              description: Whether to format utterances
-              default: true
       required:
         - custom_formatting
     TranslationResponse:

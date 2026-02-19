@@ -26,3 +26,5 @@ venv/
 *.swp
 *.tmp
 *~
+
+**.wav
