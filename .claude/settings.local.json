@@ -6,7 +6,8 @@
       "Bash(swift:*)",
       "Bash(gitleaks detect:*)",
       "Bash(git branch:*)",
-      "Bash(chmod:*)"
+      "Bash(chmod:*)",
+      "Bash(git remote:*)"
     ]
   }
 }
