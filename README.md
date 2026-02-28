@@ -1,9 +1,7 @@
 # AssemblyAI Swift SDK
 
-[![Swift 5.9+](https://img.shields.io/badge/Swift-5.9+-orange.svg)](https://swift.org)
-[![Platforms](https://img.shields.io/badge/Platforms-macOS%20|%20iOS%20|%20tvOS%20|%20watchOS%20|%20Linux-blue.svg)](https://swift.org)
-[![Swift Package Manager](https://img.shields.io/badge/SPM-compatible-brightgreen.svg)](https://swift.org/package-manager/)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fatacan%2FAssemblyAI%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/atacan/AssemblyAI)
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fatacan%2FAssemblyAI%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/atacan/AssemblyAI)
 
 An unofficial Swift SDK for [AssemblyAI](https://www.assemblyai.com/) - the AI platform for speech-to-text, speaker diarization, sentiment analysis, and more.
 
