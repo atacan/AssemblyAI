@@ -115,12 +115,24 @@ actions:
           application/json:
             schema:
               $ref: "#/components/schemas/Error"
+      BadGateway:
+        description: Bad gateway
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Error"
 
   # Add 422 response to all operations in all paths
   - target: "$.paths.*.*.responses"
     update:
       '422':
         $ref: '#/components/responses/UnprocessableContent'
+
+  # Add 502 response to all operations in all paths
+  - target: "$.paths.*.*.responses"
+    update:
+      '502':
+        $ref: '#/components/responses/BadGateway'
 
   # Add text/plain content type to all response definitions
   - target: "$.components.responses.*.content"

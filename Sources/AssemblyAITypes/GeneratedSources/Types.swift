@@ -7200,6 +7200,58 @@ public enum Components {
                 self.body = body
             }
         }
+        public struct BadGateway: Sendable, Hashable {
+            /// - Remark: Generated from `#/components/responses/BadGateway/content`.
+            @frozen public enum Body: Sendable, Hashable {
+                /// - Remark: Generated from `#/components/responses/BadGateway/content/application\/json`.
+                case json(Components.Schemas._Error)
+                /// The associated value of the enum case if `self` is `.json`.
+                ///
+                /// - Throws: An error if `self` is not `.json`.
+                /// - SeeAlso: `.json`.
+                public var json: Components.Schemas._Error {
+                    get throws {
+                        switch self {
+                        case let .json(body):
+                            return body
+                        default:
+                            try throwUnexpectedResponseBody(
+                                expectedContent: "application/json",
+                                body: self
+                            )
+                        }
+                    }
+                }
+                /// - Remark: Generated from `#/components/responses/BadGateway/content/text\/plain`.
+                case plainText(OpenAPIRuntime.HTTPBody)
+                /// The associated value of the enum case if `self` is `.plainText`.
+                ///
+                /// - Throws: An error if `self` is not `.plainText`.
+                /// - SeeAlso: `.plainText`.
+                public var plainText: OpenAPIRuntime.HTTPBody {
+                    get throws {
+                        switch self {
+                        case let .plainText(body):
+                            return body
+                        default:
+                            try throwUnexpectedResponseBody(
+                                expectedContent: "text/plain",
+                                body: self
+                            )
+                        }
+                    }
+                }
+            }
+            /// Received HTTP response body
+            public var body: Components.Responses.BadGateway.Body
+            /// Creates a new `BadGateway`.
+            ///
+            /// - Parameters:
+            ///   - body: Received HTTP response body
+            public init(body: Components.Responses.BadGateway.Body) {
+                self.body = body
+            }
+        }
     }
     /// Types generated from the `#/components/headers` section of the OpenAPI document.
     public enum Headers {}
@@ -7459,6 +7511,29 @@ public enum Operations {
                     default:
                         try throwUnexpectedResponseStatus(
                             expectedStatus: "internalServerError",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Bad gateway
+            ///
+            /// - Remark: Generated from `#/paths//v2/upload/post(uploadFile)/responses/502`.
+            ///
+            /// HTTP response code: `502 badGateway`.
+            case badGateway(Components.Responses.BadGateway)
+            /// The associated value of the enum case if `self` is `.badGateway`.
+            ///
+            /// - Throws: An error if `self` is not `.badGateway`.
+            /// - SeeAlso: `.badGateway`.
+            public var badGateway: Components.Responses.BadGateway {
+                get throws {
+                    switch self {
+                    case let .badGateway(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "badGateway",
                             response: self
                         )
                     }
@@ -7846,6 +7921,29 @@ public enum Operations {
                     }
                 }
             }
+            /// Bad gateway
+            ///
+            /// - Remark: Generated from `#/paths//v2/transcript/get(listTranscripts)/responses/502`.
+            ///
+            /// HTTP response code: `502 badGateway`.
+            case badGateway(Components.Responses.BadGateway)
+            /// The associated value of the enum case if `self` is `.badGateway`.
+            ///
+            /// - Throws: An error if `self` is not `.badGateway`.
+            /// - SeeAlso: `.badGateway`.
+            public var badGateway: Components.Responses.BadGateway {
+                get throws {
+                    switch self {
+                    case let .badGateway(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "badGateway",
+                            response: self
+                        )
+                    }
+                }
+            }
             /// Service unavailable
             ///
             /// - Remark: Generated from `#/paths//v2/transcript/get(listTranscripts)/responses/503`.
@@ -8172,6 +8270,29 @@ public enum Operations {
                     default:
                         try throwUnexpectedResponseStatus(
                             expectedStatus: "internalServerError",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Bad gateway
+            ///
+            /// - Remark: Generated from `#/paths//v2/transcript/post(createTranscript)/responses/502`.
+            ///
+            /// HTTP response code: `502 badGateway`.
+            case badGateway(Components.Responses.BadGateway)
+            /// The associated value of the enum case if `self` is `.badGateway`.
+            ///
+            /// - Throws: An error if `self` is not `.badGateway`.
+            /// - SeeAlso: `.badGateway`.
+            public var badGateway: Components.Responses.BadGateway {
+                get throws {
+                    switch self {
+                    case let .badGateway(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "badGateway",
                             response: self
                         )
                     }
@@ -8517,6 +8638,29 @@ public enum Operations {
                     }
                 }
             }
+            /// Bad gateway
+            ///
+            /// - Remark: Generated from `#/paths//v2/transcript/{transcript_id}/get(getTranscript)/responses/502`.
+            ///
+            /// HTTP response code: `502 badGateway`.
+            case badGateway(Components.Responses.BadGateway)
+            /// The associated value of the enum case if `self` is `.badGateway`.
+            ///
+            /// - Throws: An error if `self` is not `.badGateway`.
+            /// - SeeAlso: `.badGateway`.
+            public var badGateway: Components.Responses.BadGateway {
+                get throws {
+                    switch self {
+                    case let .badGateway(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "badGateway",
+                            response: self
+                        )
+                    }
+                }
+            }
             /// Service unavailable
             ///
             /// - Remark: Generated from `#/paths//v2/transcript/{transcript_id}/get(getTranscript)/responses/503`.
@@ -8853,6 +8997,29 @@ public enum Operations {
                     default:
                         try throwUnexpectedResponseStatus(
                             expectedStatus: "internalServerError",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Bad gateway
+            ///
+            /// - Remark: Generated from `#/paths//v2/transcript/{transcript_id}/delete(deleteTranscript)/responses/502`.
+            ///
+            /// HTTP response code: `502 badGateway`.
+            case badGateway(Components.Responses.BadGateway)
+            /// The associated value of the enum case if `self` is `.badGateway`.
+            ///
+            /// - Throws: An error if `self` is not `.badGateway`.
+            /// - SeeAlso: `.badGateway`.
+            public var badGateway: Components.Responses.BadGateway {
+                get throws {
+                    switch self {
+                    case let .badGateway(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "badGateway",
                             response: self
                         )
                     }
@@ -9249,6 +9416,29 @@ public enum Operations {
                     }
                 }
             }
+            /// Bad gateway
+            ///
+            /// - Remark: Generated from `#/paths//v2/transcript/{transcript_id}/{subtitle_format}/get(getSubtitles)/responses/502`.
+            ///
+            /// HTTP response code: `502 badGateway`.
+            case badGateway(Components.Responses.BadGateway)
+            /// The associated value of the enum case if `self` is `.badGateway`.
+            ///
+            /// - Throws: An error if `self` is not `.badGateway`.
+            /// - SeeAlso: `.badGateway`.
+            public var badGateway: Components.Responses.BadGateway {
+                get throws {
+                    switch self {
+                    case let .badGateway(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "badGateway",
+                            response: self
+                        )
+                    }
+                }
+            }
             /// Service unavailable
             ///
             /// - Remark: Generated from `#/paths//v2/transcript/{transcript_id}/{subtitle_format}/get(getSubtitles)/responses/503`.
@@ -9595,6 +9785,29 @@ public enum Operations {
                     }
                 }
             }
+            /// Bad gateway
+            ///
+            /// - Remark: Generated from `#/paths//v2/transcript/{transcript_id}/sentences/get(getTranscriptSentences)/responses/502`.
+            ///
+            /// HTTP response code: `502 badGateway`.
+            case badGateway(Components.Responses.BadGateway)
+            /// The associated value of the enum case if `self` is `.badGateway`.
+            ///
+            /// - Throws: An error if `self` is not `.badGateway`.
+            /// - SeeAlso: `.badGateway`.
+            public var badGateway: Components.Responses.BadGateway {
+                get throws {
+                    switch self {
+                    case let .badGateway(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "badGateway",
+                            response: self
+                        )
+                    }
+                }
+            }
             /// Service unavailable
             ///
             /// - Remark: Generated from `#/paths//v2/transcript/{transcript_id}/sentences/get(getTranscriptSentences)/responses/503`.
@@ -9930,6 +10143,29 @@ public enum Operations {
                     default:
                         try throwUnexpectedResponseStatus(
                             expectedStatus: "internalServerError",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Bad gateway
+            ///
+            /// - Remark: Generated from `#/paths//v2/transcript/{transcript_id}/paragraphs/get(getTranscriptParagraphs)/responses/502`.
+            ///
+            /// HTTP response code: `502 badGateway`.
+            case badGateway(Components.Responses.BadGateway)
+            /// The associated value of the enum case if `self` is `.badGateway`.
+            ///
+            /// - Throws: An error if `self` is not `.badGateway`.
+            /// - SeeAlso: `.badGateway`.
+            public var badGateway: Components.Responses.BadGateway {
+                get throws {
+                    switch self {
+                    case let .badGateway(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "badGateway",
                             response: self
                         )
                     }
@@ -10293,6 +10529,29 @@ public enum Operations {
                     }
                 }
             }
+            /// Bad gateway
+            ///
+            /// - Remark: Generated from `#/paths//v2/transcript/{transcript_id}/word-search/get(wordSearch)/responses/502`.
+            ///
+            /// HTTP response code: `502 badGateway`.
+            case badGateway(Components.Responses.BadGateway)
+            /// The associated value of the enum case if `self` is `.badGateway`.
+            ///
+            /// - Throws: An error if `self` is not `.badGateway`.
+            /// - SeeAlso: `.badGateway`.
+            public var badGateway: Components.Responses.BadGateway {
+                get throws {
+                    switch self {
+                    case let .badGateway(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "badGateway",
+                            response: self
+                        )
+                    }
+                }
+            }
             /// Service unavailable
             ///
             /// - Remark: Generated from `#/paths//v2/transcript/{transcript_id}/word-search/get(wordSearch)/responses/503`.
@@ -10629,6 +10888,29 @@ public enum Operations {
                     default:
                         try throwUnexpectedResponseStatus(
                             expectedStatus: "internalServerError",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Bad gateway
+            ///
+            /// - Remark: Generated from `#/paths//v2/transcript/{transcript_id}/redacted-audio/get(getRedactedAudio)/responses/502`.
+            ///
+            /// HTTP response code: `502 badGateway`.
+            case badGateway(Components.Responses.BadGateway)
+            /// The associated value of the enum case if `self` is `.badGateway`.
+            ///
+            /// - Throws: An error if `self` is not `.badGateway`.
+            /// - SeeAlso: `.badGateway`.
+            public var badGateway: Components.Responses.BadGateway {
+                get throws {
+                    switch self {
+                    case let .badGateway(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "badGateway",
                             response: self
                         )
                     }
